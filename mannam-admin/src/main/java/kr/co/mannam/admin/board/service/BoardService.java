@@ -33,7 +33,17 @@ public class BoardService {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
         for (BoardEntity boardEntity: boardEntityList) {
-            boardDTOList.add(boardEntity.toBoardDTO());
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .id(boardEntity.getId())
+                    .boardWriter(boardEntity.getBoardWriter())
+                    .boardTitle(boardEntity.getBoardTitle())
+                    .boardContents(boardEntity.getBoardContents())
+                    .boardHits(boardEntity.getBoardHits())
+                    .boardCreatedTime(boardEntity.getCreatedTime())
+                    .boardUpdatedTime(boardEntity.getUpdatedTime())
+                    .user(boardEntity.getUser())
+                    .build();
+            boardDTOList.add(boardDTO);
         }
         return boardDTOList;
     }
@@ -48,7 +58,16 @@ public class BoardService {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity = optionalBoardEntity.get();
-            BoardDTO boardDTO = boardEntity.toBoardDTO();
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .id(boardEntity.getId())
+                    .boardWriter(boardEntity.getBoardWriter())
+                    .boardTitle(boardEntity.getBoardTitle())
+                    .boardContents(boardEntity.getBoardContents())
+                    .boardHits(boardEntity.getBoardHits())
+                    .boardCreatedTime(boardEntity.getCreatedTime())
+                    .boardUpdatedTime(boardEntity.getUpdatedTime())
+                    .user(boardEntity.getUser())
+                    .build();
             return boardDTO;
         } else {
             return null;
@@ -83,7 +102,16 @@ public class BoardService {
         System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부
 
         // 목록: id, writer, title, hits, createdTime
-        Page<BoardDTO> boardDTOS = boardEntities.map(board -> board.toBoardDTO());
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> BoardDTO.builder()
+                .id(board.getId())
+                .boardWriter(board.getBoardWriter())
+                .boardTitle(board.getBoardTitle())
+                .boardContents(board.getBoardContents())
+                .boardHits(board.getBoardHits())
+                .boardCreatedTime(board.getCreatedTime())
+                .boardUpdatedTime(board.getUpdatedTime())
+                .user(board.getUser())
+                .build());
 //                BoardDTO.builder()
 //                .id(board.getId())
 //                .boardWriter(board.getBoardWriter())

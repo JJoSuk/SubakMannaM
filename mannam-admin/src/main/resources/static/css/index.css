@@ -1,0 +1,179 @@
+
+
+
+
+/*  */
+/* 섹션1 bd */
+/*  */
+.bd {
+  background-color: #d9f8dc;
+}
+
+.bd>.bd-slider {
+  /* border: 1px solid #000; */
+  width: 976px;
+  height: 550px;
+  margin: 0 auto;
+}
+
+.bd-slider .pic1 {
+  /* border: 1px solid #000; */
+  margin-top: 64px;
+}
+
+.bd-slider .pic2 {
+  /* border: 1px solid #000; */
+  margin-left: 80px;
+  margin-top: 64px;
+}
+
+.bd-slider .pic3 {
+  /* border: 1px solid #000; */
+  margin-left: 130px;
+  margin-top: 64px;
+}
+
+.slick-dots {
+}
+
+.prevBtn {
+  position: absolute;
+  top: 50%;
+  left: -100px;
+  color: white;
+  text-shadow: 0 3px 3px #0000009f;
+  z-index: 5;
+  font-size: 50px;
+  transform: translateY(-50%);
+}
+
+.nextBtn {
+  position: absolute;
+  top: 50%;
+  right: -100px;
+  color: white;
+  text-shadow: 0 3px 3px #0000009f;
+  z-index: 5;
+  font-size: 50px;
+  transform: translateY(-50%);
+}
+
+
+/*  */
+/* 섹션2 홈 */
+/*  */
+.home {
+  /* height: 95vh; */
+  padding: 4.6rem 0;
+}
+.home > .content {
+  width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.home > .content > .image {
+  width: 532px;
+  height: 684px;
+}
+.home > .content > .image > img {
+  width: 100%;
+  height: 100%;
+}
+.home > .content > .title > h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 2.4rem;
+}
+.home > .content > .title > p {
+  font-size: 1rem;
+}
+.home > .content > .title > .home-buttons {
+  margin-top: 2rem;
+}
+.home > .content > .title > .home-buttons > a {
+  background-color: #F1F3F5;
+  color: #212529;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  padding: 0.9rem 1.6rem;
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.home > .content > .title > .home-buttons > a:nth-of-type(2) {
+  margin-left: 1rem;
+}
+/*  */
+/* 회원게시물 */
+/*  */
+.items {
+  padding: 4.6rem 0;
+  background-color: #F8F9FA;
+}
+.items > .content {
+  position: relative;
+  width: 1024px;
+  margin: 3.5rem auto 9rem auto;
+}
+.items > .content > h1 {
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+}
+.items > .content > .item-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
+  grid-auto-rows: minmax(100px, auto);
+  row-gap: 25px;
+}
+.items > .content > .item-list > .card {
+  width: 200px;
+  margin: auto;
+}
+.items > .content > .item-list > .card img {
+  width: 100%;
+  border-radius: 12px;
+}
+.items > .content > .item-list > .card > .desc {
+  margin-top: 12px;
+}
+.items > .content > .item-list > .card > .desc > h2 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+.items > .content > .item-list > .card > .desc > .price {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.items > .content > .item-list > .card > .desc > .region {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.items > .content > .item-list > .card > .desc > .counts {
+  color: #868e96;
+  font-size: 13px;
+}
+
+.items > .content > .list {
+  /* border: 1px solid #000; */
+  position: absolute;
+  top: 760px;
+  right: 42.5%;
+}
+
+.items > .content > .list > a {
+  font-size: 20px;
+  font-weight: 700;
+  color: #212529;
+}
+
+

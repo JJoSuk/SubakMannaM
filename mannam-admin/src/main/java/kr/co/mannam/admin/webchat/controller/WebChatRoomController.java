@@ -24,13 +24,13 @@ public class WebChatRoomController {
     /**
      * 채팅 리스트 화면
      */
-    @GetMapping("/")
-    public String goChatRoom(Model model) {
-        List<WebChatRoomEntity> chatRooms = webChatRoomService.findAllRooms();
-        Collections.reverse(chatRooms);
-        model.addAttribute("list", chatRooms);
-        return "roomlist.html";
-    }
+//    @GetMapping("/")
+//    public String goChatRoom(Model model) {
+//        List<WebChatRoomEntity> chatRooms = webChatRoomService.findAllRooms();
+//        Collections.reverse(chatRooms);
+//        model.addAttribute("list", chatRooms);
+//        return "roomlist.html";
+//    }
 
     /**
      * 채팅방 생성

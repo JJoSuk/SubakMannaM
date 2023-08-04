@@ -3,6 +3,7 @@ package kr.co.mannam.admin.board.dto;
 
 import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.board.CommentEntity;
+import kr.co.mannam.domain.entity.member.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,5 +52,14 @@ public class CommentDTO {
         commentDTO.setBoardId(boardId);
         commentDTO.setUserId(commentEntity.getUser().getId());
         return commentDTO;
+    }
+
+    public static CommentEntity toSaveEntity(CommentDTO commentDTO, BoardEntity boardEntity, User user) {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setCommentWriter(commentDTO.getCommentWriter());
+        commentEntity.setCommentContents(commentDTO.getCommentContents());
+        commentEntity.setBoardEntity(boardEntity);
+        commentEntity.setUser(user);
+        return commentEntity;
     }
 }

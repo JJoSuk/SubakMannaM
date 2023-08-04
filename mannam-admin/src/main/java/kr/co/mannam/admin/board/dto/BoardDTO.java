@@ -1,8 +1,9 @@
 package kr.co.mannam.admin.board.dto;
 
 
-import demo.mannam_project.board.domain.BoardEntity;
-import demo.mannam_project.domain.User;
+
+import kr.co.mannam.domain.entity.board.BoardEntity;
+import kr.co.mannam.domain.entity.member.User;
 import lombok.*;
 
 import java.time.LocalDateTime;

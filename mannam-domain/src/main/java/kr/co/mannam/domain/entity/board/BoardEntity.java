@@ -1,8 +1,8 @@
 package kr.co.mannam.domain.entity.board;
 
 
-import demo.mannam_project.board.dto.BoardDTO;
-import demo.mannam_project.domain.User;
+
+import kr.co.mannam.domain.entity.member.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,18 +51,18 @@ public class BoardEntity extends BaseEntity {
         this.user = user;
     }
 
-    public BoardDTO toBoardDTO(){
-        return BoardDTO.builder()
-                .id(id)
-                .boardWriter(boardWriter)
-                .boardTitle(boardTitle)
-                .boardContents(boardContents)
-                .boardHits(boardHits)
-                .boardCreatedTime(super.getCreatedTime())
-                .boardUpdatedTime(super.getUpdatedTime())
-                .user(user)
-                .build();
-    }
+//    public BoardDTO toBoardDTO(){
+//        return BoardDTO.builder()
+//                .id(id)
+//                .boardWriter(boardWriter)
+//                .boardTitle(boardTitle)
+//                .boardContents(boardContents)
+//                .boardHits(boardHits)
+//                .boardCreatedTime(super.getCreatedTime())
+//                .boardUpdatedTime(super.getUpdatedTime())
+//                .user(user)
+//                .build();
+//    }
 
 //    public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
 //        BoardEntity boardEntity = new BoardEntity();

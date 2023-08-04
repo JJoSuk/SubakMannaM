@@ -31,7 +31,7 @@ public class CommentService {
             if (optionalUser.isPresent()){
                 BoardEntity boardEntity = optionalBoardEntity.get();
                 User user = optionalUser.get();
-                CommentEntity commentEntity = CommentEntity.toSaveEntity(commentDTO, boardEntity, user);
+                CommentEntity commentEntity = CommentDTO.toSaveEntity(commentDTO, boardEntity, user);
                 return commentRepository.save(commentEntity).getId();
             }
             return null;

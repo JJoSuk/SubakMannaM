@@ -1,5 +1,6 @@
 package kr.co.mannam.admin.webmap.dto;
 
+import kr.co.mannam.domain.entity.webmap.Mark;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
