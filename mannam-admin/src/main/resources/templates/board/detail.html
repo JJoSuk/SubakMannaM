@@ -1,0 +1,307 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<div class="content mt-5 p-5">
+    <article>
+        <div class="container mt-5 mb-5">
+            <div hidden th:text="${board.id}"></div>
+            <div class="d-flex">
+                <div class="pt-2" style="width: 62px;">제목</div>
+                <div class="w-100 mr-2">
+                    <div type="text" class="form-control" name="boardTitle" th:text="${board.boardTitle}"></div>
+                </div>
+                <div class="pt-2" style="width: 60px; margin-left: 10px">조회수</div>
+                <div class="pt-2">
+                    <div name="boardHits" th:text="${board.boardHits}" readonly
+                         style="background-color: #ffffff"></div>
+                </div>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <div class="d-flex">
+                <div class="" style="width: 60px;">작성자</div>
+                <div class="">
+                    <div name="boardWriter" th:text="${board.boardWriter}" readonly
+                         style="background-color: #ffffff"></div>
+                </div>
+                </div>
+                <div class="d-flex">
+                <div class="" style="width: 60px;">날짜</div>
+                <div class="">
+                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly
+                         style="background-color: #ffffff"></div>
+                </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <div class="form-control min-vh-100 p-5" name="boardContents" th:utext="${board.boardContents}"></div>
+                <br>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-success m-1" onclick="listReq()">목록</button>
+                <span th:if="${session.principal.id != null && session.principal.id == board.user.id}">
+                    <button class="btn btn-primary m-1" onclick="updateReq()">수정</button>
+                    <button class="btn btn-danger m-1" onclick="deleteReq()">삭제</button>
+                </span>
+            </div>
+            <hr>
+            <br>
+
+            <!--댓글 작성 부분-->
+            <div class=" d-flex mt-3 mb-3" id="comment-write">
+                <input class="" type="text" id="commentWriter" placeholder="작성자" style="width: 100px;" th:value="${session.principal.username}" readonly>
+                <input class="w-100" type="text" id="commentContents" placeholder="내용" style="margin: 0px 20px;">
+                <button class="btn btn-primary btn-sm" id="comment-write-btn" onclick="commentWriter()" style="width: 100px;">댓글작성</button>
+            </div>
+
+            <!--댓글 출력 부분-->
+            <div id="comment-list">
+                <table class="table">
+                    <colgroup>
+<!--                        <col width="5%"/>-->
+                        <col width="5%"/>
+                        <col width="20%"/>
+                        <col width="4%"/>
+                        <col width="3%"/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <!--          <th>-->
+                        <!--            <label class="checkbox-inline">-->
+                        <!--              <input type="checkbox" id="allCheckBox" class="chk">-->
+                        <!--            </label>-->
+                        <!--          </th>-->
+<!--                        <th>번호</th>-->
+                        <th>작성자</th>
+                        <th></th>
+                        <th>작성시간</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="border bg-light">
+                    <tr th:each="comment: ${commentList}">
+                        <!--          <td>-->
+                        <!--            <label class="checkbox-inline">-->
+                        <!--              <input type="checkbox" class="chk" name="chk" value="">-->
+                        <!--            </label>-->
+                        <!--          </td>-->
+                        <td hidden th:text="${comment.id}"></td>
+                        <td th:text="${comment.commentWriter}"></td>
+                        <td th:text="${comment.commentContents}"></td>
+                        <td th:text="*{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:if='${comment.userId == session.principal.id}'>
+                            <a th:onclick="|commentModifyForm(${comment.id})|">수정</a> /
+                            <a th:onclick="|commentDelete(${comment.id})|">삭제</a>
+                        </td>
+                        <td th:unless='${comment.userId == session.principal.id}'></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+</div>
+<!-- moment : json 타입 Date 포맷 -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script th:inline="javascript">
+
+    /* *************************** 게시글 ********************************** */
+    const listReq = () => {
+        console.log("목록 요청");
+        const page = [[${page}]];
+        location.href = "/board/paging?page=" + page;
+    }
+    const updateReq = () => {
+        console.log("수정 요청");
+        const id = [[${board.id}]];
+        location.href = "/board/update/" + id;
+    }
+    const deleteReq = () => {
+        console.log("삭제 요청");
+        const id = [[${board.id}]];
+        location.href = "/board/delete/" + id;
+    }
+
+    /* *************************** 댓글 ********************************* */
+        const writer = document.getElementById("commentWriter").value;
+
+        const board_id = [[${board.id}]]; // 게시글 번호
+        let session_id = [[${session.principal.id}]];
+
+        let print_comment = function (res) {
+            console.log("요청성공", res);
+            let output = "<table class='table'>";
+            output += "<colgroup>";
+            output += "<col width='5%'/>";
+            output += "<col width='20%'/>";
+            output += "<col width='4%'/>";
+            output += "<col width='3%'/>";
+            output += "</colgroup>";
+            output += "<thead>";
+            output += "<tr>";
+            output += "<th>작성자</th>";
+            output += "<th></th>";
+            output += "<th>작성시간</th>";
+            output += "<th></th>";
+            output += "</tr>";
+            output += "</thead>";
+            output += "<tbody class='border bg-light'>";
+            for (let i in res) {
+                output += "<tr>";
+                output += "<td hidden>" + res[i].id + "</td>";
+                output += "<td>" + res[i].commentWriter + "</td>";
+                output += "<td>" + res[i].commentContents + "</td>";
+                output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                if (res[i].userId == session_id) {
+                    output += "<td>";
+                    output += "<a onclick='commentModifyForm("+ res[i].id +")'>수정</a> /";
+                    output += "<a onclick='commentDelete("+ res[i].id +")'>삭제</a>";
+                    output += "</td>";
+                }else {
+                    output += "<td></td>";
+                    output += "</tr>";
+                }
+            }
+            output += "</tbody>";
+            output += "</table>";
+            document.getElementById('comment-list').innerHTML = output;
+            document.getElementById('commentContents').value = '';
+        }
+
+    let print_modifyForm = function (res, id) {
+        console.log("요청성공", res);
+        let output = "<table class='table'>";
+        output += "<colgroup>";
+        output += "<col width='5%'/>";
+        output += "<col width='20%'/>";
+        output += "<col width='4%'/>";
+        output += "<col width='3%'/>";
+        output += "</colgroup>";
+        output += "<thead>";
+        output += "<tr>";
+        output += "<th>작성자</th>";
+        output += "<th></th>";
+        output += "<th>작성시간</th>";
+        output += "<th></th>";
+        output += "</tr>";
+        output += "</thead>";
+        output += "<tbody class='border bg-light'>";
+        for (let i in res) {
+            if (res[i].id == id) {
+                output += "<tr>";
+                output += "<td hidden><input id='commentModifyId' value='" + res[i].id + "'</td>";
+                output += "<td>" + res[i].commentWriter + "</td>";
+                output += "<td><input class='w-100' style='margin-right:20px;' type='text' id='commentModifyContents' value='" + res[i].commentContents + "'></td>";
+                output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                if (res[i].userId == session_id) {
+                    output += "<td>";
+                    output += "<a onclick='commentModify()'>저장</a> /";
+                    output += "<a onclick='commentDelete("+ res[i].id +")'>삭제</a>";
+                    output += "</td>";
+                }else {
+                    output += "<td></td>";
+                    output += "</tr>";
+                }
+            } else {
+                output += "<tr>";
+                output += "<td hidden>" + res[i].id + "</td>";
+                output += "<td>" + res[i].commentWriter + "</td>";
+                output += "<td>" + res[i].commentContents + "</td>";
+                output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                if (res[i].userId == session_id) {
+                    output += "<td>";
+                    output += "<a onclick='commentModifyForm("+ res[i].id +")'>수정</a> /";
+                    output += "<a onclick='commentDelete("+ res[i].id +")'>삭제</a>";
+                    output += "</td>";
+                }else {
+                    output += "<td></td>";
+                    output += "</tr>";
+                }
+            }
+        }
+        output += "</tbody>";
+        output += "</table>";
+        document.getElementById('comment-list').innerHTML = output;
+        document.getElementById('commentContents').value = '';
+    }
+
+    // comment Save
+    const commentWriter = () => {
+        const contents = document.getElementById("commentContents").value;
+        $.ajax({
+            // 요청방식 : post, 요청주소 : /comment/save, 요청데이터 : 작성자, 작성내용, 게시글번호
+            type: "POST",
+            url: "/comment/save",
+            data: {
+                "commentWriter": writer,
+                "commentContents": contents,
+                "boardId": board_id,
+                "userId": session_id
+            },
+            success: function (res){
+                print_comment(res)
+            },
+            error: function (err) {
+                console.log("요청실패", err);
+            }
+        });
+    }
+
+    // comment Delete
+    const commentDelete = (id) => {
+        $.ajax({
+            type: "DELETE",
+            url: "/comment/delete/" + id,
+            contentType:"application/json; charset=utf-8",
+            success: function (res){
+                print_comment(res)
+            },
+            error: function (err) {
+                console.log("요청실패", err);
+            }
+        });
+    }
+
+    // comment Modify Form
+    const commentModifyForm = (id) => {
+        $.ajax({
+            type: "GET",
+            url: "/comment/modify/" + id,
+            contentType:"application/json; charset=utf-8",
+            success: function (res){
+                print_modifyForm(res, id)
+            },
+            error: function (err) {
+                console.log("요청실패", err);
+            }
+        });
+    }
+
+    // comment Modify
+    const commentModify = () => {
+            const modifyId = document.getElementById("commentModifyId").value;
+            const modifyContents = document.getElementById("commentModifyContents").value;
+            console.log(modifyId);
+            console.log(modifyContents);
+        $.ajax({
+            type: "PATCH",
+            url: "/comment/modify/",
+            data: {
+                "id": modifyId,
+                "commentContents": modifyContents
+            },
+            success: function (res){
+                print_comment(res)
+            },
+            error: function (err) {
+                console.log("요청실패", err);
+            }
+        });
+    }
+</script>
+<!-- 푸터 -->
+<th:block th:replace="/user/inc/footer::footerFragment"/>
+</body>
+</html>
