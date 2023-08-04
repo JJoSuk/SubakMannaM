@@ -53,10 +53,7 @@ public class CommentController {
 
     @PatchMapping("/modify")
     public ResponseEntity modify(@ModelAttribute CommentDTO commentDTO) {
-        System.out.println("commentDTO = " + commentDTO);
-
         CommentDTO findDTO = commentService.findById(commentDTO.getId());
-        System.out.println("findDTO = " + findDTO);
         commentDTO.setCommentContents(commentDTO.getCommentContents());
         commentService.modify(commentDTO);
 

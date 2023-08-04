@@ -26,10 +26,15 @@
                 </div>
                 </div>
                 <div class="d-flex">
-                <div class="" style="width: 60px;">날짜</div>
-                <div class="">
-                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly
-                         style="background-color: #ffffff"></div>
+                <div class="d-flex" th:if="${board.boardUpdatedTime == null}">
+                    <div class="" style="width: 50px;">날짜</div>
+                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
+                </div>
+                <div class="d-flex" th:unless="${board.boardUpdatedTime == null}">
+                    <div class="" style="width: 50px;">날짜</div>
+                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
+                    <div class="" style="width: 110px; margin-left: 10px;"> / 수정된 날짜</div>
+                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
                 </div>
                 </div>
             </div>
@@ -90,7 +95,12 @@
                         <td hidden th:text="${comment.id}"></td>
                         <td th:text="${comment.commentWriter}"></td>
                         <td th:text="${comment.commentContents}"></td>
-                        <td th:text="*{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <th:block th:if="${comment.commentUpdatedTime == null}"> <!--############### 댓글 수정 시간 보완 필요 ##############-->
+                            <td th:text="*{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        </th:block>
+                        <th:block th:unless="${comment.commentUpdatedTime == null}">
+                            <td th:text="*{#temporals.format(comment.commentUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        </th:block>
                         <td th:if='${comment.userId == session.principal.id}'>
                             <a th:onclick="|commentModifyForm(${comment.id})|">수정</a> /
                             <a th:onclick="|commentDelete(${comment.id})|">삭제</a>

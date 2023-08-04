@@ -21,6 +21,7 @@ public class CommentDTO {
     private String commentContents;
     private Long boardId;
     private LocalDateTime commentCreatedTime;
+    private LocalDateTime commentUpdatedTime;
     private BoardEntity boardEntity;
     private String userId;
 
@@ -48,6 +49,7 @@ public class CommentDTO {
         commentDTO.setCommentWriter(commentEntity.getCommentWriter());
         commentDTO.setCommentContents(commentEntity.getCommentContents());
         commentDTO.setCommentCreatedTime(commentEntity.getCreatedTime());
+        commentDTO.setCommentCreatedTime(commentEntity.getUpdatedTime());
 //        commentDTO.setBoardId(commentEntity.getBoardEntity().getId()); // 이 경우 Service 메소드에 @Transactional
         commentDTO.setBoardId(boardId);
         commentDTO.setUserId(commentEntity.getUser().getId());
