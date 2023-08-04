@@ -1,0 +1,105 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<div class="content mt-5 p-5">
+    <nav class="container">
+        <h2>게시판</h2>
+        <!-- ADMIN 권한일경우에만 글삭제 권한있음 -->
+        <div class="d-flex justify-content-end">
+            <!--        <a class="btn btn-danger">글삭제</a>-->
+            <a class="btn btn-primary" href="/board/save">글쓰기</a>
+        </div>
+        <br>
+            <table class="table table-hover">
+                <colgroup>
+                    <!--          <col width="2%" />-->
+                    <col width="5%"/>
+                    <col width="20%"/>
+                    <col width="5%"/>
+                    <col width="5%"/>
+                    <col width="5%"/>
+                    <!--          <col width="5%" />-->
+                </colgroup>
+                <thead>
+                <tr>
+                    <!--          <th>-->
+                    <!--            <label class="checkbox-inline">-->
+                    <!--              <input type="checkbox" id="allCheckBox" class="chk">-->
+                    <!--            </label>-->
+                    <!--          </th>-->
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                    <!--          <th>파일유무</th>-->
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="board: ${boardList}">
+                    <!--          <td>-->
+                    <!--            <label class="checkbox-inline">-->
+                    <!--              <input type="checkbox" class="chk" name="chk" value="">-->
+                    <!--            </label>-->
+                    <!--          </td>-->
+                    <td th:text="${board.id}"></td>
+                    <td><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}"
+                           th:text="${board.boardTitle}"></a></td>
+                    <td th:text="${board.boardWriter}"></td>
+                    <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${board.boardHits}"></td>
+                    <!--          <td>이미지</td>-->
+                </tr>
+                </tbody>
+            </table>
+            <br>
+
+            <nav class="container d-flex align-items-center justify-content-center"
+                 aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/board/paging(page=1)}" aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                        <!-- 현재페이지는 링크 없이 숫자만 -->
+                        <li class="page-item disabled">
+                            <span class="page-link" th:if="${page == boardList.number + 1}" th:text="${page}"></span>
+                        </li>
+                        <span th:unless="${boardList.isEmpty()}">
+                            <li class="page-item" th:unless="${page == boardList.number + 1}">
+                                <a class="page-link" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+                            </li>
+                        </span>
+                    </span>
+                    <li class="page-item">
+                        <a class="page-link" th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/board/paging(page=${boardList.totalPages})}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        <br>
+        <div class="input-group d-flex justify-content-center">
+            <input type="text" class="form-control" placeholder="제목을 입력해주세요.">
+            <button type="submit" class="btn btn-success">검색</button>
+        </div>
+        <br>
+    </nav>
+</div>
+<!-- 푸터 -->
+<th:block th:replace="/user/inc/footer::footerFragment"/>
+</body>
+</html>

@@ -1,7 +1,7 @@
 package kr.co.mannam.admin.board.controller;
 
-import demo.mannam_project.board.domain.UploadFile;
-import demo.mannam_project.board.service.ImageService;
+import kr.co.mannam.admin.board.service.ImageService;
+import kr.co.mannam.domain.entity.board.UploadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;

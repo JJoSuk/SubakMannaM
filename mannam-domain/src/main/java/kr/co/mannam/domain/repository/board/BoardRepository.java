@@ -1,7 +1,8 @@
 package kr.co.mannam.domain.repository.board;
 
 
-import demo.mannam_project.board.domain.BoardEntity;
+
+import kr.co.mannam.domain.entity.board.BoardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

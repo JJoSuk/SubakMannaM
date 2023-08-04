@@ -1,7 +1,7 @@
 package kr.co.mannam.admin.board.service;
 
-import demo.mannam_project.board.domain.UploadFile;
-import demo.mannam_project.board.repository.UploadFileRepository;
+import kr.co.mannam.domain.entity.board.UploadFile;
+import kr.co.mannam.domain.repository.board.UploadFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;

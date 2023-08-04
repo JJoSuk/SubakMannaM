@@ -1,12 +1,12 @@
 package kr.co.mannam.admin.board.service;
 
-import demo.mannam_project.board.domain.BoardEntity;
-import demo.mannam_project.board.domain.CommentEntity;
-import demo.mannam_project.board.dto.CommentDTO;
-import demo.mannam_project.board.repository.BoardRepository;
-import demo.mannam_project.board.repository.CommentRepository;
-import demo.mannam_project.domain.User;
-import demo.mannam_project.repository.UserRepository;
+import kr.co.mannam.admin.board.dto.CommentDTO;
+import kr.co.mannam.domain.entity.board.BoardEntity;
+import kr.co.mannam.domain.entity.board.CommentEntity;
+import kr.co.mannam.domain.entity.member.User;
+import kr.co.mannam.domain.repository.board.BoardRepository;
+import kr.co.mannam.domain.repository.board.CommentRepository;
+import kr.co.mannam.domain.repository.member.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

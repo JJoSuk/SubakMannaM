@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--  헤더  -->
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<div id="map" style="width:100%;height:70vh;padding-top: 64px;padding-left: 16px;"></div>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=67e976d6b999592753b7dacf13bb3bed&libraries=services"></script>
+<script th:inline="javascript">
+    // 카카오맵 API 초기화
+    kakao.maps.load(() => {
+        const mapContainer = document.getElementById('map');
+        const mapOptions = {
+            center: new kakao.maps.LatLng(37.566826, 126.9786567), // 서울 시청 좌표
+            level: 8,
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOptions);
+
+         // 커스텀 오버레이 닫는 함수
+    function closeOverlay() {
+        if (currentOverlay !== null) {
+            currentOverlay.setMap(null);
+            currentOverlay = null;
+        }
+    }
+
+        // 마커를 표시할 위치와 title 객체 배열입니다
+        var arr = [[${list}]];
+        console.log(arr);
+
+        var positions = new Array();
+        for (var k in arr) {
+            var $obj = arr[k];
+            console.log($obj);
+
+            var title = $obj.markname;
+            var lat = $obj.latitude;
+            var lng = $obj.longitude;
+            var category = $obj.category;
+            var address = $obj.markaddress;
+            var info = $obj.markainfo;
+            var image = $obj.markimage;
+            var tel = $obj.tel;
+            var markinfo = {'title':title,'lat':lat,'lng':lng,'category':category,'address':address,'info':info,'image':image,'tel':tel}
+            positions.push(markinfo);
+        }
+
+
+
+        // 커스텀 오버레이에 표시할 컨텐츠를 JavaScript로 생성하는 함수
+function createCustomOverlayContent(positions) {
+    // 컨텐츠 요소들을 생성합니다
+    var wrap = document.createElement('div');
+    wrap.className = 'wrap';
+
+    var info = document.createElement('div');
+    info.className = 'info';
+
+    var titleDiv = document.createElement('div');
+    titleDiv.className = 'title';
+
+    var titleText = document.createTextNode(positions.title);
+    titleDiv.appendChild(titleText);
+
+    var changeButton = document.createElement('a');
+    changeButton.className = 'btn btn-success';
+    changeButton.style.marginBottom = '8px';
+    changeButton.type = 'button';
+    changeButton.href = '/kakaomap';
+    changeButton.textContent = '변경';
+    titleDiv.appendChild(changeButton);
+
+    var closeButton = document.createElement('div');
+    closeButton.className = 'close';
+    closeButton.title = '닫기';
+    closeButton.onclick = closeOverlay;
+    titleDiv.appendChild(closeButton);
+
+    var body = document.createElement('div');
+    body.className = 'body';
+
+    var imgDiv = document.createElement('div');
+    imgDiv.className = 'img';
+
+    var img = document.createElement('img');
+    img.src = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png';
+    img.width = 73;
+    img.height = 70;
+    imgDiv.appendChild(img);
+
+    var descDiv = document.createElement('div');
+    descDiv.className = 'desc';
+
+    var ellipsis1 = document.createElement('div');
+    ellipsis1.className = 'address ellipsis';
+    ellipsis1.textContent = positions.address;
+    descDiv.appendChild(ellipsis1);
+
+    var ellipsis2 = document.createElement('div');
+    ellipsis2.className = 'category ellipsis';
+    ellipsis2.textContent = positions.category;
+    descDiv.appendChild(ellipsis2);
+
+<!--    var link = document.createElement('a');-->
+<!--    link.href = 'https://www.kakaocorp.com/main';-->
+<!--    link.target = '_blank';-->
+<!--    link.className = 'link';-->
+<!--    link.textContent = '홈페이지';-->
+<!--    descDiv.appendChild(link);-->
+
+    var ellipsis3 = document.createElement('div');
+    ellipsis3.className = 'tel ellipsis';
+    ellipsis3.textContent = positions.tel;
+    descDiv.appendChild(ellipsis3);
+
+    // 요소들을 구조에 맞게 연결합니다
+    body.appendChild(imgDiv);
+    body.appendChild(descDiv);
+    titleDiv.appendChild(body);
+    info.appendChild(titleDiv);
+    wrap.appendChild(info);
+
+    return wrap;
+}
+        // 현재 열린 오버레이를 저장할 변수
+        let currentOverlay = null;
+
+        // 마커 이미지의 이미지 주소입니다
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+// 마커 생성 및 이벤트 등록
+for (var i = 0; i < positions.length; i++) {
+     // 마커 이미지의 이미지 크기 입니다
+     var imageSize = new kakao.maps.Size(24, 35);
+
+     // 마커 이미지를 생성합니다
+     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(positions[i].lng, positions[i].lat),
+        title: positions[i].title,
+        image: markerImage
+    });
+
+    var content = createCustomOverlayContent(positions[i]);
+
+    const customOverlay = new kakao.maps.CustomOverlay({
+        content: content,
+        position: marker.getPosition(),
+        zIndex: 99999 // 오버레이를 최상위로 표시
+    });
+
+   // 마커 클릭 이벤트 처리
+        kakao.maps.event.addListener(marker, 'click', function () {
+            // 기존에 열린 오버레이가 있으면 닫기
+            if (currentOverlay !== null) {
+                currentOverlay.setMap(null);
+            }
+
+            customOverlay.setMap(map);
+            currentOverlay = customOverlay;
+        });
+
+        // 오버레이 닫기 버튼 클릭 이벤트 처리
+        var closeButton = content.querySelector('.close');
+        closeButton.onclick = closeOverlay;
+    }
+});
+</script>
+
+<!-- 푸터 -->
+<th:block th:replace="/user/inc/footer::footerFragment" />
+</html>

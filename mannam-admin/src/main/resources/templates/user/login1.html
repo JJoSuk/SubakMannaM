@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<link rel="stylesheet" th:href="@{/css/login1.css}">
+
+<section class="containers">
+  <div class="test">
+    <div class="main">
+      <h1>수박채팅 로그인</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, quo.
+      </p>
+    </div>
+    <div class="sub">
+      <p>
+        수박 채팅 주의사항 1
+      </p>
+      <ol class="list">
+        <li>1. Lorem ipsum, not good dolor sit amet consectetur adipisicing.</li>
+        <li>2. Lorem, ipsum dolor sit amet consectetur, good adipisicing.</li>
+        <li>3. Lorem, ipsum dolor sit holy amet consectetur adipisicing.</li>
+      </ol>
+    </div>
+    <div class="sub">
+      <p>
+        수박 채팅 주의사항 2
+      </p>
+      <ol class="list">
+        <li>1. Lorem, ipsum waka fee dolor sit amet, consectetur adipisicing.</li>
+        <li>2. Lorem, ipsum dolor sit amet consectetur, adipisicing.</li>
+        <li>3. Lorem, ipsum, dolor sit amet consectetur anything adipisicing.</li>
+      </ol>
+    </div>
+    <div class="last">
+      <p>
+        &#149;
+        아직 계정이 없다면 모바일 앱에서 회원가입해주세요.
+        <a href="">자주 묻는 질문</a>
+      </p>
+    </div>
+  </div>
+  <div class="login-modal">
+    <div class="login">
+      <h1>로그인</h1>
+      <input type="text" name="id" id="id" placeholder="아이디">
+      <input type="password" name="password" id="password" placeholder=" 비밀번호">
+<!--      <input type="submit" value="로그인">-->
+      <input type="submit" id="btn-login" class="btn btn-success btn-lg" value="로그인"></input>
+      <div class="save-info">
+        <label class="a">
+          <input type="checkbox"> 자동 로그인
+        </label>
+        <label class="b">
+          <input type="checkbox"> 이메일
+          <input type="checkbox"> 비밀번호
+        </label>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="/js/login.js"></script>
+<th:block th:replace="/user/inc/footer::footerFragment"/>
+
+</body>
+</html>

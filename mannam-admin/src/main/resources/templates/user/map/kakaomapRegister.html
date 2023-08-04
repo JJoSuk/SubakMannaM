@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--  헤더  -->
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<!--  컨텐츠 영역  -->
+<div class="container w-50 mt-3" style="height:70vh;padding-top: 64px;padding-left: 16px;">
+  <h3>마커 등록</h3>
+  <form action="/map/kakaomapRegister" method="post" enctype="multipart/form-data">
+<!--  <form class="form-join" method="post">-->
+    <p><input class="form-control" type="text" id="markname" name="markname" th:value="${list.get(4)}" ></p>
+    <p><input class="form-control" type="text" id="latitude" name="latitude" th:value="${list.get(1)}" ></p>
+    <p><input class="form-control" type="text" id="longitude" name="longitude" th:value="${list.get(0)}" ></p>
+    <p><select class="form-select" id="category" name="category" >
+      <option value="카페" >카페</option>
+      <option value="병원" >병원</option>
+      <option value="흡연장" >흡연장</option>
+      <option value="주차장" >주차장</option>
+      <option value="편의점" >편의점</option>
+    </select></p>
+    <p><input class="form-control" type="file" id="file" name="file" placeholder="마커 이미지" onchange="preViewImg(this)"/><img/></p>
+    <p><input class="form-control" type="text" id="markainfo" name="markainfo" placeholder="마커 설명"  ></p>
+    <p><input class="form-control" type="text" id="tel" name="tel" placeholder="전화번호" th:value="${list.get(2)}"></p>
+    <p><input class="form-control" type="text" id="markaddress" name="markaddress" placeholder="마커 주소" th:value="${list.get(3)}"></p>
+<!--    <p><input class="btn btn-markRegister" type="submit" value="마크등록"></p>-->
+    <button type="submit"  class="btn btn-success btn-lg">마크등록</button>
+  </form>
+
+
+</div>
+<!--<script src="/js/mark.js"></script>-->
+<!--  푸터  -->
+<th:block th:replace="/user/inc/footer::footerFragment"/>
+
+</body>
+</html>

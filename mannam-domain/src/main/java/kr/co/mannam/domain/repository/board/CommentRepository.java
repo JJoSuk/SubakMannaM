@@ -1,7 +1,7 @@
 package kr.co.mannam.domain.repository.board;
 
-import demo.mannam_project.board.domain.BoardEntity;
-import demo.mannam_project.board.domain.CommentEntity;
+import kr.co.mannam.domain.entity.board.BoardEntity;
+import kr.co.mannam.domain.entity.board.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

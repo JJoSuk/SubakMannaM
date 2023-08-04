@@ -1,7 +1,7 @@
 package kr.co.mannam.admin.board.controller;
 
-import demo.mannam_project.board.dto.CommentDTO;
-import demo.mannam_project.board.service.CommentService;
+import kr.co.mannam.admin.board.dto.CommentDTO;
+import kr.co.mannam.admin.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--  헤더  -->
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<div id="map" style="width:100%;height:70vh;padding-top: 64px;padding-left: 16px;">
+    <form action="/markupdate" method="post">
+    <div id="modal" style="display:none;">
+        <div class="modal_content">
+            <h2>마커 이름 변경</h2>
+            <input type="hidden" name="mid" id="mid">
+            <input type="text" name="markname" id="markname">
+<!--            <button type="button" id="markname_update_btn">수정</button>-->
+            <button type="submit">수정</button>
+            <button type="button" id="modal_close_btn">닫기</button>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+
+
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=67e976d6b999592753b7dacf13bb3bed&libraries=services"></script>
+<script th:inline="javascript">
+    // 카카오맵 API 초기화
+    kakao.maps.load(() => {
+        const mapContainer = document.getElementById('map');
+        const mapOptions = {
+            center: new kakao.maps.LatLng(37.566826, 126.9786567), // 서울 시청 좌표
+            level: 8,
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOptions);
+
+         // 커스텀 오버레이 닫는 함수
+    function closeOverlay() {
+        if (currentOverlay !== null) {
+            currentOverlay.setMap(null);
+            currentOverlay = null;
+        }
+    }
+
+        // 마커를 표시할 위치와 title 객체 배열입니다
+        var arr = [[${list}]];
+        console.log(arr);
+
+        var positions = new Array();
+        for (var k in arr) {
+            var $obj = arr[k];
+            console.log($obj);
+
+            var mid = $obj.mid;
+            var title = $obj.markname;
+            var lat = $obj.latitude;
+            var lng = $obj.longitude;
+            var category = $obj.category;
+            var address = $obj.markaddress;
+            var info = $obj.markainfo;
+            var image = $obj.markimage;
+            var imagepath = $obj.markimagepath;
+            var tel = $obj.tel;
+            var markinfo = {'mid':mid,'title':title,'lat':lat,'lng':lng,'category':category,'address':address,'info':info,'image':image,'imagepath':imagepath,'tel':tel}
+            positions.push(markinfo);
+        }
+
+        console.log(positions);
+
+
+
+        // 커스텀 오버레이에 표시할 컨텐츠를 JavaScript로 생성하는 함수
+function createCustomOverlayContent(positions) {
+    // 컨텐츠 요소들을 생성합니다
+    var wrap = document.createElement('div');
+    wrap.className = 'wrap';
+
+    var info = document.createElement('div');
+    info.className = 'info';
+
+    var titleDiv = document.createElement('div');
+    titleDiv.className = 'title';
+
+    var titleText = document.createTextNode(positions.title);
+    titleDiv.appendChild(titleText);
+
+        // modal로 열기
+    var changeButton = document.createElement('button');
+    changeButton.className = 'btn btn-success';
+    changeButton.id = 'modal_open_btn';
+    changeButton.type = 'button';
+    changeButton.textContent = '변경';
+    titleDiv.appendChild(changeButton);
+
+    // 모달 열기 버튼 클릭 이벤트 처리
+    changeButton.onclick = function () {
+        document.getElementById('modal').style.display = 'block';
+
+         var markname = positions.title; // 해당 마커의 title 값
+         var mid = positions.mid; // 해당 마커의 title 값
+         console.log(positions.title);
+
+     $(".modal_content #markname").val( markname );
+     $(".modal_content #mid").val( mid );
+
+    };
+
+    var closeButton = document.createElement('div');
+    closeButton.className = 'close';
+    closeButton.title = '닫기';
+    closeButton.onclick = closeOverlay;
+    titleDiv.appendChild(closeButton);
+
+    var body = document.createElement('div');
+    body.className = 'body';
+
+    var imgDiv = document.createElement('div');
+    imgDiv.className = 'img';
+
+    var img = document.createElement('img');
+<!--    img.src = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png';-->
+    img.src = '/upload/'+positions.image;
+    img.width = 73;
+    img.height = 70;
+    imgDiv.appendChild(img);
+
+    var descDiv = document.createElement('div');
+    descDiv.className = 'desc';
+
+    var ellipsis1 = document.createElement('div');
+    ellipsis1.className = 'address ellipsis';
+    ellipsis1.textContent = positions.address;
+    descDiv.appendChild(ellipsis1);
+
+    var ellipsis2 = document.createElement('div');
+    ellipsis2.className = 'category ellipsis';
+    ellipsis2.textContent = positions.category;
+    descDiv.appendChild(ellipsis2);
+
+<!--    var link = document.createElement('a');-->
+<!--    link.href = 'https://www.kakaocorp.com/main';-->
+<!--    link.target = '_blank';-->
+<!--    link.className = 'link';-->
+<!--    link.textContent = '홈페이지';-->
+<!--    descDiv.appendChild(link);-->
+
+    var ellipsis3 = document.createElement('div');
+    ellipsis3.className = 'tel ellipsis';
+    ellipsis3.textContent = positions.tel;
+    descDiv.appendChild(ellipsis3);
+
+    // 요소들을 구조에 맞게 연결합니다
+    body.appendChild(imgDiv);
+    body.appendChild(descDiv);
+    titleDiv.appendChild(body);
+    info.appendChild(titleDiv);
+    wrap.appendChild(info);
+
+    return wrap;
+}
+
+
+
+    // 모달 닫기 버튼 클릭 이벤트 처리
+    document.getElementById('modal_close_btn').onclick = function () {
+        document.getElementById('modal').style.display = 'none';
+    };
+        // 현재 열린 오버레이를 저장할 변수
+        let currentOverlay = null;
+
+        // 마커 이미지의 이미지 주소입니다
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+// 마커 생성 및 이벤트 등록
+for (var i = 0; i < positions.length; i++) {
+     // 마커 이미지의 이미지 크기 입니다
+     var imageSize = new kakao.maps.Size(24, 35);
+
+     // 마커 이미지를 생성합니다
+     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(positions[i].lng, positions[i].lat),
+        title: positions[i].title,
+        image: markerImage
+    });
+
+    var content = createCustomOverlayContent(positions[i]);
+
+    const customOverlay = new kakao.maps.CustomOverlay({
+        content: content,
+        position: marker.getPosition(),
+        zIndex: 99999 // 오버레이를 최상위로 표시
+    });
+
+   // 마커 클릭 이벤트 처리
+        kakao.maps.event.addListener(marker, 'click', function () {
+            // 기존에 열린 오버레이가 있으면 닫기
+            if (currentOverlay !== null) {
+                currentOverlay.setMap(null);
+            }
+
+            customOverlay.setMap(map);
+            currentOverlay = customOverlay;
+
+
+        });
+
+        // 오버레이 닫기 버튼 클릭 이벤트 처리
+        var closeButton = content.querySelector('.close');
+        closeButton.onclick = closeOverlay;
+    }
+
+    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+if (navigator.geolocation) {
+
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+        var lat = position.coords.latitude - 0.000693811, // 위도
+            lon = position.coords.longitude - 0.02624445; // 경도
+        console.log("lat : " + lat);
+        console.log("lon : " + lon);
+
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="padding:5px;">현재 위치</div>'; // 인포윈도우에 표시될 내용입니다
+
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition, message);
+
+      });
+
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
+        message = 'geolocation을 사용할수 없어요..'
+
+    displayMarker(locPosition, message);
+}
+
+// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+function displayMarker(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: locPosition
+    });
+
+    var iwContent = message, // 인포윈도우에 표시할 내용
+        iwRemoveable = true;
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content : iwContent,
+        removable : iwRemoveable
+    });
+
+    // 인포윈도우를 마커위에 표시합니다
+    infowindow.open(map, marker);
+
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);
+}
+});
+</script>
+<!-- 푸터 -->
+<th:block th:replace="/user/inc/footer::footerFragment" />
+</html>

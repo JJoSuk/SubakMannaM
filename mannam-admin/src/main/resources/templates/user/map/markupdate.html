@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--  헤더  -->
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<!--  컨텐츠 영역  -->
+<div class="container w-50 mt-3" style="height:70vh;padding-top: 64px;padding-left: 16px;">
+  <h3>마커 수정</h3>
+  <form action="/markupdate" method="post">
+<!--  <form class="form-join" method="post">-->
+    <p><input class="form-control" type="text" id="mid" name="mid" th:value="${list.mid}" ></p>
+    <p><input class="form-control" type="text" id="markname" name="markname" th:value="${list.markname}" ></p>
+<!--    <p><input class="form-control" type="file" id="file" name="file" placeholder="마커 이미지" onchange="preViewImg(this)" th:value="${list.markimage}" /><img/></p>-->
+    <button type="submit"  class="btn btn-success btn-lg">수정</button>
+    <button href="/kakaomarkmap"  class="btn btn-secondary btn-lg">돌아가기</button>
+  </form>
+
+</div>
+<!--<script src="/js/mark.js"></script>-->
+<!--  푸터  -->
+<th:block th:replace="/user/inc/footer::footerFragment"/>
+
+</body>
+</html>

@@ -1,8 +1,8 @@
 package kr.co.mannam.domain.entity.board;
 
 
-import demo.mannam_project.board.dto.CommentDTO;
-import demo.mannam_project.domain.User;
+
+import kr.co.mannam.domain.entity.member.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

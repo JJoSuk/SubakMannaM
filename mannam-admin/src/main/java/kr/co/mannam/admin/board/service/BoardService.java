@@ -1,8 +1,8 @@
 package kr.co.mannam.admin.board.service;
 
-import demo.mannam_project.board.domain.BoardEntity;
-import demo.mannam_project.board.dto.BoardDTO;
-import demo.mannam_project.board.repository.BoardRepository;
+import kr.co.mannam.admin.board.dto.BoardDTO;
+import kr.co.mannam.domain.entity.board.BoardEntity;
+import kr.co.mannam.domain.repository.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

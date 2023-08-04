@@ -1,11 +1,11 @@
 package kr.co.mannam.admin.board.controller;
 
 
-import demo.mannam_project.board.dto.BoardDTO;
-import demo.mannam_project.board.dto.CommentDTO;
-import demo.mannam_project.board.service.BoardService;
-import demo.mannam_project.board.service.CommentService;
-import demo.mannam_project.domain.User;
+import kr.co.mannam.admin.board.dto.BoardDTO;
+import kr.co.mannam.admin.board.dto.CommentDTO;
+import kr.co.mannam.admin.board.service.BoardService;
+import kr.co.mannam.admin.board.service.CommentService;
+import kr.co.mannam.domain.entity.member.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
