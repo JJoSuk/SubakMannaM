@@ -1,0 +1,4 @@
+rootProject.name = 'mannam-project'
+include 'mannam-admin'
+include 'mannam-domain'
+
