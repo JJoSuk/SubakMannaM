@@ -7,13 +7,16 @@
     <form action="/markupdate" method="post">
     <div id="modal" style="display:none;">
         <div class="modal_content">
-            <h2>마커 이름 변경</h2>
+            <h4>마커 이름 변경</h4>
             <input type="hidden" name="mid" id="mid">
             <input type="text" name="markname" id="markname">
 <!--            <button type="button" id="markname_update_btn">수정</button>-->
-            <button type="submit">수정</button>
-            <button type="button" id="modal_close_btn">닫기</button>
+            <div class="modal_btn">
+            <button type="submit"  class="markupdate_btn btn btn-sm btn-success">수정</button>
+            <button type="button" id="modal_close_btn" class="modalclose_btn btn btn-sm btn-danger">닫기</button>
+            </div>
         </div>
+
     </div>
     </form>
 </div>

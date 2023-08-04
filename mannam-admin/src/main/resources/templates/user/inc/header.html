@@ -84,7 +84,7 @@
     .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
     .info .tel {font-size: 11px; color: #5085BB;}
 </style>
-        <style>
+<style>
 #modal {
 <!--  display:none;-->
 
@@ -95,10 +95,11 @@
   position: absolute;
   top: 64px; /* 원하는 위치로 상하 조절 */
   left: 16px; /* 원하는 위치로 좌우 조절 */
+
 }
 
-#modal h2 {
-  margin:0;
+#modal h4 {
+  margin-bottom: 10px;
 }
 
 #modal button {
@@ -108,12 +109,35 @@
 }
 
 #modal .modal_content {
-  width:300px;
+  width: 220px;
+  height: 140px;
   margin:100px auto;
   padding:20px 10px;
   background:#fff;
-  border:2px solid #666;
+<!--  border:1px solid #666;-->
+  border-radius: 10px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;
+  box-shadow: 0px 1px 2px #888;
 }
+
+#modal .modal_content input {
+  margin-bottom: 10px;
+}
+
+#modal .modal_btn {
+ width:250px;
+ display: block;
+
+}
+
+#modal .modal_btn .btn {
+ width:50px;
+ margin:0;
+
+}
+
+#modal .modal_btn .markupdate_btn {
+ margin-right: 15px;
+
 }
 </style>
 
@@ -147,9 +171,9 @@
                     <li class="">
                         <a class="" href="/kakaomarkmap">등록된 마커</a>
                     </li>
-                    <li class="">
-                        <a class="" href="/root2">등록된 마커</a>
-                    </li>
+<!--                    <li class="">-->
+<!--                        <a class="" href="/root2">등록된 마커</a>-->
+<!--                    </li>-->
                     <li><a class="" href="/board/paging">게시판</a></li>
                 </ul>
             </nav>
