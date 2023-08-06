@@ -4,6 +4,7 @@ package kr.co.mannam.admin.board.dto;
 
 import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.member.User;
+import kr.co.mannam.type.board.BoardCategory;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class BoardDTO {
     private LocalDateTime boardCreatedTime;
     private LocalDateTime boardUpdatedTime;
     private User user;
+    private BoardCategory boardCategory;
 
     @Builder
     public BoardDTO(Long id,
@@ -32,7 +34,9 @@ public class BoardDTO {
                     int boardHits,
                     LocalDateTime boardCreatedTime,
                     LocalDateTime boardUpdatedTime,
-                    User user){
+                    User user,
+                    BoardCategory boardCategory
+    ){
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
@@ -41,6 +45,7 @@ public class BoardDTO {
         this.boardCreatedTime = boardCreatedTime;
         this.boardUpdatedTime = boardUpdatedTime;
         this.user = user;
+        this.boardCategory = boardCategory;
     }
     public BoardEntity toEntity(){
         return BoardEntity.builder()
@@ -50,6 +55,7 @@ public class BoardDTO {
                 .boardContents(boardContents)
                 .boardHits(boardHits)
                 .user(user)
+                .boardCategory(boardCategory)
                 .build();
     }
 

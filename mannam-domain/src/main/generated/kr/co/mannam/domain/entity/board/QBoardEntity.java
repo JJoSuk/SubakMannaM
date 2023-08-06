@@ -24,6 +24,8 @@ public class QBoardEntity extends EntityPathBase<BoardEntity> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final EnumPath<kr.co.mannam.type.board.BoardCategory> boardCategory = createEnum("boardCategory", kr.co.mannam.type.board.BoardCategory.class);
+
     public final StringPath boardContents = createString("boardContents");
 
     public final NumberPath<Integer> boardHits = createNumber("boardHits", Integer.class);

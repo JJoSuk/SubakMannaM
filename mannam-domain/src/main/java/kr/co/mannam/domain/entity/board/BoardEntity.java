@@ -3,6 +3,7 @@ package kr.co.mannam.domain.entity.board;
 
 
 import kr.co.mannam.domain.entity.member.User;
+import kr.co.mannam.type.board.BoardCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,9 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
+    @Enumerated(EnumType.STRING)
+    private BoardCategory boardCategory;
+
 
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntitieList = new ArrayList<>();
@@ -42,13 +46,14 @@ public class BoardEntity extends BaseEntity {
     private User user;
 
     @Builder
-    public BoardEntity(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, int fileAttached, User user){
+    public BoardEntity(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, User user, BoardCategory boardCategory){
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
         this.boardContents = boardContents;
         this.boardHits = boardHits;
         this.user = user;
+        this.boardCategory = boardCategory;
     }
 
 //    public BoardDTO toBoardDTO(){

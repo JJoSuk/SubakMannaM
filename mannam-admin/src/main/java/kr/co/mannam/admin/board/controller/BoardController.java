@@ -6,9 +6,11 @@ import kr.co.mannam.admin.board.dto.CommentDTO;
 import kr.co.mannam.admin.board.service.BoardService;
 import kr.co.mannam.admin.board.service.CommentService;
 import kr.co.mannam.domain.entity.member.User;
+import kr.co.mannam.type.board.BoardCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -25,21 +28,21 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
 
-    @GetMapping("/save")
-    public String saveForm() {
-        return "user/board/save";
-    }
+    @GetMapping("/save/{category}")
+    public String saveForm(@PathVariable BoardCategory category) { return "user/board/save"; }
 
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO,
                        @PageableDefault(page=1) Pageable pageable,
                        Model model,
                        HttpSession session) throws IOException {
+        System.out.println("boardDTO.getBoardCategory() = " + boardDTO.getBoardCategory());
         User user = (User) session.getAttribute("principal");
         boardDTO.setUser(user);
         boardService.save(boardDTO);
         model.addAttribute("page", pageable.getPageNumber());
-        return "redirect:/board/paging";
+
+        return "redirect:/board/paging/"+ boardDTO.getBoardCategory();
     }
 
     //////////// 게시판 더미 데이터용 save 메소드 ///////////////
@@ -99,20 +102,23 @@ public class BoardController {
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
         model.addAttribute("page", pageable.getPageNumber());
-        return "redirect:/board/"+boardDTO.getId();
+        return "redirect:/board/" + boardDTO.getBoardCategory() + "/" + boardDTO.getId();
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, @PageableDefault(page=1) Pageable pageable, Model model) {
+    public String delete(@PathVariable Long id,
+                         @PageableDefault(page=1) Pageable pageable,
+                         Model model) {
+        BoardCategory category = boardService.findById(id).getBoardCategory();
         boardService.delete(id);
         model.addAttribute("page", pageable.getPageNumber());
-        return "redirect:/board/paging";
+        return "redirect:/board/paging/"+category;
     }
 
     // /board/paging?page=1
-    @GetMapping("/paging")
-    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
-//        pageable.getPageNumber();
+    @GetMapping("/paging/{category}")
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model,
+                         @PathVariable BoardCategory category) {
         Page<BoardDTO> boardList = boardService.paging(pageable);
         int blockLimit = 5;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
@@ -129,8 +135,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        System.out.println("pageable = " + pageable);
-        System.out.println("boardList.getNumber() = " + boardList.getNumber());
+
         return "user/board/paging";
 
     }

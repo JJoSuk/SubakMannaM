@@ -6,11 +6,11 @@
         <div class="container mt-5 mb-5">
             <div hidden th:text="${board.id}"></div>
             <div class="d-flex">
-                <div class="pt-2" style="width: 62px;">제목</div>
+                <b class="pt-2" style="width: 62px;">제목</b>
                 <div class="w-100 mr-2">
                     <div type="text" class="form-control" name="boardTitle" th:text="${board.boardTitle}"></div>
                 </div>
-                <div class="pt-2" style="width: 60px; margin-left: 10px">조회수</div>
+                <b class="pt-2 me-2" style="width: 60px; margin-left: 10px">조회수</b>
                 <div class="pt-2">
                     <div name="boardHits" th:text="${board.boardHits}" readonly
                          style="background-color: #ffffff"></div>
@@ -19,23 +19,29 @@
             <hr>
             <div class="d-flex justify-content-between">
                 <div class="d-flex">
-                <div class="" style="width: 60px;">작성자</div>
+                <b class="" style="width: 60px;">작성자</b>
                 <div class="">
                     <div name="boardWriter" th:text="${board.boardWriter}" readonly
                          style="background-color: #ffffff"></div>
                 </div>
                 </div>
                 <div class="d-flex">
-                <div class="d-flex" th:if="${board.boardUpdatedTime == null}">
-                    <div class="" style="width: 50px;">날짜</div>
-                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
+                    <div class="d-flex" th:if="${board.boardUpdatedTime == null}">
+                        <b class="" style="width: 50px;">날짜</b>
+                        <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
+                    </div>
+                    <div class="d-flex" th:unless="${board.boardUpdatedTime == null}">
+                        <b class="" style="width: 50px;">날짜</b>
+                        <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
+                        <b class="" style="width: 110px; margin-left: 10px;"> / 수정된 날짜</b>
+                        <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
+                    </div>
                 </div>
-                <div class="d-flex" th:unless="${board.boardUpdatedTime == null}">
-                    <div class="" style="width: 50px;">날짜</div>
-                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
-                    <div class="" style="width: 110px; margin-left: 10px;"> / 수정된 날짜</div>
-                    <div name="boardCreatedTime" th:text="*{#temporals.format(board.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}" readonly style="background-color: #ffffff"></div>
-                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-2">
+                <b style="width: 80px;">카테고리</b>
+                <div>
+                    <div class="" name="categoryName" th:text="${board.getBoardCategory().Name}"></div>
                 </div>
             </div>
             <hr>
@@ -44,7 +50,7 @@
                 <br>
             </div>
             <div class="d-flex justify-content-end">
-                <button class="btn btn-success m-1" onclick="listReq()">목록</button>
+                <a th:href="|/board/paging/${board.getBoardCategory()}?page=${page}|"><button class="btn btn-success m-1">목록</button></a>
                 <span th:if="${session.principal.id != null && session.principal.id == board.user.id}">
                     <button class="btn btn-primary m-1" onclick="updateReq()">수정</button>
                     <button class="btn btn-danger m-1" onclick="deleteReq()">삭제</button>
@@ -118,11 +124,6 @@
 <script th:inline="javascript">
 
     /* *************************** 게시글 ********************************** */
-    const listReq = () => {
-        console.log("목록 요청");
-        const page = [[${page}]];
-        location.href = "/board/paging?page=" + page;
-    }
     const updateReq = () => {
         console.log("수정 요청");
         const id = [[${board.id}]];

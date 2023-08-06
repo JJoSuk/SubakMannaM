@@ -42,6 +42,7 @@ public class BoardService {
                     .boardCreatedTime(boardEntity.getCreatedTime())
                     .boardUpdatedTime(boardEntity.getUpdatedTime())
                     .user(boardEntity.getUser())
+                    .boardCategory(boardEntity.getBoardCategory())
                     .build();
             boardDTOList.add(boardDTO);
         }
@@ -67,6 +68,7 @@ public class BoardService {
                     .boardCreatedTime(boardEntity.getCreatedTime())
                     .boardUpdatedTime(boardEntity.getUpdatedTime())
                     .user(boardEntity.getUser())
+                    .boardCategory(boardEntity.getBoardCategory())
                     .build();
             return boardDTO;
         } else {
@@ -111,6 +113,7 @@ public class BoardService {
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
+                .boardCategory(board.getBoardCategory())
                 .build());
 //                BoardDTO.builder()
 //                .id(board.getId())

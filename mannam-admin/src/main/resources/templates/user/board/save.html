@@ -15,12 +15,23 @@
                 </div>
             </div>
             <hr>
-            <div class="d-flex">
-                <div class="pt-2" style="width: 60px;">작성자</div>
-                <div class="">
-                    <input type="text" class="form-control" name="boardWriter" readonly
-                           th:value="${session.principal.username}"
-                           style="background-color: #ffffff">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex">
+                    <div class="pt-2" style="width: 60px;">작성자</div>
+                    <div class="">
+                        <input type="text" class="form-control" name="boardWriter" readonly
+                               th:value="${session.principal.username}"
+                               style="background-color: #ffffff;">
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="pt-2" style="width: 80px;">카테고리</div>
+                    <div class="">
+                        <input type="text" class="form-control" name="categoryName" readonly
+                               th:value="${category.Name}"
+                               style="text-align: center; width: 160px; background-color: #ffffff;">
+                        <input type="text" name="BoardCategory" th:value="${category}" hidden>
+                    </div>
                 </div>
             </div>
             <hr>

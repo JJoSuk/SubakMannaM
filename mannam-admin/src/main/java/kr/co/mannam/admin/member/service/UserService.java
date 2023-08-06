@@ -3,6 +3,7 @@ package kr.co.mannam.admin.member.service;
 
 import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.repository.member.UserRepository;
+import kr.co.mannam.type.member.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UserService {
     }
 
     public void insertUser(User user){
-//        user.setRole(RoleType.USER);
+        user.setRole(RoleType.USER);
         userRepository.save(user);
     }
 }
