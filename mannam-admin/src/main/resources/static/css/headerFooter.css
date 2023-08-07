@@ -193,10 +193,10 @@ aside{
     width: 150px;
     height: 100%;
     background-color: #25a30b;
-    color: white;
     box-shadow: 1px 1px 1px 0.5px green;
     text-align: center;
     transition: 0.5s;
+    display: flex;
 }
 aside:hover{
     left: 0;
@@ -205,31 +205,50 @@ aside:hover hr{
     width: 100%;
 }
 aside>nav{
-    position: relative;
+    background-color: white;
+    display: inline-block;
+    width: 85%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
 }
 aside>nav>hr{
     transition: 0.3s;
     width: 50%;
 }
-aside>nav>ul{}
-aside>nav>ul a{
-    text-decoration: none;
-    color: white;
+aside>nav>ul{
+    border: 1px solid purple;
 }
-aside>nav>ul>li.edit{
+aside>nav>ul>.edit{
     font-size: 12px;
     text-align: right;
 }
 aside>nav>ul>li{
     padding: 5px;
     margin: 20px;
+    width: 85%;
+    left: 0px;
+    border: 1px solid blue;
+}
+aside>nav>ul>li>h5{
+    display: inline-block;
+    width: 100%;
+}
+aside>nav>ul>li>a{
+    border: 1px solid red;
+    text-decoration: none;
+    font-weight: 700;
+    color: #4d5159;
 }
 aside>.arrow{
+    display: inline-block;
     color: white;
-    top: 100%;
-    text-align: right;
     font-weight: bold;
-    margin-right: 3px;
+    position: absolute;
+    right: 0px;
+    width: 15%;
+    height: 100%;
+    top: 50%;
 }
 
 
