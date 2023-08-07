@@ -163,8 +163,9 @@
             <nav>
                 <ul>
                     <li><a href="">추천</a></li>
-                    <li><a href="/board/paging/Notice">공지</a></li>
-                    <li><a href="/board/paging/Suggestion">건의</a></li>
+<!--                    <li><a href="/board/paging/Notice">공지</a></li>-->
+                    <li><a th:href="|/board/paging/${session.category[0]}|">공지</a></li>
+                    <li><a th:href="|/board/paging/${session.category[1]}|">건의</a></li>
                     <li class="">
                         <a class="" href="/kakaomap">지도</a>
                     </li>
@@ -174,7 +175,15 @@
 <!--                    <li class="">-->
 <!--                        <a class="" href="/root2">등록된 마커</a>-->
 <!--                    </li>-->
-                    <li><a class="" href="/board/paging/Health">게시판</a></li>
+                    <li><a class="" href="">게시판</a>
+                        <div class="subNav">
+                            <ul th:each="cat : ${session.category}">
+                                <th:block th:unless="|${cat.Name == '공지사항' || cat.Name == '건의사항'}|">
+                                    <li><a th:href="|/board/paging/${cat}|" th:text="|${cat.Name} 게시판|"></a></li>
+                                </th:block>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </nav>
             <div class="search">
@@ -198,6 +207,7 @@
             </th:block>
         </div>
     </header>
+
     <aside>
         <nav>
             <ul>

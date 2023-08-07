@@ -102,7 +102,7 @@ public class BoardController {
         BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
         model.addAttribute("page", pageable.getPageNumber());
-        return "redirect:/board/" + boardDTO.getBoardCategory() + "/" + boardDTO.getId();
+        return "redirect:/board/" + boardDTO.getId();
     }
 
     @GetMapping("/delete/{id}")
@@ -119,7 +119,7 @@ public class BoardController {
     @GetMapping("/paging/{category}")
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model,
                          @PathVariable BoardCategory category) {
-        Page<BoardDTO> boardList = boardService.paging(pageable);
+        Page<BoardDTO> boardList = boardService.paging(pageable, category);
         int blockLimit = 5;
         int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
@@ -135,6 +135,11 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+
+//        for (BoardCategory bc : BoardCategory.values()) {
+//            System.out.println("bc = " + bc);
+//            System.out.println("bc.getName() = " + bc.getName());
+//        }
 
         return "user/board/paging";
 

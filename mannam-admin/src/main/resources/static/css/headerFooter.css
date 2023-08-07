@@ -24,7 +24,7 @@ header {
 header>.container {
     /* border: 2px solid rgb(255, 157, 0); */
     width: 1500px;
-    height: 64px;
+    /*height: 64px;*/
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,29 +47,83 @@ header>.container>nav>ul {
 }
 
 header>.container>nav>ul>li {
-    /* border: 1px solid #000; */
-    display: inline-block;
+    display: table;
     text-align: center;
     color: #4d5159;
     font-weight: 700;
     cursor: pointer;
-    margin-right: 20px;
+    padding: 2px 5px;
+    /*border: 1px solid crimson;*/
+    width: 70px;
+    height: 60px;
+}
+header>.container>nav>ul>li:nth-child(5) {
+    width: 120px;
 }
 header>.container>nav>ul>li>a {
+    width: 100%;
+    /*border: 1px solid blue;*/
     text-decoration: none;
     color: #4d5159;
+    display: table-cell;
+    vertical-align: middle;
 }
-
-header>.container>nav>ul>li:first-child {
+header>.container>nav>ul>li>a:hover {
     color: #25a30b;
 }
 
-header>.container>nav>ul>li>a:hover:nth-child(2),
-header>.container>nav>ul>li>a:hover:nth-child(3),
-header>.container>nav>ul>li>a:hover:nth-child(4),
-header>.container>nav>ul>li>a:hover:nth-child(5) {
-    color: #9b9b9b;
+header>.container>nav>ul>li:nth-child(6) {
+    position: relative;
 }
+header>.container>nav>ul>li:nth-child(6):hover .subNav {
+    display: block;
+    top: 58px;
+}
+
+.subNav{
+    transition: .2s;
+    position: absolute;
+    width: 200px;
+    padding: 20px 10px 10px 10px;
+    left: -60px;
+    top: -200px;
+    background-color: white;
+    display: none;
+}
+h.subNav>ul{
+    font-size: 18px;
+    /*border: 1px solid blue;*/
+}
+.subNav>ul>li{
+    display: inline-block;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 5px 5px;
+}
+.subNav>ul>li>a{
+    display: inline-block;
+    padding: 3px;
+    color: #4d5159;
+    text-decoration: none;
+}
+
+.subNav>ul>li>a:hover{
+    color: #25a30b;
+}
+
+
+/*header>.container>nav>ul>li:first-child {*/
+/*    color: #25a30b;*/
+/*}*/
+
+/*header>.container>nav>ul>li>a:hover:nth-child(2),*/
+/*header>.container>nav>ul>li>a:hover:nth-child(3),*/
+/*header>.container>nav>ul>li>a:hover:nth-child(4),*/
+/*header>.container>nav>ul>li>a:hover:nth-child(5) {*/
+/*    color: #9b9b9b;*/
+/*}*/
+
+
 /* 검색창 */
 header>.container>.search {
     display: flex;
@@ -99,6 +153,7 @@ header>.container>.search>input {
 
 header>.container button {
     margin-left: 10px;
+    width: 110px;
     border: 1px solid #d1d3d8;
     background-color: white;
     border-radius: 10px;

@@ -43,8 +43,7 @@
             <br>
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary" id="btnSave">저장</button>
-                <button onclick="location.href='/board/paging'" type="button" class="btn btn-success" id="btnList" style="margin-left: 10px">목록
-                </button>
+                <a th:href="|/board/paging/${category}|"><button type="button" class="btn btn-success" id="btnList" style="margin-left: 10px">목록</button></a>
             </div>
         </form>
     </article>
