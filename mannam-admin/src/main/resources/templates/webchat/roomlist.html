@@ -27,8 +27,6 @@
             // 모달창 열릴 때 이벤트 처리 => roomId 가져오기
             $("#enterRoomModal").on("show.bs.modal", function (event) {
                 roomId = $(event.relatedTarget).data('id');
-                // console.log("roomId: " + roomId);
-
             });
 
             $("#confirmPwdModal").on("show.bs.modal", function (e) {
@@ -38,7 +36,7 @@
             });
 
             // 채팅방 설정 시 비밀번호 확인
-            confirmPWD();
+            confirmPass();
 
             // 문자 채팅 누를 시 disabled 풀림
             $msgType.change(function(){
@@ -51,17 +49,17 @@
 
 
         // 채팅방 설정 시 비밀번호 확인 - keyup 펑션 활용
-        function confirmPWD(){
-            $("#confirmPwd").on("keyup", function(){
-                let $confirmPwd = $("#confirmPwd").val();
+        function confirmPass(){
+            $("#confirmPass").on("keyup", function(){
+                let $confirmPass = $("#confirmPass").val();
                 const $configRoomBtn = $("#configRoomBtn");
                 let $confirmLabel = $("#confirmLabel");
 
                 $.ajax({
                     type : "post",
-                    url : "/chat/confirmPwd/"+roomId,
+                    url : "/chat/confirmPass/"+roomId,
                     data : {
-                        "roomPwd" : $confirmPwd
+                        "roomPass" : $confirmPass
                     },
                     success : function(result){
                         // console.log("동작완료")
@@ -109,9 +107,9 @@
         function createRoom() {
 
             let name = $("#roomName").val();
-            let pwd = $("#roomPwd").val();
+            let pwd = $("#roomPass").val();
             let secret = $("#secret").is(':checked');
-            let secretChk = $("#secretChk");
+            let secretChk = $("#roomLock");
             let $rtcType = $("#rtcType");
             let $msgType = $("#msgType");
 
@@ -168,14 +166,14 @@
 
         // 채팅방 입장 시 비밀번호 확인
         function enterRoom(){
-            let $enterPwd = $("#enterPwd").val();
+            let $enterPass = $("#enterPass").val();
 
             $.ajax({
                 type : "post",
-                url : "/chat/confirmPwd/"+roomId,
+                url : "/chat/confirmPass/"+roomId,
                 async : false,
                 data : {
-                    "roomPwd" : $enterPwd
+                    "roomPass" : $enterPass
                 },
                 success : function(result){
                     // console.log("동작완료")
@@ -276,15 +274,15 @@
 
                 <tr th:each="room : ${list}">
                     <span class="hidden" th:id="${room.roomName}"></span>
-                    <td th:if="${room.secretChk}">
+                    <td th:if="${room.roomLock}">
                         <a href="#enterRoomModal" data-bs-toggle="modal" data-target="#enterRoomModal" th:data-id="${room.roomId}">[[${room.roomName}]]</a>
                     </td>
-                    <td th:if="${!room.secretChk}">
+                    <td th:if="${!room.roomLock}">
                         <!-- thymeleaf 의 변수를 onclick 에 넣는 방법 -->
                         <a th:href="@{/chat/room(roomId=${room.roomId})}" th:roomId="${room.roomId}" onclick="return chkRoomUserCnt(this.getAttribute('roomId'));">[[${room.roomName}]]</a>
                     </td>
                     <td>
-                        <span th:if="${room.secretChk}">
+                        <span th:if="${room.roomLock}">
                             🔒︎
                         </span>
                     </td>
@@ -321,9 +319,9 @@
                         <input type="text" class="form-control" id="roomName" name="roomName">
                     </div>
                     <div class="mb-3">
-                        <label for="roomPwd" class="col-form-label">방 설정 번호(방 삭제시 필요합니다)</label>
+                        <label for="roomPass" class="col-form-label">방 설정 번호(방 삭제시 필요합니다)</label>
                         <div class="input-group">
-                            <input type="password" name="roomPwd" id="roomPwd" class="form-control" data-toggle="password">
+                            <input type="password" name="roomPass" id="roomPass" class="form-control" data-toggle="password">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-eye"></i></span>
                             </div>
@@ -344,14 +342,13 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="maxUserCnt" class="col-form-label">채팅방 인원 설정
-                            <!--<input class="form-check-input" type="checkbox" id="maxChk">--></label>
+                        <label for="maxUserCnt" class="col-form-label">채팅방 인원 설정</label>
                         <input type="text" class="form-control" id="maxUserCnt" name="maxUserCnt">
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="secret">
-                        <input type="hidden" name="secretChk" id="secretChk" value="">
-                        <label class="form-check-label" for="secret">
+                        <input class="form-check-input" type="checkbox" id="Lock">
+                        <input type="hidden" name="roomLock" id="roomLock" value="">
+                        <label class="form-check-label" for="Lock">
                             채팅방 잠금
                         </label>
                     </div>
@@ -376,7 +373,7 @@
                 <div class="mb-3">
                     <label for="roomName" class="col-form-label">방 비밀번호</label>
                     <div class="input-group">
-                        <input type="password" name="roomPwd" id="enterPwd" class="form-control" data-toggle="password">
+                        <input type="password" name="roomPass" id="enterPass" class="form-control" data-toggle="password">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fa fa-eye"></i></span>
                         </div>
@@ -394,7 +391,7 @@
 
 
 
-<div class="modal fade" id="confirmPwdModal" aria-hidden="true" aria-labelledby="ModalToggleLabel" tabindex="-1">
+<div class="modal fade" id="confirmPassModal" aria-hidden="true" aria-labelledby="ModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -402,9 +399,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <label for="confirmPwd" class="col-form-label" id="confirmLabel">비밀번호 확인</label>
+                <label for="confirmPass" class="col-form-label" id="confirmLabel">비밀번호 확인</label>
                 <div class="input-group">
-                    <input type="password" name="confirmPwd" id="confirmPwd" class="form-control" data-toggle="password">
+                    <input type="password" name="confirmPass" id="confirmPass" class="form-control" data-toggle="password">
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fa fa-eye"></i></span>
                     </div>
@@ -425,9 +422,9 @@
             </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="chPwd" class="col-form-label">비밀번호 변경</label>
+                        <label for="chPass" class="col-form-label">비밀번호 변경</label>
                         <div class="input-group">
-                            <input type="password" name="confirmPwd" id="chPwd" class="form-control" data-toggle="password">
+                            <input type="password" name="confirmPass" id="chPass" class="form-control" data-toggle="password">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-eye"></i></span>
                             </div>
@@ -442,9 +439,9 @@
                         <input type="text" class="form-control" id="chRoomUserCnt" name="chUserCnt">
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="chSecret">
-                        <input type="hidden" name="secretChk" id="chSecretChk" value="">
-                        <label class="form-check-label" for="secret">
+                        <input class="form-check-input" type="checkbox" id="chLock">
+                        <input type="hidden" name="roomLock" id="chRoomLock" value="">
+                        <label class="form-check-label" for="Lock">
                             채팅방 잠금
                         </label>
                     </div>
