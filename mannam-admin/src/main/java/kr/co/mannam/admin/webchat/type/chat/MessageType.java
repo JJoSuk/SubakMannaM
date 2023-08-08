@@ -1,4 +1,4 @@
-package kr.co.mannam.admin.webchat.type.webchat;
+package kr.co.mannam.admin.webchat.type.chat;
 
 public enum MessageType {
 
