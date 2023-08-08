@@ -139,6 +139,11 @@
  margin-right: 15px;
 
 }
+
+#modal .modal_btn .modaldelete_btn {
+ margin-right: 15px;
+
+}
 </style>
 
 <style>
@@ -169,9 +174,15 @@
                     <li class="">
                         <a class="" href="/kakaomap">지도</a>
                     </li>
+<!--                    <li class="">-->
+<!--                        <a class="" href="/kakaomarkmap">등록된 마커</a>-->
+<!--                    </li>-->
+                    <th:block th:if="${session.principal != null}">
                     <li class="">
-                        <a class="" href="/kakaomarkmap">등록된 마커</a>
+                        <a class="" th:href="@{/kakaomarkmap/{userid}(userid=${session.principal.getId()})}">등록된 마커</a>
+<!--                        th:href="@{/post/updatePost/{id}(id=${post.id})}"-->
                     </li>
+                    </th:block>
 <!--                    <li class="">-->
 <!--                        <a class="" href="/root2">등록된 마커</a>-->
 <!--                    </li>-->
@@ -207,7 +218,6 @@
             </th:block>
         </div>
     </header>
-
     <aside>
         <nav>
             <ul>

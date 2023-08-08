@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kakao Map with Current Location</title>
+    <title>Kakao Mobility Directions API Example</title>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=67e976d6b999592753b7dacf13bb3bed&libraries=services"></script>
     <style>
         #map {
-            position: relative;
             width: 100%;
             height: 400px;
         }
-        #show-current-location-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 99;
+        #form {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-<div id="map">
-    <button id="show-current-location-btn">현재 위치 보기</button>
+<div id="map"></div>
+<div id="form">
+    <label for="from">출발지:</label>
+    <input type="text" id="from" placeholder="출발지 주소">
+    <label for="to">도착지:</label>
+    <input type="text" id="to" placeholder="도착지 주소">
+    <button onclick="findRoute()">길찾기</button>
 </div>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=67e976d6b999592753b7dacf13bb3bed&libraries=services"></script>
+
 <script>
+        let map;
+
         // 카카오맵 API 초기화
         kakao.maps.load(() => {
             const mapContainer = document.getElementById('map');
@@ -31,69 +35,44 @@
                 center: new kakao.maps.LatLng(37.566826, 126.9786567), // 기본 좌표
                 level: 8,
             };
-            const map = new kakao.maps.Map(mapContainer, mapOptions);
-            let marker = null; // Variable to store the current location marker
-            let infoWindow = null; // Variable to store the info window
-
-            // 현재 위치 표시 함수
-            function showCurrentPosition() {
-                if (marker) {
-                    // If marker exists, remove it from the map
-                    marker.setMap(null);
-                    marker = null;
-
-                    // If infoWindow exists, close it
-                    if (infoWindow) {
-                        infoWindow.close();
-                        infoWindow = null;
-                    }
-                } else {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(
-                            function (position) {
-                                var lat = position.coords.latitude; // 위도
-                                var lng = position.coords.longitude; // 경도
-                                var locPosition = new kakao.maps.LatLng(lat, lng);
-
-                                // 현재 위치로 지도 중심 이동
-                                map.setCenter(locPosition);
-
-                                // 현재 위치 마커 표시
-                                marker = new kakao.maps.Marker({
-                                    position: locPosition,
-                                    title: '현재 위치', // Text to display in the info window
-                                });
-                                marker.setMap(map);
-
-                                // Info window is created and opened immediately when the marker is created
-                                infoWindow = new kakao.maps.InfoWindow({
-                                    content: marker.getTitle(), // Get the title from the marker
-                                });
-                                infoWindow.open(map, marker);
-
-                                // Add click event listener for the marker to toggle the info window visibility
-                                kakao.maps.event.addListener(marker, 'click', function() {
-                                    if (infoWindow.getMap()) {
-                                        infoWindow.close();
-                                    } else {
-                                        infoWindow.open(map, marker);
-                                    }
-                                });
-                            },
-                            function (error) {
-                                console.error('Error getting the current location:', error);
-                            },
-                            { enableHighAccuracy: true }
-                        );
-                    } else {
-                        console.error('Geolocation is not supported by this browser.');
-                    }
-                }
-            }
-
-            // 현재 위치 표시 버튼 클릭 시 실행
-            document.getElementById('show-current-location-btn').addEventListener('click', showCurrentPosition);
+            map = new kakao.maps.Map(mapContainer, mapOptions);
         });
+
+        // 길찾기 함수
+        function findRoute() {
+            const from = document.getElementById('from').value;
+            const to = document.getElementById('to').value;
+
+            // 출발지와 도착지 주소를 이용하여 API 호출하는 로직
+            // 여기서 API 호출 코드를 구현해야 합니다.
+
+            // API 호출이 성공하면 아래와 같이 지도에 마커와 경로를 표시하는 로직을 작성합니다.
+            const fromPosition = new kakao.maps.LatLng(37.566826, 126.9786567); // 출발지 좌표
+            const toPosition = new kakao.maps.LatLng(37.566826, 127.9786567); // 도착지 좌표
+
+            // 출발지와 도착지를 지도에 표시하는 로직
+            const fromMarker = new kakao.maps.Marker({ position: fromPosition });
+            const toMarker = new kakao.maps.Marker({ position: toPosition });
+            fromMarker.setMap(map);
+            toMarker.setMap(map);
+
+            // 출발지와 도착지를 연결하는 경로를 지도에 표시하는 로직
+            const path = [fromPosition, toPosition];
+            const polyline = new kakao.maps.Polyline({
+                path: path,
+                strokeWeight: 3,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.7,
+                strokeStyle: 'solid'
+            });
+            polyline.setMap(map);
+
+            // 출발지와 도착지가 보이도록 지도의 중심과 레벨을 조정합니다.
+            const bounds = new kakao.maps.LatLngBounds();
+            bounds.extend(fromPosition);
+            bounds.extend(toPosition);
+            map.setBounds(bounds);
+        }
     </script>
 </body>
 </html>

@@ -54,8 +54,35 @@ public class MarkService {
 
     @Transactional
     public Long save(MarkDTO markDTO) {
+
         return markRepository.save(markDTO.toEntity()).getMid();
     }
 
 
+    public List<Mark.MarkMapping> getMarkUser(String userid) {
+        List<Mark.MarkMapping> list = markRepository.findMarkByUser_id(userid);
+
+        return list;
+    }
+
+
+    @Transactional
+    public void deleteMark(Long mid) {
+        markRepository.deleteByMid(mid);
+    }
+
+    public List<Mark.MarkMapping> getMarkMid(Long mid) {
+        List<Mark.MarkMapping> marks = markRepository.findMarkByMid(mid);
+
+        return marks;
+    }
+
+    public void updateMark(Mark mark) {
+        Mark findMark = markRepository.findByMid(mark.getMid());
+        System.out.println("findMark.getMarkname() = " + findMark.getMarkname());
+        findMark.setMarkname(mark.getMarkname());
+        System.out.println("22findMark.getMarkname() = " + findMark.getMarkname());
+
+        markRepository.save(findMark);
+    }
 }

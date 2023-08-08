@@ -1,23 +1,28 @@
 package kr.co.mannam.admin.webmap.controller;
 
 
+import kr.co.mannam.admin.member.dto.ResponseDTO;
 import kr.co.mannam.admin.webmap.dto.FileDTO;
 import kr.co.mannam.admin.webmap.dto.MarkDTO;
 import kr.co.mannam.admin.webmap.service.FileService;
 import kr.co.mannam.admin.webmap.service.MarkService;
+import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.domain.repository.webmap.MarkRepository;
+import kr.co.mannam.type.board.BoardCategory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +90,8 @@ public class MapController {
 
 
     @PostMapping("/map/kakaomapRegister")
-    public String saveFormRequests(@ModelAttribute("item") ItemRequest itemRequest, HttpServletRequest request) throws IOException {
+    public String saveFormRequests(@ModelAttribute("item") ItemRequest itemRequest, HttpServletRequest request,
+                                   HttpSession session) throws IOException {
 
 
 
@@ -141,7 +147,9 @@ public class MapController {
             System.out.println("markDTO2"+markDTO);
         }
 
-//        markService.save(markDTO);
+        User user = (User) session.getAttribute("principal");
+        markDTO.setUser(user);
+        markService.save(markDTO);
 
         return "user/map/kakaomapmain";
     }
@@ -157,43 +165,46 @@ public class MapController {
 //    }
 
 
-    @GetMapping("/kakaomarkmap")
-    public String kakaomarkmap(Model model){
+    @GetMapping("/kakaomarkmap/{userid}")
+    public String kakaomarkmap(Model model, HttpSession session,  @PathVariable String userid){
 
-        List<Mark> list = markService.getMark();
+
+        System.out.println("userid = " + userid);
+
+        List<Mark.MarkMapping> list = markService.getMarkUser(userid);
         System.out.println("list = " + list);
 
         model.addAttribute("list",list);
+        model.addAttribute("userid",userid);
 
 
 //        return "user/map/kakaomarkmap";
         return "user/map/kakaomarkmap";
     }
 
-    @GetMapping("/markupdate/{mid}")
-    public String markupdate(@PathVariable Long mid, Model model){
+    // 마커 수정
+    @PutMapping("/markupdate")
+    public @ResponseBody ResponseDTO<?> updateMark( @RequestBody Mark mark) {
 
-        model.addAttribute("list", markService.getMark2(mid));
+        System.out.println("mark.getMid() = " + mark.getMid());
+        System.out.println("mark.getMarkname() = " + mark.getMarkname());
+        markService.updateMark(mark);
 
 
-        return "user/map/markupdate";
+        return new ResponseDTO<>(HttpStatus.OK.value(),
+                mark.getMid() + "번 마크를 수정했습니다!!");
     }
 
-    // 마커 수정
-    @PostMapping("/markupdate")
-    public String updatePost( String markname, int mid, @ModelAttribute("item") ItemRequest itemRequest, HttpServletRequest request) throws IOException {
-
-        System.out.println("markname = " + markname);
-        System.out.println("mid = " + mid);
-
-        List<Mark> marks = markRepository.findAll();
+    // 마커 삭제
+    @DeleteMapping("/markdelete/{mid}")
+    public @ResponseBody ResponseDTO<?> deleteMark(@PathVariable Long mid) {
 
 
-        marks.get(mid-1).setMarkname(markname);
-        markRepository.save(marks.get(mid-1)); // Update
+        markService.deleteMark(mid);
 
 
-        return "redirect:/kakaomarkmap";
+        return new ResponseDTO<>(HttpStatus.OK.value(),
+                 "마크를 삭제했습니다!!");
     }
 
     @GetMapping("/root2")

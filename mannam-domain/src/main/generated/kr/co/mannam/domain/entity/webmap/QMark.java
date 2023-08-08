@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -16,6 +17,8 @@ import com.querydsl.core.types.Path;
 public class QMark extends EntityPathBase<Mark> {
 
     private static final long serialVersionUID = 1637750975L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QMark mark = new QMark("mark");
 
@@ -39,16 +42,27 @@ public class QMark extends EntityPathBase<Mark> {
 
     public final StringPath tel = createString("tel");
 
+    public final kr.co.mannam.domain.entity.member.QUser user;
+
     public QMark(String variable) {
-        super(Mark.class, forVariable(variable));
+        this(Mark.class, forVariable(variable), INITS);
     }
 
     public QMark(Path<? extends Mark> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMark(PathMetadata metadata) {
-        super(Mark.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMark(PathMetadata metadata, PathInits inits) {
+        this(Mark.class, metadata, inits);
+    }
+
+    public QMark(Class<? extends Mark> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.user = inits.isInitialized("user") ? new kr.co.mannam.domain.entity.member.QUser(forProperty("user")) : null;
     }
 
 }

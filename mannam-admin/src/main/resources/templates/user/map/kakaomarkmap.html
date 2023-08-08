@@ -4,27 +4,28 @@
 <th:block th:replace="/user/inc/header::headerFragment"/>
 
 <div id="map" style="width:100%;height:70vh;padding-top: 64px;padding-left: 16px;">
-    <form action="/markupdate" method="post">
+<!--    <form action="/markupdate" method="post">-->
     <div id="modal" style="display:none;">
         <div class="modal_content">
             <h4>마커 이름 변경</h4>
+            <input type="hidden" name="userid" id="userid" th:value="${userid}">
             <input type="hidden" name="mid" id="mid">
             <input type="text" name="markname" id="markname">
 <!--            <button type="button" id="markname_update_btn">수정</button>-->
             <div class="modal_btn">
-            <button type="submit"  class="markupdate_btn btn btn-sm btn-success">수정</button>
-            <button type="button" id="modal_close_btn" class="modalclose_btn btn btn-sm btn-danger">닫기</button>
+<!--            <button type="submit"  class="markupdate_btn btn btn-sm btn-success">수정</button>-->
+            <button type="button" id="modal_update_btn" class="markupdate_btn btn btn-sm btn-success">수정</button>
+            <button type="button" id="modal_delete_btn" class="modaldelete_btn btn btn-sm btn-danger">삭제</button>
+            <button type="button" id="modal_close_btn" class="modalclose_btn btn btn-sm btn-primary">닫기</button>
             </div>
         </div>
 
     </div>
-    </form>
+<!--    </form>-->
 </div>
 
 
-
-
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=67e976d6b999592753b7dacf13bb3bed&libraries=services"></script>
+<!--<script th:inline="javascript">-->
 <script th:inline="javascript">
     // 카카오맵 API 초기화
     kakao.maps.load(() => {
@@ -266,6 +267,8 @@ function displayMarker(locPosition, message) {
 }
 });
 </script>
+
+<script src="/js/mark.js"></script>
 <!-- 푸터 -->
 <th:block th:replace="/user/inc/footer::footerFragment" />
 </html>
