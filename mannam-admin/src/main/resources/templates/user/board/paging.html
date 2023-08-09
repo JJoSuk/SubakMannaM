@@ -12,7 +12,8 @@
         <!-- ADMIN 권한일경우에만 글삭제 권한있음 -->
         <div class="d-flex justify-content-end">
             <!--        <a class="btn btn-danger">글삭제</a>-->
-            <a class="btn btn-primary" th:href="|/board/save/${category}|">글쓰기</a>
+            <a class="btn btn-primary" th:href="|/board/save/${category}/${session.principal.getId()}|">글쓰기</a>
+            <input type="hidden" name="userid" id="userid" th:value="${session.principal.username}">
         </div>
         <br>
             <table class="table table-hover">

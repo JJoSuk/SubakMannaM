@@ -5,9 +5,12 @@ import kr.co.mannam.admin.board.dto.BoardDTO;
 import kr.co.mannam.admin.board.dto.CommentDTO;
 import kr.co.mannam.admin.board.service.BoardService;
 import kr.co.mannam.admin.board.service.CommentService;
+import kr.co.mannam.admin.webmap.service.MarkService;
 import kr.co.mannam.domain.entity.member.User;
+import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.type.board.BoardCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -27,9 +31,18 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
+    private final MarkService markService;
 
-    @GetMapping("/save/{category}")
-    public String saveForm(@PathVariable BoardCategory category) { return "user/board/save"; }
+    @GetMapping("/save/{category}/{userid}")
+    public String saveForm(@PathVariable("category") BoardCategory category, Model model,@PathVariable("userid") String userid) {
+        System.out.println("userid = " + userid);
+
+        List<Mark.MarkMapping> list = markService.getMarkUser(userid);
+        model.addAttribute("list",list);
+
+
+        return "user/board/save";
+    }
 
     @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO,

@@ -80,4 +80,11 @@ public class Mark {
 
 	}
 
+	public interface MarkNameMapping {
+
+		String getMarkname();
+
+
+	}
+
 }
