@@ -38,6 +38,7 @@ public class BoardController {
         System.out.println("userid = " + userid);
 
         List<Mark.MarkMapping> list = markService.getMarkUser(userid);
+        System.out.println("list = " + list);
         model.addAttribute("list",list);
 
 

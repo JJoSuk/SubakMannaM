@@ -25,17 +25,20 @@
                     </div>
                 </div>
                 <div class="d-flex">
-                    <div class="pt-2" style="width: 80px;">위치공유</div>
-                    <select class="form-select form-select-sm" name="pCategory_fk">
-                        <th:block th:if="${list == null || list.size() == 0}">
-                            <option value="">공유 안함</option>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnMark" style="margin-right:10px;">위치</button>
+                    <div id="locationSelect" style="display:none">
+                    <select class="form-select form-select-sm" name="mark_name">
+                        <th:block th:if="${list.size() == 0}">
+                            <option value="">마커 없음</option>
                         </th:block>
-                        <th:block th:if="${list != null || list.size() != 0}">
-                            <th:forEach var="dto" items="${list}">
-                                <option value="${dto.markname}">1</option>
-                            </th:forEach>
+                        <th:block th:if="${list.size() != 0}">
+                            <option value="">선택</option>
+                            <th:block th:each="dto : ${list}">
+                                <option id="markname" th:value="|${dto.markname},${dto.longitude},${dto.latitude}|">[[${dto.markname}]]</option>
+                            </th:block>
                         </th:block>
                     </select>
+                    </div>
                 </div>
                 <div class="d-flex">
                     <div class="pt-2" style="width: 80px;">카테고리</div>
@@ -62,6 +65,36 @@
     </article>
 </div>
 <script src="/js/summernote/summernoteSetting.js"></script>
+<script>
+    var buttonElement = document.getElementById("btnMark");
+    var locationSelect = document.getElementById("locationSelect");
+
+    buttonElement.addEventListener("click", function(event) {
+        event.stopPropagation();
+        if (locationSelect.style.display === "none") {
+            locationSelect.style.display = "block";
+        } else {
+            locationSelect.style.display = "none";
+        }
+    });
+
+    var selectElement = document.querySelector('select[name="mark_name"]');
+    var summernoteElement = document.getElementById('summernote');
+
+    selectElement.addEventListener('change', function (event) {
+
+        if (event.target.value != "") {
+        var selectedValue = '<a target="_blank" href= "https://map.kakao.com/link/to/'+event.target.value+'">' + '길찾기' + '</a>' ;
+        var currentContent = $('#summernote').summernote('code');
+        }else{
+        var selectedValue = "";
+        var currentContent = $('#summernote').summernote('code');
+        }
+
+        var updatedContent = currentContent + selectedValue;
+        $('#summernote').summernote('code', updatedContent);
+    });
+</script>
 <!-- 푸터 -->
 <th:block th:replace="/user/inc/footer::footerFragment"/>
 </body>
