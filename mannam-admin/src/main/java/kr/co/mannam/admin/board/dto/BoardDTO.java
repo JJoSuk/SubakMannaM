@@ -21,6 +21,7 @@ public class BoardDTO {
     private String boardTitle;
     private String boardContents;
     private int boardHits;
+    private int likeCount;
     private LocalDateTime boardCreatedTime;
     private LocalDateTime boardUpdatedTime;
     private User user;
@@ -32,6 +33,7 @@ public class BoardDTO {
                     String boardTitle,
                     String boardContents,
                     int boardHits,
+                    int likeCount,
                     LocalDateTime boardCreatedTime,
                     LocalDateTime boardUpdatedTime,
                     User user,
@@ -42,6 +44,7 @@ public class BoardDTO {
         this.boardTitle = boardTitle;
         this.boardContents = boardContents;
         this.boardHits = boardHits;
+        this.likeCount = likeCount;
         this.boardCreatedTime = boardCreatedTime;
         this.boardUpdatedTime = boardUpdatedTime;
         this.user = user;
@@ -54,6 +57,7 @@ public class BoardDTO {
                 .boardTitle(boardTitle)
                 .boardContents(boardContents)
                 .boardHits(boardHits)
+                .likeCount(likeCount)
                 .user(user)
                 .boardCategory(boardCategory)
                 .build();

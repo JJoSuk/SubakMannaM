@@ -34,6 +34,9 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
+    @Column
+    private int likeCount;
+
     @Enumerated(EnumType.STRING)
     private BoardCategory boardCategory;
 
@@ -46,7 +49,7 @@ public class BoardEntity extends BaseEntity {
     private User user;
 
     @Builder
-    public BoardEntity(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, User user, BoardCategory boardCategory){
+    public BoardEntity(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, User user, BoardCategory boardCategory, int likeCount){
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
@@ -54,6 +57,7 @@ public class BoardEntity extends BaseEntity {
         this.boardHits = boardHits;
         this.user = user;
         this.boardCategory = boardCategory;
+        this.likeCount = likeCount;
     }
 
 //    public BoardDTO toBoardDTO(){

@@ -31,6 +31,16 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
             @Param("category") BoardCategory category,
             Pageable pageable
     );
+
+    /** 좋아요 추가 **/
+    @Modifying
+    @Query(value = "update BoardEntity board set board.likeCount = board.likeCount + 1 where board.id = :boardId")
+    int plusLike(@Param("boardId") Long boardId);
+
+    /** 좋아요 삭제 **/
+    @Modifying
+    @Query(value = "update BoardEntity board set board.likeCount = board.likeCount - 1 where board.id = :boardId")
+    int minusLike(@Param("boardId") Long boardId);
 }
 
 

@@ -4,7 +4,7 @@
 <div class="content mt-5 p-5">
     <article>
         <div class="container mt-5 mb-5">
-            <div hidden th:text="${board.id}"></div>
+            <div hidden id="boardId" th:text="${board.id}"></div>
             <div class="d-flex">
                 <b class="pt-2" style="width: 62px;">제목</b>
                 <div class="w-100 mr-2">
@@ -52,6 +52,12 @@
                 <br>
             </div>
             <div class="d-flex justify-content-end">
+                <button id="like_btn" class="btn btn-outline-danger" data-bs-toggle="button" autocomplete="off" onclick="like()">
+                    <input type="hidden" id="like_check" th:value="${like}">
+                    <img th:id="likeImg" src="/img/like_empty.png" alt="" width="13px" height="13px">
+                    <span> 좋아요 </span>
+                    <span id="like_count" th:text="${board.likeCount}"></span>
+                </button>
                 <a th:href="|/board/paging/${board.getBoardCategory()}?page=${page}|"><button class="btn btn-success m-1">목록</button></a>
                 <span th:if="${session.principal.id != null && session.principal.id == board.user.id}">
                     <button class="btn btn-primary m-1" onclick="updateReq()">수정</button>
@@ -313,6 +319,52 @@
             }
         });
     }
+
+    // 좋아요 유무 확인
+    $(function(){
+        let likeVal = $('#like_check').val(); // 데이터가 있으면 true
+        let likeBtn = document.querySelector('#like_btn');
+
+        if (likeVal === 'true'){
+            likeBtn.setAttribute('aria-pressed', true);
+            likeBtn.setAttribute('class', "btn btn-outline-danger active");
+        } else if (likeVal === 'false'){
+            likeBtn.setAttribute('aria-pressed', false);
+            likeBtn.setAttribute('class', "btn btn-outline-danger");
+        }
+    });
+
+    const like = () => {
+        const boardId = $('#boardId').text();
+        const likeVal = $('#like_check').val();
+        console.log(boardId);
+        console.log(likeVal);
+
+        if (likeVal === 'true') {
+            console.log("추천 취소 진입");
+            $.ajax({
+                type: 'POST',
+                url: '/board/like/' + boardId,
+                contentType: 'application/json; charset=utf-8',
+            }).done(() => {
+                location.reload();
+            }).fail((error) => {
+                alert(JSON.stringify(error));
+            })
+        } else if (likeVal === 'false') {
+            console.log("추천 진입");
+            $.ajax({
+                type: 'POST',
+                url: '/board/like/' + boardId,
+                contentType: 'application/json; charset=utf-8',
+            }).done(() => {
+                location.reload();
+            }).fail((error) => {
+                alert(JSON.stringify(error));
+            })
+        }
+    };
+
 </script>
 <!-- 푸터 -->
 <th:block th:replace="/user/inc/footer::footerFragment"/>

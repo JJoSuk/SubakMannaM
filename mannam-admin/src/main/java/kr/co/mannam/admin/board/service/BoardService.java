@@ -2,7 +2,11 @@ package kr.co.mannam.admin.board.service;
 
 import kr.co.mannam.admin.board.dto.BoardDTO;
 import kr.co.mannam.domain.entity.board.BoardEntity;
+import kr.co.mannam.domain.entity.board.LikeBoard;
+import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.repository.board.BoardRepository;
+import kr.co.mannam.domain.repository.board.LikeBoardRepository;
+import kr.co.mannam.domain.repository.member.UserRepository;
 import kr.co.mannam.type.board.BoardCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +28,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final LikeBoardRepository likeBoardRepository;
+    private final UserRepository userRepository;
     public void save(BoardDTO boardDTO) throws IOException {
         BoardEntity boardEntity = boardDTO.toEntity();
         boardRepository.save(boardEntity);
@@ -40,6 +46,7 @@ public class BoardService {
                     .boardTitle(boardEntity.getBoardTitle())
                     .boardContents(boardEntity.getBoardContents())
                     .boardHits(boardEntity.getBoardHits())
+                    .likeCount(boardEntity.getLikeCount())
                     .boardCreatedTime(boardEntity.getCreatedTime())
                     .boardUpdatedTime(boardEntity.getUpdatedTime())
                     .user(boardEntity.getUser())
@@ -66,6 +73,7 @@ public class BoardService {
                     .boardTitle(boardEntity.getBoardTitle())
                     .boardContents(boardEntity.getBoardContents())
                     .boardHits(boardEntity.getBoardHits())
+                    .likeCount(boardEntity.getLikeCount())
                     .boardCreatedTime(boardEntity.getCreatedTime())
                     .boardUpdatedTime(boardEntity.getUpdatedTime())
                     .user(boardEntity.getUser())
@@ -111,6 +119,7 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
+                .likeCount(board.getLikeCount())
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
@@ -147,6 +156,7 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
+                .likeCount(board.getLikeCount())
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
@@ -158,6 +168,36 @@ public class BoardService {
     }
 
 
+    public boolean findLike(Long boardId, String userId) {
+        return likeBoardRepository.existsByBoard_IdAndUser_Id(boardId, userId);
+    }
+
+    @Transactional
+    public boolean saveLike(Long boardId, String userId) {
+
+        // 로그인한 유저가 해당 게시물을 좋아요 했는지 확인
+        if (!findLike(boardId, userId)) {
+            // 좋아요 하지 않은 게시물이면 좋아요 추가, true 리턴
+            BoardEntity findBoard = boardRepository.findById(boardId).get();
+            User findUser = userRepository.findById(userId).get();
+
+            LikeBoard likeBoard = LikeBoard.builder()
+                    .board(findBoard)
+                    .user(findUser)
+                    .build();
+
+            likeBoardRepository.save(likeBoard);
+            boardRepository.plusLike(boardId);
+
+            return true;
+        } else {
+            // 좋아요한 게시물이면 좋아요 삭제, false 리턴
+            likeBoardRepository.deleteByBoard_IdAndUser_Id(boardId, userId);
+            boardRepository.minusLike(boardId);
+
+            return false;
+        }
+    }
 }
 
 

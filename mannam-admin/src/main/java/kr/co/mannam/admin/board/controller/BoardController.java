@@ -51,7 +51,6 @@ public class BoardController {
                        @PageableDefault(page=1) Pageable pageable,
                        Model model,
                        HttpSession session) throws IOException {
-        System.out.println("boardDTO.getBoardCategory() = " + boardDTO.getBoardCategory());
         User user = (User) session.getAttribute("principal");
         boardDTO.setUser(user);
         boardService.save(boardDTO);
@@ -82,13 +81,21 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id, Model model,
-                           @PageableDefault(page=1) Pageable pageable) {
+                           @PageableDefault(page=1) Pageable pageable,
+                           HttpSession session) {
         /*
             해당 게시글의 조회수를 하나 올리고
             게시글 데이터를 가져와서 detail.html에 출력
          */
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+
+        /* 좋아요 여부 가져오기 */
+        User principal = (User) (session.getAttribute("principal"));
+        String userId = principal.getId();
+        boolean like = boardService.findLike(id, userId);
+        model.addAttribute("like", like);
+
         /* 댓글 목록 가져오기 */
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         model.addAttribute("commentList", commentDTOList);
@@ -183,6 +190,18 @@ public class BoardController {
 
         return "user/board/paging";
 
+    }
+
+    // 게시글 좋아요
+    @PostMapping("/like/{boardId}")
+    @ResponseBody
+    public boolean like(@PathVariable Long boardId, HttpSession session) {
+        User principal = (User)(session.getAttribute("principal"));
+        String userId = principal.getId();
+        System.out.println("userId = " + userId);
+
+        boolean result = boardService.saveLike(boardId, userId);
+        return result;
     }
 
 }
