@@ -70,12 +70,12 @@
                  aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/board/paging(page=1)}" aria-label="First">
+                        <a class="page-link" th:href="|/board/paging/${category}?page=1${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="First">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}" aria-label="Previous">
+                        <a class="page-link" th:href="${boardList.first} ? '#' : |/board/paging/${category}?page=${boardList.number}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
@@ -86,27 +86,27 @@
                         </li>
                         <span th:unless="${boardList.isEmpty()}">
                             <li class="page-item" th:unless="${page == boardList.number + 1}">
-                                <a class="page-link" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+                                <a class="page-link" th:href="|/board/paging/${category}?page=${page}${keyword != null ? '&keyword=' + keyword : ''}|" th:text="${page}"></a>
                             </li>
                         </span>
                     </span>
                     <li class="page-item">
-                        <a class="page-link" th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}" aria-label="Next">
+                        <a class="page-link" th:href="${boardList.last} ? '#' : |/board/paging/${category}?page=${boardList.number + 2}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/board/paging(page=${boardList.totalPages})}" aria-label="Last">
+                        <a class="page-link" th:href="|/board/paging/${category}?page=${boardList.totalPages}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Last">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
         <br>
-        <div class="input-group d-flex justify-content-center">
-            <input type="text" class="form-control" placeholder="제목을 입력해주세요.">
+            <form th:action="|/board/paging/${category}|" method="GET" class="input-group d-flex justify-content-center" role="search">
+            <input type="text" name="keyword" class="form-control" id="search" placeholder="제목을 입력해주세요.">
             <button type="submit" class="btn btn-success">검색</button>
-        </div>
+            </form>
         <br>
     </nav>
 </div>

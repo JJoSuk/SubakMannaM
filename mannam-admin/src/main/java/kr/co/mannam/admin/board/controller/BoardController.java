@@ -6,6 +6,7 @@ import kr.co.mannam.admin.board.dto.CommentDTO;
 import kr.co.mannam.admin.board.service.BoardService;
 import kr.co.mannam.admin.board.service.CommentService;
 import kr.co.mannam.admin.webmap.service.MarkService;
+import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.type.board.BoardCategory;
@@ -130,30 +131,55 @@ public class BoardController {
     }
 
     // /board/paging?page=1
+//    @GetMapping("/paging/{category}")
+//    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model,
+//                         @PathVariable BoardCategory category) {
+//        Page<BoardDTO> boardList = boardService.paging(pageable, category);
+//        int blockLimit = 5;
+//        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+//        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+//
+//        // page 갯수 20개
+//        // 현재 사용자가 3페이지
+//        // 1 2 3
+//        // 현재 사용자가 7페이지
+//        // 7 8 9
+//        // 보여지는 페이지 갯수 3개
+//        // 총 페이지 갯수 8개
+//
+//        model.addAttribute("boardList", boardList);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//
+////        for (BoardCategory bc : BoardCategory.values()) {
+////            System.out.println("bc = " + bc);
+////            System.out.println("bc.getName() = " + bc.getName());
+////        }
+//
+//        return "user/board/paging";
+//
+//    }
+
     @GetMapping("/paging/{category}")
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model,
-                         @PathVariable BoardCategory category) {
-        Page<BoardDTO> boardList = boardService.paging(pageable, category);
+                         @PathVariable BoardCategory category, String keyword) {
+        Page<BoardDTO> boardList;
         int blockLimit = 5;
-        int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
-        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+        int startPage, endPage;
 
-        // page 갯수 20개
-        // 현재 사용자가 3페이지
-        // 1 2 3
-        // 현재 사용자가 7페이지
-        // 7 8 9
-        // 보여지는 페이지 갯수 3개
-        // 총 페이지 갯수 8개
+        if (keyword == null) {
+            boardList = boardService.paging(pageable, category);
+        } else {
+            boardList = boardService.search(keyword, pageable, category);
+            model.addAttribute("keyword", keyword);
+        }
+
+        startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-
-//        for (BoardCategory bc : BoardCategory.values()) {
-//            System.out.println("bc = " + bc);
-//            System.out.println("bc.getName() = " + bc.getName());
-//        }
 
         return "user/board/paging";
 

@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     // update board_table set board_hits=board_hits+1 where id=?
     @Modifying
@@ -18,6 +20,17 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     void updateHits(@Param("id") Long id);
 
     public Page<BoardEntity> findByBoardCategory(Pageable pageable, BoardCategory category);
+
+//    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword% AND b.boardCategory = :category")
+//    public Page<BoardEntity> findByBoardTitleContainingAndBoardCategory(String keyword, Pageable pageable, BoardCategory category);
+
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword% AND b.boardCategory = :category")
+    Page<BoardEntity> findByBoardTitleContainingAndBoardCategory(
+            @Param("keyword") String keyword,
+            @Param("category") BoardCategory category,
+            Pageable pageable
+    );
 }
 
 
