@@ -1,0 +1,69 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/user/inc/header::headerFragment"/>
+
+<div class="content mt-5 p-5">
+    <nav class="container" th:each="category : ${category}">
+        <th:block th:if="${category.Name == '공지사항' || category.Name == '건의사항'}">
+            <h2 name="category" th:text="${category.Name}"></h2>
+        </th:block>
+        <th:block th:unless="${category.Name == '공지사항' || category.Name == '건의사항'}">
+            <h2 name="category" th:text="|${category.Name + ' 게시판'}|"></h2>
+        </th:block>
+        <br>
+            <table class="table table-hover">
+                <colgroup>
+                    <!--          <col width="2%" />-->
+                    <col width="5%"/>
+                    <col width="20%"/>
+                    <col width="5%"/>
+                    <col width="5%"/>
+                    <col width="5%"/>
+                    <!--          <col width="5%" />-->
+                </colgroup>
+                <thead>
+                <tr>
+                    <!--          <th>-->
+                    <!--            <label class="checkbox-inline">-->
+                    <!--              <input type="checkbox" id="allCheckBox" class="chk">-->
+                    <!--            </label>-->
+                    <!--          </th>-->
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                    <!--          <th>파일유무</th>-->
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="board: ${boardList}">
+                    <th:block th:if="${category} ==  ${board.boardCategory}">
+                    <!--          <td>-->
+                    <!--            <label class="checkbox-inline">-->
+                    <!--              <input type="checkbox" class="chk" name="chk" value="">-->
+                    <!--            </label>-->
+                    <!--          </td>-->
+                    <td th:text="${board.id}"></td>
+                    <td><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}"
+                           th:text="${board.boardTitle}"></a></td>
+                    <td th:text="${board.boardWriter}"></td>
+                    <span th:if="${board.boardUpdatedTime == null}">
+                        <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </span>
+                    <span th:unless="${board.boardUpdatedTime == null}">
+                        <td th:text="*{#temporals.format(board.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </span>
+                    <td th:text="${board.boardHits}"></td>
+                    <!--          <td>이미지</td>-->
+                    </th:block>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+    </nav>
+</div>
+<!-- 푸터 -->
+<th:block th:replace="/user/inc/footer::footerFragment"/>
+</body>
+</html>

@@ -9,6 +9,7 @@ import kr.co.mannam.admin.webmap.service.MarkService;
 import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webmap.Mark;
+import kr.co.mannam.domain.repository.board.BoardRepository;
 import kr.co.mannam.type.board.BoardCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
+    private final BoardRepository boardRepository;
     private final CommentService commentService;
     private final MarkService markService;
 
@@ -194,6 +196,36 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
 
         return "user/board/paging";
+
+    }
+
+    // 통합 검색
+    @GetMapping("/search")
+    public String search(@PageableDefault(page = 1) Pageable pageable, Model model, String keyword, String type) {
+//        System.out.println("type = " + type);
+        List<BoardCategory> categorylist = boardRepository.findDistinctBoardCategory();
+        System.out.println("categorylist = " + categorylist);
+        model.addAttribute("category", categorylist);
+        Page<BoardDTO> boardList;
+        int blockLimit = 5;
+        int startPage, endPage;
+
+
+
+            boardList = boardService.search22(keyword, type, pageable);
+            model.addAttribute("type", type);
+            model.addAttribute("keyword", keyword);
+
+        startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());
+
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+
+        return "user/board/Integration";
 
     }
 

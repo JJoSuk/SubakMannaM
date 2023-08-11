@@ -58,7 +58,15 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     int minusLike(@Param("boardId") Long boardId);
 
 
+    @Query("SELECT DISTINCT b.boardCategory FROM BoardEntity b")
+    List<BoardCategory> findDistinctBoardCategory();
 
+
+    Page<BoardEntity> findByBoardTitleContaining(String keyword, Pageable pageable);
+
+    Page<BoardEntity> findByBoardContentsContaining(String keyword, Pageable pageable);
+
+    Page<BoardEntity> findByBoardWriterContaining(String keyword, Pageable pageable);
 }
 
 
