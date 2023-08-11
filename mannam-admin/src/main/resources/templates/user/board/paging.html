@@ -66,45 +66,53 @@
             </table>
             <br>
 
-            <nav class="container d-flex align-items-center justify-content-center"
-                 aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" th:href="|/board/paging/${category}?page=1${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="First">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="${boardList.first} ? '#' : |/board/paging/${category}?page=${boardList.number}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+        <nav class="container d-flex align-items-center justify-content-center"
+             aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" th:href="|/board/paging/${category}?page=1${type != null ? '&type=' + type : ''}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="${boardList.first} ? '#' : |/board/paging/${category}?page=${boardList.number}${type != null ? '&type=' + type : ''}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Previous">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
+                <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
                         <!-- 현재페이지는 링크 없이 숫자만 -->
                         <li class="page-item disabled">
                             <span class="page-link" th:if="${page == boardList.number + 1}" th:text="${page}"></span>
                         </li>
                         <span th:unless="${boardList.isEmpty()}">
                             <li class="page-item" th:unless="${page == boardList.number + 1}">
-                                <a class="page-link" th:href="|/board/paging/${category}?page=${page}${keyword != null ? '&keyword=' + keyword : ''}|" th:text="${page}"></a>
+                                <a class="page-link" th:href="|/board/paging/${category}?page=${page}${type != null ? '&type=' + type : ''}${keyword != null ? '&keyword=' + keyword : ''}|" th:text="${page}"></a>
                             </li>
                         </span>
                     </span>
-                    <li class="page-item">
-                        <a class="page-link" th:href="${boardList.last} ? '#' : |/board/paging/${category}?page=${boardList.number + 2}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" th:href="|/board/paging/${category}?page=${boardList.totalPages}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Last">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                <li class="page-item">
+                    <a class="page-link" th:href="${boardList.last} ? '#' : |/board/paging/${category}?page=${boardList.number + 2}${type != null ? '&type=' + type : ''}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Next">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="|/board/paging/${category}?page=${boardList.totalPages}${type != null ? '&type=' + type : ''}${keyword != null ? '&keyword=' + keyword : ''}|" aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
         <br>
             <form th:action="|/board/paging/${category}|" method="GET" class="input-group d-flex justify-content-center" role="search">
-            <input type="text" name="keyword" class="form-control" id="search" placeholder="제목을 입력해주세요.">
+            <select name="type">
+                <option selected value="">검색 내용 선택</option>
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+                <option value="writer">작성자</option>
+            </select>
+
+
+            <input type="text" name="keyword" class="form-control" id="search" placeholder="키워드 검색">
             <button type="submit" class="btn btn-success">검색</button>
             </form>
         <br>

@@ -100,8 +100,13 @@ public class BoardService {
         int pageLimit = 10; // 한 페이지에 보여줄 글 갯수
         // 한페이지당 3개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순 정렬
         // page 위치에 있는 값은 0부터 시작
-        Page<BoardEntity> boardEntities =
-                boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
+
+        Page<BoardEntity> boardEntities = null;
+
+
+            boardEntities =
+                    boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
+
 
 //        System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
 //        System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
@@ -119,7 +124,6 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
-                .likeCount(board.getLikeCount())
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
@@ -130,13 +134,34 @@ public class BoardService {
     }
 
     @Transactional
-    public Page<BoardDTO> search(String keyword, Pageable pageable, BoardCategory category) {
+    public Page<BoardDTO> search(String keyword, Pageable pageable, BoardCategory category, String type) {
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 10; // 한 페이지에 보여줄 글 갯수
         // 한페이지당 3개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순 정렬
         // page 위치에 있는 값은 0부터 시작
-        Page<BoardEntity> boardEntities =
-                boardRepository.findByBoardTitleContainingAndBoardCategory(keyword,category,PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        Page<BoardEntity> boardEntities = null;
+        System.out.println("type = " + type);
+
+        if("title".equals(type)) {
+            boardEntities =
+                    boardRepository.findByBoardTitleContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            System.out.println("findByBoardTitleContainingAndBoardCategory = " + boardEntities);
+        }
+        else if("content".equals(type)) {
+            boardEntities =
+                    boardRepository.findByBoardContentsContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            System.out.println("findByBoardContentsContainingAndBoardCategory = " + boardEntities);
+        }
+        else if("writer".equals(type)) {
+            boardEntities =
+                    boardRepository.findByBoardWriterContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            System.out.println("findByBoardWriterContainingAndBoardCategory = " + boardEntities);
+        }else{
+            boardEntities =
+            boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
+            System.out.println("findByBoardCategory = " + boardEntities);
+        }
 
         System.out.println("boardEntities222 = " + boardEntities);
 
@@ -156,7 +181,6 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
-                .likeCount(board.getLikeCount())
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())

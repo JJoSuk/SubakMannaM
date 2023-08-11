@@ -169,17 +169,22 @@ public class BoardController {
 
     @GetMapping("/paging/{category}")
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model,
-                         @PathVariable BoardCategory category, String keyword) {
+                         @PathVariable BoardCategory category, String keyword, String type) {
+//        System.out.println("type = " + type);
+
         Page<BoardDTO> boardList;
         int blockLimit = 5;
         int startPage, endPage;
 
-        if (keyword == null) {
-            boardList = boardService.paging(pageable, category);
-        } else {
-            boardList = boardService.search(keyword, pageable, category);
-            model.addAttribute("keyword", keyword);
-        }
+
+            if (keyword == null) {
+                boardList = boardService.paging(pageable, category);
+            } else {
+                boardList = boardService.search(keyword, pageable, category, type);
+                model.addAttribute("type", type);
+                model.addAttribute("keyword", keyword);
+            }
+
 
         startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         endPage = Math.min(startPage + blockLimit - 1, boardList.getTotalPages());

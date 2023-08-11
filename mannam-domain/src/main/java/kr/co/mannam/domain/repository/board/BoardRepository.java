@@ -5,6 +5,7 @@ package kr.co.mannam.domain.repository.board;
 import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.type.board.BoardCategory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,6 +33,20 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
             Pageable pageable
     );
 
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword% AND b.boardCategory = :category")
+    Page<BoardEntity> findByBoardContentsContainingAndBoardCategory(
+            @Param("keyword") String keyword,
+            @Param("category") BoardCategory category,
+            Pageable pageable
+    );
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword% AND b.boardCategory = :category")
+    Page<BoardEntity> findByBoardWriterContainingAndBoardCategory(
+            @Param("keyword") String keyword,
+            @Param("category") BoardCategory category,
+            Pageable pageable
+    );
+
     /** 좋아요 추가 **/
     @Modifying
     @Query(value = "update BoardEntity board set board.likeCount = board.likeCount + 1 where board.id = :boardId")
@@ -41,6 +56,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     @Modifying
     @Query(value = "update BoardEntity board set board.likeCount = board.likeCount - 1 where board.id = :boardId")
     int minusLike(@Param("boardId") Long boardId);
+
+
+
 }
 
 
