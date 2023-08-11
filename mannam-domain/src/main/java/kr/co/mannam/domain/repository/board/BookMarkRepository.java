@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
     Optional<BookMark> findByUserIdAndBoardCategory(String userId, BoardCategory category);
+
+    void deleteByUserIdAndBoardCategory(String userId, BoardCategory category);
 }

@@ -2,6 +2,7 @@ package kr.co.mannam.domain.entity.member;
 
 
 import kr.co.mannam.domain.entity.board.BoardEntity;
+import kr.co.mannam.domain.entity.board.BookMark;
 import kr.co.mannam.domain.entity.board.CommentEntity;
 import kr.co.mannam.type.member.RoleType;
 import lombok.AllArgsConstructor;
@@ -43,4 +44,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> boardEntitieList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<BookMark> bookMarkList = new ArrayList<>();
 }

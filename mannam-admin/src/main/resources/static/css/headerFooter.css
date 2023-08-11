@@ -57,7 +57,7 @@ header>.container>nav>ul>li {
     width: 70px;
     height: 60px;
 }
-header>.container>nav>ul>li:nth-child(5) {
+header>.container>nav>ul>.savedMarker {
     width: 120px;
 }
 header>.container>nav>ul>li>a {
@@ -72,10 +72,10 @@ header>.container>nav>ul>li>a:hover {
     color: #25a30b;
 }
 
-header>.container>nav>ul>li:nth-child(6) {
+header>.container>nav>ul>.board {
     position: relative;
 }
-header>.container>nav>ul>li:nth-child(6):hover .subNav {
+header>.container>nav>ul>.board:hover .subNav {
     display: block;
     top: 58px;
 }
@@ -193,7 +193,7 @@ aside{
     width: 150px;
     height: 100%;
     background-color: #25a30b;
-    box-shadow: 1px 1px 1px 0.5px green;
+    box-shadow: 1px 1px 0px 0.5px green;
     text-align: center;
     transition: 0.5s;
     display: flex;
@@ -201,8 +201,8 @@ aside{
 aside:hover{
     left: 0;
 }
-aside:hover hr{
-    width: 100%;
+aside a {
+    font-weight: 600;
 }
 aside>nav{
     background-color: white;
@@ -214,31 +214,56 @@ aside>nav{
 }
 aside>nav>hr{
     transition: 0.3s;
-    width: 50%;
+    width: 100%;
 }
-aside>nav>ul{
-    border: 1px solid purple;
-}
+aside>nav>ul{}
 aside>nav>ul>.edit{
     font-size: 12px;
-    text-align: right;
+    display: flex;
+    justify-content: right;
 }
-aside>nav>ul>li{
+aside>nav>ul>.edit>a{
+    width: 40px;
     padding: 5px;
-    margin: 20px;
-    width: 85%;
-    left: 0px;
-    border: 1px solid blue;
 }
 aside>nav>ul>li>h5{
     display: inline-block;
     width: 100%;
+    font-weight: 700;
+    color: #4d5159;
 }
-aside>nav>ul>li>a{
-    border: 1px solid red;
+aside>nav>ul>li{
+    width: 100%;
+    left: 0px;
+}
+aside>nav>ul>li>list{
     text-decoration: none;
     font-weight: 700;
     color: #4d5159;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+aside>nav>.bookmark_list>li{
+    position: relative;
+    height: 60px;
+    display: table;
+}
+aside>nav>.bookmark_list>li>.cat_list:hover{
+    background-color: rgba(153, 241, 137, 0.76);
+    color: #4d5159;
+}
+aside>nav>.bookmark_list>li>.cat_list{
+    display: table-cell;
+    vertical-align: middle;
+}
+aside>nav>.bookmark_list .bookmark_delete{
+    position: absolute;
+    right: 0px;
+    padding: 5px;
+}
+aside>nav>.bookmark_list>.bookmark>.bookmark_delete:hover .bookmark{
+    background-color: rgba(255, 63, 60, 0.15);
 }
 aside>.arrow{
     display: inline-block;

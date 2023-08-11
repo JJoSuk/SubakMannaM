@@ -22,6 +22,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<kr.co.mannam.domain.entity.board.BoardEntity, kr.co.mannam.domain.entity.board.QBoardEntity> boardEntitieList = this.<kr.co.mannam.domain.entity.board.BoardEntity, kr.co.mannam.domain.entity.board.QBoardEntity>createList("boardEntitieList", kr.co.mannam.domain.entity.board.BoardEntity.class, kr.co.mannam.domain.entity.board.QBoardEntity.class, PathInits.DIRECT2);
 
+    public final ListPath<kr.co.mannam.domain.entity.board.BookMark, kr.co.mannam.domain.entity.board.QBookMark> bookMarkList = this.<kr.co.mannam.domain.entity.board.BookMark, kr.co.mannam.domain.entity.board.QBookMark>createList("bookMarkList", kr.co.mannam.domain.entity.board.BookMark.class, kr.co.mannam.domain.entity.board.QBookMark.class, PathInits.DIRECT2);
+
     public final ListPath<kr.co.mannam.domain.entity.board.CommentEntity, kr.co.mannam.domain.entity.board.QCommentEntity> commentEntitieList = this.<kr.co.mannam.domain.entity.board.CommentEntity, kr.co.mannam.domain.entity.board.QCommentEntity>createList("commentEntitieList", kr.co.mannam.domain.entity.board.CommentEntity.class, kr.co.mannam.domain.entity.board.QCommentEntity.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.sql.Timestamp> createDate = createDateTime("createDate", java.sql.Timestamp.class);

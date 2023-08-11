@@ -20,11 +20,12 @@ public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final UserRepository userRepository;
 
+
     @Transactional
     public void save(String userId, List<BoardCategory> boardCategoryList) {
         for (BoardCategory category : boardCategoryList) {
             Optional<BookMark> findBookMark = bookMarkRepository.findByUserIdAndBoardCategory(userId, category);
-            if (!(findBookMark.isPresent())) {
+            if (!findBookMark.isPresent()) {
                 User user = userRepository.findById(userId).get();
                 BookMark bookMark = BookMark.builder()
                         .user(user)
@@ -34,6 +35,10 @@ public class BookMarkService {
                 bookMarkRepository.save(bookMark);
             }
         }
+    }
 
+    @Transactional
+    public void delete(String userId, BoardCategory category) {
+        bookMarkRepository.deleteByUserIdAndBoardCategory(userId, category);
     }
 }
