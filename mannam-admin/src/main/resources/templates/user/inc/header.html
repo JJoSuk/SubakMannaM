@@ -53,7 +53,7 @@
 <!--                        <a class="" href="/kakaomarkmap">등록된 마커</a>-->
 <!--                    </li>-->
                     <th:block th:if="${session.principal != null}">
-                    <li class="">
+                    <li class="savedMarker">
                         <a class="" th:href="@{/kakaomarkmap/{userid}(userid=${session.principal.getId()})}">등록된 마커</a>
 <!--                        th:href="@{/post/updatePost/{id}(id=${post.id})}"-->
                     </li>
@@ -61,7 +61,7 @@
 <!--                    <li class="">-->
 <!--                        <a class="" href="/root2">등록된 마커</a>-->
 <!--                    </li>-->
-                    <li><a class="" href="">게시판</a>
+                    <li class="board"><a href="">게시판</a>
                         <div class="subNav">
                             <ul th:each="cat : ${session.category}">
                                 <th:block th:unless="|${cat.Name == '공지사항' || cat.Name == '건의사항'}|">
@@ -98,17 +98,157 @@
     <aside>
         <nav>
             <ul>
-                <li class="edit"><a href="">편집</a></li>
+                <li class="edit"><a href="#" id="editBtn">편집</a></li>
                 <li><h5>즐겨찾기</h5></li>
             </ul>
             <hr>
-            <ul>
-                <li><a href="">헬스 게시판</a></li>
-                <li><a href="">자동차 게시판</a></li>
-                <li><a href="">+</a></li>
-            </ul>
+            <th:block th:if="${session.principal == null}">
+                <b style="text-align: center;">로그인이 필요한 서비스입니다!</b>
+            </th:block>
+            <th:block th:if="${session.principal != null}">
+                <ul class="bookmark_list">
+                    <!--                    <div th:utext="${session.principal.bookMarkList}" style="display: none;"></div>-->
+
+                    <th:block th:each="myCat : ${session.principal.bookMarkList}">
+                        <th:block th:unless="|${myCat.boardCategory == 'Notice' || myCat.boardCategory == 'Suggestion'}|">
+                            <li class="bookmark">
+                                <a class="cat_list" th:href="|/board/paging/${myCat.boardCategory}|" th:text="|${myCat.boardCategory.name} 게시판|"></a>
+                                <a class="bookmark_delete" href="#" style="display: none"
+                                   th:delCat = "${myCat.boardCategory}"
+                                   th:onclick="bookmark_delete(this.getAttribute('delCat'))"><img src="/img/delete.png" alt="" width="13px" height="13px"></a>
+                            </li>
+                        </th:block>
+                    </th:block>
+
+<!--                    <th:block th:each="cat : ${session.category}">-->
+<!--                        <th:block th:unless="${cat.name == '공지사항' || cat.name == '건의사항'}">-->
+<!--                            <li><a class="list" th:href="|/board/paging/${cat}|" th:text="|${cat.name} 게시판|"></a></li>-->
+<!--                        </th:block>-->
+<!--                    </th:block>-->
+
+
+                    <li><a
+                            type="button"
+                            class="btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#newNoticeModal"
+                            data-bs-whatever="@mdo"
+                    >+</a></li>
+
+                </ul>
+            </th:block>
         </nav>
         <div class="arrow">▶</div>
     </aside>
 
+    <!-- Modal -->
+    <div
+            class="modal fade"
+            id="newNoticeModal"
+            tabindex="-1"
+            aria-labelledby="newNoticeModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newNoticeModalLabel">즐겨찾기</h5>
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+                </div>
+
+                <form>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <table id="bookMark" class="table">
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="80%">
+                                </colgroup>
+                                <tbody>
+                                <tr th:each="cat : ${session.category}">
+                                    <th:bolck th:unless="|${cat.Name == '공지사항' || cat.Name == '건의사항'}|">
+                                        <td><label class="checkbox-inline">
+                                            <input type="checkbox" name="chk" class="chk" th:value="${cat}">
+                                        </label></td>
+                                        <td th:text="|${cat.Name} 게시판|"></td>
+                                    </th:bolck>
+                                </tr>
+                                <th:block th:if="${session.principal != null}">
+                                    <input hidden type="text" id="userId" th:value="${session.principal.id}">
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">종료</button>
+                        <a class="btn btn-primary" onclick="bookmark_save()">저장</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const userId = document.getElementById('userId').value;
+        function bookmark_save() {
+            const query = 'input[name="chk"]:checked';
+            const selectedElements = document.querySelectorAll(query);
+
+            const selectedElementsCnt = selectedElements.length;
+
+            if (selectedElementsCnt == 0) {
+                alert("추가할 항목을 선택해주세요.");
+                return false;
+            } else {
+                const arr = new Array(selectedElementsCnt);
+
+                document.querySelectorAll('input[name="chk"]:checked').forEach(function(v, i) {
+                    arr[i] = v.value;
+                });
+
+                const form = document.createElement('form');
+                form.setAttribute('method', 'post');        //Post 메소드 적용
+                form.setAttribute('action', '/bookmark/save/'+userId);
+
+                var input = document.createElement('input');
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", "boardCategoryList");
+                input.setAttribute("value", arr);
+                form.appendChild(input);
+                console.log(form);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // 편집 버튼 누르면 북마크 삭제 버튼 보이게
+        $("#editBtn").on("click", function (){
+            $(".bookmark_delete").toggle();
+        });
+
+        function bookmark_delete(category) {
+            if (confirm("목록에서 삭제하시겠습니까?")) {
+                console.log("삭제 진입");
+
+                const form = document.createElement('form');
+                form.setAttribute('method', 'POST');
+                form.setAttribute('action', '/bookmark/delete/'+userId);
+
+                var input = document.createElement('input');
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", "category");
+                input.setAttribute("value", category);
+                form.appendChild(input);
+                console.log(form);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+    </script>
 </th:block>

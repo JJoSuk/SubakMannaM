@@ -203,7 +203,6 @@ public class BoardController {
     public boolean like(@PathVariable Long boardId, HttpSession session) {
         User principal = (User)(session.getAttribute("principal"));
         String userId = principal.getId();
-        System.out.println("userId = " + userId);
 
         boolean result = boardService.saveLike(boardId, userId);
         return result;

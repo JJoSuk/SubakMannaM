@@ -4,6 +4,7 @@ package kr.co.mannam.admin.member.controller;
 
 import kr.co.mannam.admin.member.dto.ResponseDTO;
 import kr.co.mannam.admin.member.service.UserService;
+import kr.co.mannam.domain.entity.board.BookMark;
 import kr.co.mannam.domain.entity.member.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -40,6 +42,9 @@ public class LoginController {
             // 비번 검증
             if (user.getPassword().equals(findUser.getPassword())) {
                 session.setAttribute("principal", findUser);
+
+                List<BookMark> bookMarkList = findUser.getBookMarkList();
+
                 return new ResponseDTO<>(HttpStatus.OK.value(), findUser.getUsername() +
                         "님 로그인 성공했습니다!!");
             } else {
