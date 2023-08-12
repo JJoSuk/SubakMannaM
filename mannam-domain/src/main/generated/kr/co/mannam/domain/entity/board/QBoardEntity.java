@@ -43,6 +43,8 @@ public class QBoardEntity extends EntityPathBase<BoardEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final ListPath<LikeBoard, QLikeBoard> likeBoardList = this.<LikeBoard, QLikeBoard>createList("likeBoardList", LikeBoard.class, QLikeBoard.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
     //inherited
