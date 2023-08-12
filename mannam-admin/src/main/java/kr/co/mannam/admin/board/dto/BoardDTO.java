@@ -26,6 +26,7 @@ public class BoardDTO {
     private LocalDateTime boardUpdatedTime;
     private User user;
     private BoardCategory boardCategory;
+    private Long commentCount; // 댓글 수 추가
 
     @Builder
     public BoardDTO(Long id,
@@ -37,7 +38,8 @@ public class BoardDTO {
                     LocalDateTime boardCreatedTime,
                     LocalDateTime boardUpdatedTime,
                     User user,
-                    BoardCategory boardCategory
+                    BoardCategory boardCategory,
+                    Long commentCount
     ){
         this.id = id;
         this.boardWriter = boardWriter;
@@ -49,6 +51,7 @@ public class BoardDTO {
         this.boardUpdatedTime = boardUpdatedTime;
         this.user = user;
         this.boardCategory = boardCategory;
+        this.commentCount = commentCount;
     }
     public BoardEntity toEntity(){
         return BoardEntity.builder()
@@ -60,6 +63,7 @@ public class BoardDTO {
                 .likeCount(likeCount)
                 .user(user)
                 .boardCategory(boardCategory)
+                .commentCount(commentCount)
                 .build();
     }
 

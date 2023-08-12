@@ -48,8 +48,13 @@ public class BoardEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column
+    private Long commentCount; // 댓글 수 추가
+
+
+
     @Builder
-    public BoardEntity(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, User user, BoardCategory boardCategory, int likeCount){
+    public BoardEntity(Long id, String boardWriter, String boardTitle, String boardContents, int boardHits, User user, BoardCategory boardCategory, int likeCount,Long commentCount){
         this.id = id;
         this.boardWriter = boardWriter;
         this.boardTitle = boardTitle;
@@ -58,6 +63,7 @@ public class BoardEntity extends BaseEntity {
         this.user = user;
         this.boardCategory = boardCategory;
         this.likeCount = likeCount;
+        this.commentCount = commentCount;
     }
 
 //    public BoardDTO toBoardDTO(){

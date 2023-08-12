@@ -34,6 +34,7 @@ public class CommentEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+
 //    @Builder
 //    public CommentEntity(Long id, String commentWriter, String commentContents, BoardEntity boardEntity){
 //        this.id = id;

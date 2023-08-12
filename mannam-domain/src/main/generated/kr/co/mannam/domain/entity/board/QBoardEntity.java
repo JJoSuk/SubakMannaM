@@ -34,6 +34,8 @@ public class QBoardEntity extends EntityPathBase<BoardEntity> {
 
     public final StringPath boardWriter = createString("boardWriter");
 
+    public final NumberPath<Long> commentCount = createNumber("commentCount", Long.class);
+
     public final ListPath<CommentEntity, QCommentEntity> commentEntitieList = this.<CommentEntity, QCommentEntity>createList("commentEntitieList", CommentEntity.class, QCommentEntity.class, PathInits.DIRECT2);
 
     //inherited
