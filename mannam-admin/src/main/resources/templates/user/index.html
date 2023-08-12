@@ -38,135 +38,40 @@
 
 <!-- 회원게시물 -->
 <section class="items">
-    <div class="content">
-        <h1>중고거래 인기매물</h1>
-        <div class="item-list">
-            <div class="card">
-                <div class="image">
-                    <a href="https://www.daangn.com/articles/578286332">
-                        <img
-                                src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                                alt="">
-                    </a>
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
+    <div class="custom_inner__132IP" style="text-align : center; line-height:342px;">
+    <div class="popular_post_wrap__ovgMo" style="width:800px;margin:0 auto; line-height:342px;">
+        <div class="popular_post_title_area__3npoJ">
+            <strong class="popular_post_title__3SdcZ">게시판 최신글</strong>
+<!--            <a class="popular_post_more__2_aQv" href="/">더보기</a>-->
+        </div><div class="popular_post_content__Gs2Nm">
+
+        <ul class="popular_post_list__2rxvW">
+            <li class="popular_post_item__3455R" th:each="board: ${boardList}">
+                <a class="popular_post_card__2inlT" th:href="|board/${board.id}|">
+                    <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
+                        <strong class="popular_post_title__3SdcZ" th:text="${board.boardTitle}"></strong>
+                        <span class="popular_post_new__VUMbO">
+                            <span class="blind">NEW</span>
+                        </span></div><div class="popular_post_user__35iXd">
+                        <div class="popular_post_profile_image_area__3H6ls">
+                            <div class="styles_CommonProfile__l3I4a CommonProfile" style="width: 18px; height: 18px;">
+                                <div class="styles_wrapProfileImage__1Mf-c">
+                                    <img class="styles_profileImage__1RP6R" src="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png" width="18" height="18" alt="전설의 파괴왕 8988">
+                                </div>
+                            </div>
+                        </div>
+                        <span class="popular_post_name__3pWNs" th:text="${board.boardWriter}"></span>
+                        <span class="popular_post_sub__3nHs0" th:text="|조회수: ${board.boardHits}|"></span>
+                        <span class="popular_post_sub__3nHs0">
+                            <span class="popular_post_num__1Fw4M" th:text="|추천수: ${board.likeCount}|"></span>
+                        </span>
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="image">
-                    <img
-                            src="https://dnvefa72aowie.cloudfront.net/origin/article/202212/9de9bab1f214e06bd5be50f7f32da33675d2bacf7ff58c11feab32d1c7979592.webp?q=82&s=300x300&t=crop"
-                            alt="">
-                </div>
-                <div class="desc">
-                    <h2>선반</h2>
-                    <div class="price">1,000원</div>
-                    <div class="region">울산 북구 농소 3동</div>
-                    <div class="counts">
-                        관심 7 ∙ 채팅 46
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="list">
-            <a href="#">인기매물 더 보기</a>
-        </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    </div>
     </div>
 </section>
 <script src="./js/01.js"></script>

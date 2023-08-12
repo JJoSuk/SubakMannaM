@@ -94,6 +94,11 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     @Modifying
     @Query(value = "update BoardEntity b set b.commentCount = :commentCount where b.id = :boardId")
     void updateCommentCount(@Param("boardId") Long boardId, @Param("commentCount") Long commentCount);
+
+
+    // board 테이블에서 가장 최근 5개를 불러오기
+    @Query("SELECT b FROM BoardEntity b ORDER BY b.createdTime DESC")
+    List<BoardEntity> findLatestFive();
 }
 
 
