@@ -38,6 +38,7 @@
                     <th>작성자</th>
                     <th>날짜</th>
                     <th>조회수</th>
+                    <th>추천수</th>
                     <!--          <th>파일유무</th>-->
                 </tr>
                 </thead>
@@ -51,7 +52,7 @@
                     <!--          </td>-->
                     <td th:text="${board.id}"></td>
                     <td><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}"
-                           th:text="${board.boardTitle}"></a></td>
+                           th:text="|${board.boardTitle} [${board.commentCount != null ? board.commentCount : 0}]|"></a></td>
                     <td th:text="${board.boardWriter}"></td>
                     <span th:if="${board.boardUpdatedTime == null}">
                         <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -60,6 +61,8 @@
                         <td th:text="*{#temporals.format(board.boardUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     </span>
                     <td th:text="${board.boardHits}"></td>
+                    <td th:text="${board.likeCount}"></td>
+<!--                    <td th:text="${board.likeCount}"></td>-->
                     <!--          <td>이미지</td>-->
                 </tr>
                 </tbody>

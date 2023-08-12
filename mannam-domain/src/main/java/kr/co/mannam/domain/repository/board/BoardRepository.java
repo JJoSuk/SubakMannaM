@@ -67,6 +67,11 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     Page<BoardEntity> findByBoardContentsContaining(String keyword, Pageable pageable);
 
     Page<BoardEntity> findByBoardWriterContaining(String keyword, Pageable pageable);
+
+
+    @Modifying
+    @Query(value = "update BoardEntity b set b.commentCount = :commentCount where b.id = :boardId")
+    void updateCommentCount(@Param("boardId") Long boardId, @Param("commentCount") Long commentCount);
 }
 
 

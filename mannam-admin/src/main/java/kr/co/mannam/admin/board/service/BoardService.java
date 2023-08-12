@@ -5,6 +5,7 @@ import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.board.LikeBoard;
 import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.repository.board.BoardRepository;
+import kr.co.mannam.domain.repository.board.CommentRepository;
 import kr.co.mannam.domain.repository.board.LikeBoardRepository;
 import kr.co.mannam.domain.repository.member.UserRepository;
 import kr.co.mannam.type.board.BoardCategory;
@@ -30,6 +31,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final LikeBoardRepository likeBoardRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     public void save(BoardDTO boardDTO) throws IOException {
         BoardEntity boardEntity = boardDTO.toEntity();
         boardRepository.save(boardEntity);
@@ -74,6 +76,7 @@ public class BoardService {
                     .boardContents(boardEntity.getBoardContents())
                     .boardHits(boardEntity.getBoardHits())
                     .likeCount(boardEntity.getLikeCount())
+                    .commentCount(boardEntity.getCommentCount())  // 댓글 수 추가
                     .boardCreatedTime(boardEntity.getCreatedTime())
                     .boardUpdatedTime(boardEntity.getUpdatedTime())
                     .user(boardEntity.getUser())
@@ -101,6 +104,8 @@ public class BoardService {
         // 한페이지당 3개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순 정렬
         // page 위치에 있는 값은 0부터 시작
 
+
+
         Page<BoardEntity> boardEntities = null;
 
 
@@ -124,6 +129,8 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
+                .likeCount(board.getLikeCount())
+                .commentCount(board.getCommentCount())  // 댓글 수 추가
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
@@ -181,6 +188,8 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
+                .likeCount(board.getLikeCount())
+                .commentCount(board.getCommentCount())  // 댓글 수 추가
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
@@ -255,6 +264,8 @@ public class BoardService {
                 .boardTitle(board.getBoardTitle())
                 .boardContents(board.getBoardContents())
                 .boardHits(board.getBoardHits())
+                .likeCount(board.getLikeCount())
+                .commentCount(board.getCommentCount())  // 댓글 수 추가
                 .boardCreatedTime(board.getCreatedTime())
                 .boardUpdatedTime(board.getUpdatedTime())
                 .user(board.getUser())
@@ -262,6 +273,11 @@ public class BoardService {
                 .build());
 
         return boardDTOS;
+    }
+
+    @Transactional
+    public void updateCommentCount(Long boardId, Long commentCount) {
+        boardRepository.updateCommentCount(boardId, commentCount);
     }
 }
 

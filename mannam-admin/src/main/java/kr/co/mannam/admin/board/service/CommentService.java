@@ -27,11 +27,13 @@ public class CommentService {
         /* 부모엔티티(BoardEntity) */
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(commentDTO.getBoardId());
         Optional<User> optionalUser = userRepository.findById(commentDTO.getUserId());
+
         if(optionalBoardEntity.isPresent()){
             if (optionalUser.isPresent()){
                 BoardEntity boardEntity = optionalBoardEntity.get();
                 User user = optionalUser.get();
                 CommentEntity commentEntity = CommentDTO.toSaveEntity(commentDTO, boardEntity, user);
+
                 return commentRepository.save(commentEntity).getId();
             }
             return null;
