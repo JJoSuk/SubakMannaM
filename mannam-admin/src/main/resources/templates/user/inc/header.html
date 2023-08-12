@@ -42,10 +42,10 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="">추천</a></li>
+                    <li><a th:href="|/board/paging/${session.category[0]}|">인기</a></li>
 <!--                    <li><a href="/board/paging/Notice">공지</a></li>-->
-                    <li><a th:href="|/board/paging/${session.category[0]}|">공지</a></li>
-                    <li><a th:href="|/board/paging/${session.category[1]}|">건의</a></li>
+                    <li><a th:href="|/board/paging/${session.category[1]}|">공지</a></li>
+                    <li><a th:href="|/board/paging/${session.category[2]}|">건의</a></li>
                     <li class="">
                         <a class="" href="/kakaomap">지도</a>
                     </li>
@@ -64,7 +64,7 @@
                     <li class="board"><a href="">게시판</a>
                         <div class="subNav">
                             <ul th:each="cat : ${session.category}">
-                                <th:block th:unless="|${cat.Name == '공지사항' || cat.Name == '건의사항'}|">
+                                <th:block th:unless="|${cat.Name == '공지사항' || cat.Name == '건의사항' || cat.Name == '인기'}|">
                                     <li><a th:href="|/board/paging/${cat}|" th:text="|${cat.Name} 게시판|"></a></li>
                                 </th:block>
                             </ul>

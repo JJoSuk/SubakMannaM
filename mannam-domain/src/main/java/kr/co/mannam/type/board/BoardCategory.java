@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum BoardCategory {
+    Hit("인기"),
     Notice("공지사항"),
     Suggestion("건의사항"),
     Computer("컴퓨터"),

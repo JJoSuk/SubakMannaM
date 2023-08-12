@@ -108,9 +108,11 @@ public class BoardService {
 
         Page<BoardEntity> boardEntities = null;
 
-
-            boardEntities =
-                    boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
+        if (category == BoardCategory.Hit) {
+            boardEntities = boardRepository.findByHit(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+        }else {
+            boardEntities = boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
+        }
 
 
 //        System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
@@ -150,24 +152,42 @@ public class BoardService {
         Page<BoardEntity> boardEntities = null;
         System.out.println("type = " + type);
 
-        if("title".equals(type)) {
-            boardEntities =
-                    boardRepository.findByBoardTitleContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-            System.out.println("findByBoardTitleContainingAndBoardCategory = " + boardEntities);
-        }
-        else if("content".equals(type)) {
-            boardEntities =
-                    boardRepository.findByBoardContentsContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-            System.out.println("findByBoardContentsContainingAndBoardCategory = " + boardEntities);
-        }
-        else if("writer".equals(type)) {
-            boardEntities =
-                    boardRepository.findByBoardWriterContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-            System.out.println("findByBoardWriterContainingAndBoardCategory = " + boardEntities);
-        }else{
-            boardEntities =
-            boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
-            System.out.println("findByBoardCategory = " + boardEntities);
+        if (category == BoardCategory.Hit) {
+            if("title".equals(type)) {
+                boardEntities =
+                        boardRepository.findByBoardTitleContainingAndHit(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            }
+            else if("content".equals(type)) {
+                boardEntities =
+                        boardRepository.findByBoardContentsContainingAndHit(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            }
+            else if("writer".equals(type)) {
+                boardEntities =
+                        boardRepository.findByBoardWriterContainingAndHit(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            }else{
+                boardEntities =
+                        boardRepository.findByHit(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+            }
+        }else {
+            if("title".equals(type)) {
+                boardEntities =
+                        boardRepository.findByBoardTitleContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+                System.out.println("findByBoardTitleContainingAndBoardCategory = " + boardEntities);
+            }
+            else if("content".equals(type)) {
+                boardEntities =
+                        boardRepository.findByBoardContentsContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+                System.out.println("findByBoardContentsContainingAndBoardCategory = " + boardEntities);
+            }
+            else if("writer".equals(type)) {
+                boardEntities =
+                        boardRepository.findByBoardWriterContainingAndBoardCategory(keyword, category, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+                System.out.println("findByBoardWriterContainingAndBoardCategory = " + boardEntities);
+            }else{
+                boardEntities =
+                boardRepository.findByBoardCategory(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")), category);
+                System.out.println("findByBoardCategory = " + boardEntities);
+            }
         }
 
         System.out.println("boardEntities222 = " + boardEntities);

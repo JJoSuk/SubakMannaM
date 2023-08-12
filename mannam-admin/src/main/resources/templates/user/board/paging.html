@@ -8,23 +8,24 @@
         </th:block>
         <th:block th:unless="${category.Name == '공지사항' || category.Name == '건의사항'}">
             <h2 name="category" th:text="|${category.Name + ' 게시판'}|"></h2>
+            <th:block th:unless="${category.Name == '인기'}">
+                <div class="d-flex justify-content-end">
+                    <!--        <a class="btn btn-danger">글삭제</a>-->
+                    <a class="btn btn-primary" th:href="|/board/save/${category}/${session.principal.getId()}|">글쓰기</a>
+                    <input type="hidden" name="userid" id="userid" th:value="${session.principal.username}">
+                </div>
+            </th:block>
         </th:block>
-        <!-- ADMIN 권한일경우에만 글삭제 권한있음 -->
-        <div class="d-flex justify-content-end">
-            <!--        <a class="btn btn-danger">글삭제</a>-->
-            <a class="btn btn-primary" th:href="|/board/save/${category}/${session.principal.getId()}|">글쓰기</a>
-            <input type="hidden" name="userid" id="userid" th:value="${session.principal.username}">
-        </div>
         <br>
             <table class="table table-hover">
                 <colgroup>
                     <!--          <col width="2%" />-->
                     <col width="5%"/>
                     <col width="20%"/>
-                    <col width="5%"/>
-                    <col width="5%"/>
-                    <col width="5%"/>
-                    <col width="5%"/>
+                    <col width="4%"/>
+                    <col width="6%"/>
+                    <col width="3%"/>
+                    <col width="3%"/>
                     <!--          <col width="5%" />-->
                 </colgroup>
                 <thead>
@@ -53,7 +54,7 @@
                     <!--          </td>-->
                     <td th:text="${board.id}"></td>
                     <td><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}"
-                           th:text="|${board.boardTitle} [${board.commentCount != null ? board.commentCount : 0}]|"></a></td>
+                           th:text="|${board.boardTitle}|"></a><b th:text="| [${board.commentCount != null ? board.commentCount : 0}]|"></b></td>
                     <td th:text="${board.boardWriter}"></td>
                     <span th:if="${board.boardUpdatedTime == null}">
                         <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
@@ -68,6 +69,11 @@
                 </tr>
                 </tbody>
             </table>
+            <th:block  th:if="${boardList.isEmpty()}">
+                <div class="m-5 p-5 d-flex justify-content-center">
+                    <h2 class="m-5 p-5 text-center">아직 게시물이 없습니다.</h2>
+                </div>
+            </th:block>
             <br>
 
         <nav class="container d-flex align-items-center justify-content-center"

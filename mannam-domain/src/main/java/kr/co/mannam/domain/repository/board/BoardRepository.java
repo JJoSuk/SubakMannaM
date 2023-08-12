@@ -20,7 +20,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     @Query(value = "update BoardEntity b set b.boardHits=b.boardHits+1 where b.id=:id")
     void updateHits(@Param("id") Long id);
 
-    public Page<BoardEntity> findByBoardCategory(Pageable pageable, BoardCategory category);
+    Page<BoardEntity> findByBoardCategory(Pageable pageable, BoardCategory category);
 
 //    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword% AND b.boardCategory = :category")
 //    public Page<BoardEntity> findByBoardTitleContainingAndBoardCategory(String keyword, Pageable pageable, BoardCategory category);
@@ -46,6 +46,28 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
             @Param("category") BoardCategory category,
             Pageable pageable
     );
+
+    /** 인기 게시판 검색 (추천수 5 이상)**/
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword% AND b.likeCount >= 5")
+    Page<BoardEntity> findByBoardTitleContainingAndHit(
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword% AND b.likeCount >= 5")
+    Page<BoardEntity> findByBoardContentsContainingAndHit(
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword% AND b.likeCount >= 5")
+    Page<BoardEntity> findByBoardWriterContainingAndHit(
+            @Param("keyword") String keyword,
+            Pageable pageable
+    );
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5")
+    Page<BoardEntity> findByHit(Pageable pageable);
 
     /** 좋아요 추가 **/
     @Modifying
