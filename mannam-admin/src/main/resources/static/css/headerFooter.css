@@ -17,6 +17,7 @@ header {
     background-color: white;
     position: fixed;
     z-index: 998;
+    border-bottom: 1px solid #eaeaea;
     /* 999 절대값 */
 
 }
@@ -84,7 +85,7 @@ header>.container>nav>ul>.board:hover .subNav {
     transition: .2s;
     position: absolute;
     width: 200px;
-    padding: 20px 10px 10px 10px;
+    padding: 10px;
     left: -60px;
     top: -200px;
     background-color: white;
@@ -154,6 +155,8 @@ header>.container>.search>input {
 header>.container button {
     margin-left: 10px;
     width: 110px;
+    height: 40px;
+    line-height: 22px;
     border: 1px solid #d1d3d8;
     background-color: white;
     border-radius: 10px;
@@ -175,6 +178,7 @@ header>.container button>a {
     text-decoration: none;
     color: #212529;
     height: 100%;
+    width: 110px;
 }
 
 /* 로그인/회원가입 */
