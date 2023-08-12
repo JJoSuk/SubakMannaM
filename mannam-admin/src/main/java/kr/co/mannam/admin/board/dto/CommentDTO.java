@@ -49,7 +49,7 @@ public class CommentDTO {
         commentDTO.setCommentWriter(commentEntity.getCommentWriter());
         commentDTO.setCommentContents(commentEntity.getCommentContents());
         commentDTO.setCommentCreatedTime(commentEntity.getCreatedTime());
-        commentDTO.setCommentCreatedTime(commentEntity.getUpdatedTime());
+        commentDTO.setCommentUpdatedTime(commentEntity.getUpdatedTime());
 //        commentDTO.setBoardId(commentEntity.getBoardEntity().getId()); // 이 경우 Service 메소드에 @Transactional
         commentDTO.setBoardId(boardId);
         commentDTO.setUserId(commentEntity.getUser().getId());

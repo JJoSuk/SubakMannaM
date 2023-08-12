@@ -47,8 +47,12 @@ public class CommentService {
         List<CommentEntity> commentEntityList = commentRepository.findAllByBoardEntityOrderByIdDesc(boardEntity);
         /* EntityList -> DTOList */
         List<CommentDTO> commentDTOList = new ArrayList<>();
-        for(CommentEntity commentEntity : commentEntityList){
-            CommentDTO commentDTO = CommentDTO.toCommentDTO(commentEntity, boardId);
+//        for(CommentEntity commentEntity : commentEntityList){
+//            CommentDTO commentDTO = CommentDTO.toCommentDTO(commentEntity, boardId);
+//            commentDTOList.add(commentDTO);
+//        }
+        for(int i=0;i<commentEntityList.size();i++){
+            CommentDTO commentDTO = CommentDTO.toCommentDTO(commentEntityList.get(i), boardId);
             commentDTOList.add(commentDTO);
         }
         return commentDTOList;

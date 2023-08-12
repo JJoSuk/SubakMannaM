@@ -23,6 +23,7 @@ public class CommentController {
             // 작성 성공 시 댓글목록을 가져와서 리턴
             // 댓글목록 : 해당 게시글의 댓글 전체
             List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
+            commentDTOList.get(0).setCommentUpdatedTime(null); // 첫 댓글에 updatedTime이 createdTime으로 설정되는 버그 수정
             return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("해당 게시글이 존재하지 않습니다.", HttpStatus.NOT_FOUND);

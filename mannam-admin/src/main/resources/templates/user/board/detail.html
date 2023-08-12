@@ -1,5 +1,7 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="/user/inc/header::headerFragment"/>
+<!-- moment : json 타입 Date 포맷 -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
 <div class="content mt-5 p-5">
     <article>
@@ -81,7 +83,7 @@
 <!--                        <col width="5%"/>-->
                         <col width="5%"/>
                         <col width="20%"/>
-                        <col width="4%"/>
+                        <col width="6%"/>
                         <col width="3%"/>
                     </colgroup>
                     <thead>
@@ -113,7 +115,7 @@
                             <td th:text="*{#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                         </th:block>
                         <th:block th:unless="${comment.commentUpdatedTime == null}">
-                            <td th:text="*{#temporals.format(comment.commentUpdatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="|*{#temporals.format(comment.commentUpdatedTime, 'yyyy-MM-dd HH:mm:ss')} [수정됨]|"></td>
                         </th:block>
                         <td th:if='${comment.userId == session.principal.id}'>
                             <a th:onclick="|commentModifyForm(${comment.id})|">수정</a> /
@@ -127,8 +129,7 @@
         </div>
     </article>
 </div>
-<!-- moment : json 타입 Date 포맷 -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
 <script th:inline="javascript">
 
     /* *************************** 게시글 ********************************** */
@@ -155,7 +156,7 @@
             output += "<colgroup>";
             output += "<col width='5%'/>";
             output += "<col width='20%'/>";
-            output += "<col width='4%'/>";
+            output += "<col width='6%'/>";
             output += "<col width='3%'/>";
             output += "</colgroup>";
             output += "<thead>";
@@ -172,7 +173,11 @@
                 output += "<td hidden>" + res[i].id + "</td>";
                 output += "<td>" + res[i].commentWriter + "</td>";
                 output += "<td>" + res[i].commentContents + "</td>";
-                output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                if (res[i].commentUpdatedTime == null){
+                    output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                }else{
+                    output += "<td>" + moment(res[i].commentUpdatedTime).format('YYYY-MM-DD HH:mm:ss') + " [수정됨]</td>";
+                }
                 if (res[i].userId == session_id) {
                     output += "<td>";
                     output += "<a onclick='commentModifyForm("+ res[i].id +")'>수정</a> /";
@@ -195,7 +200,7 @@
         output += "<colgroup>";
         output += "<col width='5%'/>";
         output += "<col width='20%'/>";
-        output += "<col width='4%'/>";
+        output += "<col width='6%'/>";
         output += "<col width='3%'/>";
         output += "</colgroup>";
         output += "<thead>";
@@ -213,7 +218,11 @@
                 output += "<td hidden><input id='commentModifyId' value='" + res[i].id + "'</td>";
                 output += "<td>" + res[i].commentWriter + "</td>";
                 output += "<td><input class='w-100' style='margin-right:20px;' type='text' id='commentModifyContents' value='" + res[i].commentContents + "'></td>";
-                output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                if (res[i].commentUpdatedTime == null){
+                    output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                }else{
+                    output += "<td>" + moment(res[i].commentUpdatedTime).format('YYYY-MM-DD HH:mm:ss') + " [수정됨]</td>";
+                }
                 if (res[i].userId == session_id) {
                     output += "<td>";
                     output += "<a onclick='commentModify()'>저장</a> /";
@@ -228,7 +237,11 @@
                 output += "<td hidden>" + res[i].id + "</td>";
                 output += "<td>" + res[i].commentWriter + "</td>";
                 output += "<td>" + res[i].commentContents + "</td>";
-                output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                if (res[i].commentUpdatedTime == null){
+                    output += "<td>" + moment(res[i].commentCreatedTime).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                }else{
+                    output += "<td>" + moment(res[i].commentUpdatedTime).format('YYYY-MM-DD HH:mm:ss') + " [수정됨]</td>";
+                }
                 if (res[i].userId == session_id) {
                     output += "<td>";
                     output += "<a onclick='commentModifyForm("+ res[i].id +")'>수정</a> /";
