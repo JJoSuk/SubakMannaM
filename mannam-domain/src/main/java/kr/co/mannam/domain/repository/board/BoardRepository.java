@@ -48,36 +48,26 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     );
 
     /** 인기 게시판 검색 (추천수 5 이상)**/
-    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword% AND b.likeCount >= 5")
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardTitle LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount ASC")
     Page<BoardEntity> findByBoardTitleContainingAndHit(
             @Param("keyword") String keyword,
             Pageable pageable
     );
 
-    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword% AND b.likeCount >= 5")
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount ASC")
     Page<BoardEntity> findByBoardContentsContainingAndHit(
             @Param("keyword") String keyword,
             Pageable pageable
     );
 
-    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword% AND b.likeCount >= 5")
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount ASC")
     Page<BoardEntity> findByBoardWriterContainingAndHit(
             @Param("keyword") String keyword,
             Pageable pageable
     );
 
-    @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5")
+    @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5 ORDER BY b.likeCount ASC")
     Page<BoardEntity> findByHit(Pageable pageable);
-
-    /** 좋아요 추가 **/
-    @Modifying
-    @Query(value = "update BoardEntity board set board.likeCount = board.likeCount + 1 where board.id = :boardId")
-    int plusLike(@Param("boardId") Long boardId);
-
-    /** 좋아요 삭제 **/
-    @Modifying
-    @Query(value = "update BoardEntity board set board.likeCount = board.likeCount - 1 where board.id = :boardId")
-    int minusLike(@Param("boardId") Long boardId);
 
 
     @Query("SELECT DISTINCT b.boardCategory FROM BoardEntity b")

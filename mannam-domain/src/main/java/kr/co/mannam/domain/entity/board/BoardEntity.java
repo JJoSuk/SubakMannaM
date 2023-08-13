@@ -7,6 +7,7 @@ import kr.co.mannam.type.board.BoardCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
-    @Column
+    @Formula("(SELECT count(1) FROM like_board l WHERE l.board_id = id)")
     private int likeCount;
 
     @Enumerated(EnumType.STRING)
