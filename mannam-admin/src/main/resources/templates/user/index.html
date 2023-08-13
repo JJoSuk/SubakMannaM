@@ -38,40 +38,77 @@
 
 <!-- 회원게시물 -->
 <section class="items">
-    <div class="custom_inner__132IP" style="text-align : center; line-height:342px;">
-    <div class="popular_post_wrap__ovgMo" style="width:800px;margin:0 auto; line-height:342px;">
-        <div class="popular_post_title_area__3npoJ">
-            <strong class="popular_post_title__3SdcZ">게시판 최신글</strong>
-<!--            <a class="popular_post_more__2_aQv" href="/">더보기</a>-->
-        </div><div class="popular_post_content__Gs2Nm">
+<!--    <div class="custom_inner__132IP" style="text-align : center; line-height:342px;">-->
+    <div class="custom_inner__132IP" style="display:flex;justify-content: center;">
+        <div class="popular_post_wrap__ovgMo" style="width:500px;">
+            <div class="popular_post_title_area__3npoJ">
+                <strong class="popular_post_title__3SdcZ">게시판 최신글</strong>
+    <!--            <a class="popular_post_more__2_aQv" href="/">더보기</a>-->
+            </div>
+            <div class="popular_post_content__Gs2Nm">
 
-        <ul class="popular_post_list__2rxvW">
-            <li class="popular_post_item__3455R" th:each="board: ${boardList}">
-                <a class="popular_post_card__2inlT" th:href="|board/${board.id}|">
-                    <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
-                        <strong class="popular_post_title__3SdcZ" th:text="${board.boardTitle}"></strong>
-                        <span class="popular_post_new__VUMbO">
-                            <span class="blind">NEW</span>
-                        </span></div><div class="popular_post_user__35iXd">
-                        <div class="popular_post_profile_image_area__3H6ls">
-                            <div class="styles_CommonProfile__l3I4a CommonProfile" style="width: 18px; height: 18px;">
-                                <div class="styles_wrapProfileImage__1Mf-c">
-                                    <img class="styles_profileImage__1RP6R" src="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png" width="18" height="18" alt="전설의 파괴왕 8988">
+            <ul class="popular_post_list__2rxvW">
+                <li class="popular_post_item__3455R" th:each="board: ${boardList}">
+                    <a class="popular_post_card__2inlT" th:href="|board/${board.id}|">
+                        <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
+                            <strong class="popular_post_title__3SdcZ" th:text="${board.boardTitle}"></strong>
+                            <span class="popular_post_new__VUMbO">
+                                <span class="blind">NEW</span>
+                            </span></div><div class="popular_post_user__35iXd">
+                            <div class="popular_post_profile_image_area__3H6ls">
+                                <div class="styles_CommonProfile__l3I4a CommonProfile" style="width: 18px; height: 18px;">
+                                    <div class="styles_wrapProfileImage__1Mf-c">
+                                        <img class="styles_profileImage__1RP6R" src="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png" width="18" height="18" alt="전설의 파괴왕 8988">
+                                    </div>
                                 </div>
                             </div>
+                            <span class="popular_post_name__3pWNs" th:text="${board.boardWriter}"></span>
+                            <span class="popular_post_sub__3nHs0" th:text="|조회수: ${board.boardHits}|"></span>
+                            <span class="popular_post_sub__3nHs0">
+                                <span class="popular_post_num__1Fw4M" th:text="|추천수: ${board.likeCount}|"></span>
+                            </span>
                         </div>
-                        <span class="popular_post_name__3pWNs" th:text="${board.boardWriter}"></span>
-                        <span class="popular_post_sub__3nHs0" th:text="|조회수: ${board.boardHits}|"></span>
-                        <span class="popular_post_sub__3nHs0">
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            </div>
+        </div>
+
+        <div class="popular_post_wrap__ovgMo" style="width:500px;">
+            <div class="popular_post_title_area__3npoJ">
+                <strong class="popular_post_title__3SdcZ">공지사항</strong>
+                            <a class="popular_post_more__2_aQv" th:href="|/board/paging/${session.category[1]}|">더보기</a>
+            </div>
+            <div class="popular_post_content__Gs2Nm">
+
+            <ul class="popular_post_list__2rxvW">
+                <li class="popular_post_item__3455R" th:each="board: ${NoticList}">
+                    <a class="popular_post_card__2inlT" th:href="|board/${board.id}|">
+                        <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
+                            <strong class="popular_post_title__3SdcZ" th:text="${board.boardTitle}"></strong>
+                            <span class="popular_post_new__VUMbO">
+                            <span class="blind">NEW</span>
+                        </span></div><div class="popular_post_user__35iXd">
+                            <div class="popular_post_profile_image_area__3H6ls">
+                                <div class="styles_CommonProfile__l3I4a CommonProfile" style="width: 18px; height: 18px;">
+                                    <div class="styles_wrapProfileImage__1Mf-c">
+                                        <img class="styles_profileImage__1RP6R" src="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png" width="18" height="18" alt="전설의 파괴왕 8988">
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="popular_post_name__3pWNs" th:text="${board.boardWriter}"></span>
+                            <span class="popular_post_sub__3nHs0" th:text="|조회수: ${board.boardHits}|"></span>
+                            <span class="popular_post_sub__3nHs0">
                             <span class="popular_post_num__1Fw4M" th:text="|추천수: ${board.likeCount}|"></span>
                         </span>
-                    </div>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
-    </div>
+                        </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            </div>
+        </div>
     </div>
 </section>
 <script src="./js/01.js"></script>

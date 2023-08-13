@@ -6,6 +6,7 @@ import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.repository.board.BoardRepository;
 import kr.co.mannam.type.board.BoardCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,13 @@ public class HomeController {
     public String home(HttpSession session,Model model) {
         session.setAttribute("category",BoardCategory.values());
 
-        List<BoardEntity> boardList = boardRepository.findLatestFive();
+        List<BoardEntity> boardList = boardRepository.findLatestFive(PageRequest.of(0, 5));
         System.out.println("boardList = " + boardList);
         model.addAttribute("boardList",boardList);
+
+        List<BoardEntity> NoticList = boardRepository.findLatestNoticeBoards(PageRequest.of(0, 5));
+        System.out.println("NoticList = " + NoticList);
+        model.addAttribute("NoticList",NoticList);
 
         return "user/index";
     }

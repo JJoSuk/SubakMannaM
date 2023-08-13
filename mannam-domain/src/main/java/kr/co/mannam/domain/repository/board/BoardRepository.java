@@ -97,8 +97,14 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
 
     // board 테이블에서 가장 최근 5개를 불러오기
-    @Query("SELECT b FROM BoardEntity b ORDER BY b.createdTime DESC")
-    List<BoardEntity> findLatestFive();
+    @Query("SELECT b FROM BoardEntity b ORDER BY b.id DESC")
+    List<BoardEntity> findLatestFive(Pageable pageable);
+
+    // board 테이블에서 공지사항 가장 최근 5개를 불러오기
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardCategory = 'Notice' ORDER BY b.id DESC")
+    List<BoardEntity> findLatestNoticeBoards(Pageable pageable);
+
+
 }
 
 
