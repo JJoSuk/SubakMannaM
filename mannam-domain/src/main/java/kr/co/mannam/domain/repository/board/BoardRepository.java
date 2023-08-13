@@ -69,11 +69,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5 ORDER BY b.likeCount ASC")
     Page<BoardEntity> findByHit(Pageable pageable);
 
-    /** 좋아요 업데이트 **/
-    @Modifying
-    @Query(value = "update BoardEntity board set board.likeCount = :likeCount WHERE board.id = :boardId")
-    int updateLike(@Param("boardId") Long boardId, @Param("likeCount") int likeCount);
-
 
     @Query("SELECT DISTINCT b.boardCategory FROM BoardEntity b")
     List<BoardCategory> findDistinctBoardCategory();

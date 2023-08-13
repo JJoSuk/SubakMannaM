@@ -240,15 +240,11 @@ public class BoardService {
                     .build();
 
             likeBoardRepository.save(likeBoard);
-            int likeCount = (int)likeBoardRepository.count();
-            boardRepository.updateLike(boardId, likeCount);
 
             return true;
         } else {
             // 좋아요한 게시물이면 좋아요 삭제, false 리턴
             likeBoardRepository.deleteByBoard_IdAndUser_Id(boardId, userId);
-            int likeCount = (int)likeBoardRepository.count();
-            boardRepository.updateLike(boardId, likeCount);
 
             return false;
         }
