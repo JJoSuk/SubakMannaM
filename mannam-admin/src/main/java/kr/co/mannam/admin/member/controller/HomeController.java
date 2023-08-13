@@ -25,9 +25,13 @@ public class HomeController {
     public String home(HttpSession session,Model model) {
         session.setAttribute("category",BoardCategory.values());
 
-        List<BoardEntity> boardList = boardRepository.findLatestFive(PageRequest.of(0, 5));
-        System.out.println("boardList = " + boardList);
+        List<BoardEntity> boardList = boardRepository.findLatestFive();
         model.addAttribute("boardList",boardList);
+
+        /**배너 - 오늘날짜의 인기 게시물 top5 **/
+        List<BoardEntity> todayTopFiveList = boardService.findTodayTopFive();
+        model.addAttribute("todayTopFiveList", todayTopFiveList);
+        System.out.println("todayTopFiveList = " + todayTopFiveList);
 
         List<BoardEntity> NoticList = boardRepository.findLatestNoticeBoards(PageRequest.of(0, 5));
         System.out.println("NoticList = " + NoticList);

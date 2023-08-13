@@ -18,6 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -296,6 +300,17 @@ public class BoardService {
     @Transactional
     public void updateCommentCount(Long boardId, Long commentCount) {
         boardRepository.updateCommentCount(boardId, commentCount);
+    }
+
+    public List<BoardEntity> findTodayTopFive() {
+        // 현재 날짜 구하기
+        LocalDate today = LocalDate.now();
+        // LocalDateTime으로 형변환 + 시간 범위 지정
+        LocalDateTime today_LDC = today.atStartOfDay();
+
+        List<BoardEntity> todayTopFiveList = boardRepository.findTodayTopFive(today_LDC, PageRequest.of(0,5));
+
+        return todayTopFiveList;
     }
 }
 

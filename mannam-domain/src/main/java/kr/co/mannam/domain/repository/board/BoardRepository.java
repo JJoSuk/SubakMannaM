@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
@@ -54,19 +55,19 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
             Pageable pageable
     );
 
-    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount ASC")
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardContents LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount DESC")
     Page<BoardEntity> findByBoardContentsContainingAndHit(
             @Param("keyword") String keyword,
             Pageable pageable
     );
 
-    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount ASC")
+    @Query("SELECT b FROM BoardEntity b WHERE b.boardWriter LIKE %:keyword% AND b.likeCount >= 5 ORDER BY b.likeCount DESC")
     Page<BoardEntity> findByBoardWriterContainingAndHit(
             @Param("keyword") String keyword,
             Pageable pageable
     );
 
-    @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5 ORDER BY b.likeCount ASC")
+    @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5 ORDER BY b.likeCount DESC")
     Page<BoardEntity> findByHit(Pageable pageable);
 
 
@@ -95,6 +96,12 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     List<BoardEntity> findLatestNoticeBoards(Pageable pageable);
 
 
+    @Query("SELECT b FROM BoardEntity b ORDER BY b.createdTime DESC")
+    List<BoardEntity> findLatestFive();
+
+
+    @Query("SELECT b FROM BoardEntity b WHERE b.likeCount >= 5 AND b.createdTime > :today ORDER BY b.likeCount DESC")
+    List<BoardEntity> findTodayTopFive(@Param("today")LocalDateTime today, Pageable pageable);
 }
 
 

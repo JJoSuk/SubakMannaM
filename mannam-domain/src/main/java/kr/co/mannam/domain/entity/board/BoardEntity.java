@@ -35,6 +35,7 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
+    // Formula : DB 엔티티를 가져올 때 실행되는 '읽기전용' 엔티티를 생성, 이를 서브쿼리처럼 사용하거나 값만 가져와서 사용 할 수 있다.
     @Formula("(SELECT count(1) FROM like_board l WHERE l.board_id = id)")
     private int likeCount;
 

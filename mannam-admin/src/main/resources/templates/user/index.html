@@ -7,6 +7,91 @@
 
 <div class="bd" style="margin-top: 60px;">
     <div class="bd-slider">
+        <div>
+            <div class="today-recommend" src="./img/1.PNG" style="max-width: 100%; height: 100%;">
+                <div class="todayTitle d-flex">
+                    <h1 class="mb-5">오늘의 추천</h1><h1 class="top5" style="margin-left: 10px;">TOP 5</h1>
+                </div>
+                <th:block th:unless="${todayTopFiveList.isEmpty()}">
+                    <div style="display: flex">
+                        <div class="card" style="width: 50%; padding: 0 10px 10px 10px; margin-right: 10px;">
+                            <div class="card-body">
+                                <ul class="popular_post_list__2rxvW">
+                                    <li class="popular_post_item__3455R mb-2">
+                                            <a class="popular_post_card__2inlT" th:href="|board/${todayTopFiveList[0].id}|">
+                                                <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
+                                                    <strong class="popular_post_title__3SdcZ" th:text="${todayTopFiveList[0].boardTitle}"></strong>
+                                                    <img src="/img/1st-prize.png" alt="" style="width: 30px;height: 30px; margin-left: 10px;">
+                                                    </span>
+                                                </div>
+                                                    <div class="popular_post_user__35iXd">
+                                                        <div class="popular_post_profile_image_area__3H6ls">
+                                                            <div class="styles_CommonProfile__l3I4a CommonProfile" style="width: 18px; height: 18px;">
+                                                                <div class="styles_wrapProfileImage__1Mf-c">
+                                                                    <img class="styles_profileImage__1RP6R" src="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png" width="18" height="18" alt="전설의 파괴왕 8988">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="popular_post_name__3pWNs" th:text="${todayTopFiveList[0].boardWriter}"></span>
+                                                        <span class="popular_post_sub__3nHs0" th:text="|조회수: ${todayTopFiveList[0].boardHits}|"></span>
+                                                        <span class="popular_post_sub__3nHs0">
+                                                <span class="popular_post_num__1Fw4M" th:text="|추천수: ${todayTopFiveList[0].likeCount}|"></span>
+                                            </span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                    </li>
+                                </ul>
+                                <div class="form-control p-4" name="boardContents" th:utext="${todayTopFiveList[0].boardContents}" style="height: 70%"></div>
+                                <hr id="hrBottom">
+                            </div>
+                        </div>
+                        <div class="card" style="width: 50%; padding: 0 10px 10px 10px; margin-left: 10px;">
+                            <ul class="popular_post_list__2rxvW">
+                                <li class="popular_post_item__3455R" th:each="board: ${todayTopFiveList}">
+                                    <th:block th:if="${board != todayTopFiveList[0]}">
+                                    <a class="popular_post_card__2inlT" th:href="|board/${board.id}|">
+                                        <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
+                                            <strong class="popular_post_title__3SdcZ" th:text="${board.boardTitle}"></strong>
+<!--                                            <span class="popular_post_new__VUMbO">-->
+                                                <th:block th:if="${board == todayTopFiveList[1]}">
+                                                    <span><img src="/img/2nd-place.png" alt="" style="width: 20px; height: 20px;"></span>
+                                                </th:block>
+                                                <th:block th:if="${board == todayTopFiveList[2]}">
+                                                    <span><img src="/img/3rd-place.png" alt="" style="width: 20px; height: 20px;"></span>
+                                                </th:block>
+                                                <span class="blind">NEW</span>
+                                            </span>
+                                        </div>
+                                            <div class="popular_post_user__35iXd">
+                                            <div class="popular_post_profile_image_area__3H6ls">
+                                                <div class="styles_CommonProfile__l3I4a CommonProfile" style="width: 18px; height: 18px;">
+                                                    <div class="styles_wrapProfileImage__1Mf-c">
+                                                        <img class="styles_profileImage__1RP6R" src="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png" width="18" height="18" alt="전설의 파괴왕 8988">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="popular_post_name__3pWNs" th:text="${board.boardWriter}"></span>
+                                            <span class="popular_post_sub__3nHs0" th:text="|조회수: ${board.boardHits}|"></span>
+                                            <span class="popular_post_sub__3nHs0">
+                                                <span class="popular_post_num__1Fw4M" th:text="|추천수: ${board.likeCount}|"></span>
+                                            </span>
+                                        </div>
+                                        </div>
+                                    </a>
+                                    </th:block>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </th:block>
+                <th:block th:if="${todayTopFiveList.isEmpty()}">
+                    <div class="emptyTop5">
+                        <h2>오늘은 아직 인기게시물이 없습니다.</h2>
+                    </div>
+                </th:block>
+            </div>
+        </div>
         <div><img class="pic1" src="./img/1.PNG" style="max-width: 100%; height: auto;"></div>
         <div><img class="pic2" src="./img/2.PNG" style="max-width: 100%; height: 485px;"></div>
         <div><img class="pic3" src="./img/3.PNG" style="max-width: 100%; height: 485px;"></div>
