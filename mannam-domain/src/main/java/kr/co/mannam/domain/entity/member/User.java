@@ -22,10 +22,10 @@ import java.util.List;
 @Table(name="USERS")
 public class User {
     @Id
-    private String id; // 회원 일련번호
+    private String id;
 
     @Column(nullable = false, length = 50, unique = true)
-    private String username; // 아이디
+    private String username;
 
     @Column(length = 100)
     private String password;

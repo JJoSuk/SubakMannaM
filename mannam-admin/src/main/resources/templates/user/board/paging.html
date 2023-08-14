@@ -8,13 +8,18 @@
         </th:block>
         <th:block th:unless="${category.Name == '공지사항' || category.Name == '건의사항'}">
             <h2 name="category" th:text="|${category.Name + ' 게시판'}|"></h2>
-            <th:block th:unless="${category.Name == '인기'}">
-                <div class="d-flex justify-content-end">
-                    <!--        <a class="btn btn-danger">글삭제</a>-->
-                    <a class="btn btn-primary" th:href="|/board/save/${category}/${session.principal.getId()}|">글쓰기</a>
-                    <input type="hidden" name="userid" id="userid" th:value="${session.principal.username}">
-                </div>
-            </th:block>
+        </th:block>
+        <th:block th:unless="${category.Name == '인기' || category.Name == '공지사항'}">
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" th:href="|/board/save/${category}/${session.principal.getId()}|">글쓰기</a>
+                <input type="hidden" name="userid" id="userid" th:value="${session.principal.username}">
+            </div>
+        </th:block>
+        <th:block th:if="${category.Name == '공지사항' && session.principal.role == adminKey}">
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" th:href="|/board/save/${category}/${session.principal.getId()}|">글쓰기</a>
+                <input type="hidden" name="userid" id="userid" th:value="${session.principal.username}">
+            </div>
         </th:block>
         <br>
             <table class="table table-hover">

@@ -13,8 +13,8 @@
                     <h1 class="mb-5">오늘의 추천</h1><h1 class="top5" style="margin-left: 10px;">TOP 5</h1>
                 </div>
                 <th:block th:unless="${todayTopFiveList.isEmpty()}">
-                    <div style="display: flex">
-                        <div class="card" style="width: 50%; padding: 0 10px 10px 10px; margin-right: 10px;">
+                    <div style="display: flex; height: 300px;">
+                        <div class="card" style="width: 50%; height: 100%; padding: 0 10px 10px 10px; margin-right: 10px;">
                             <div class="card-body">
                                 <ul class="popular_post_list__2rxvW">
                                     <li class="popular_post_item__3455R mb-2">
@@ -42,7 +42,7 @@
                                             </a>
                                     </li>
                                 </ul>
-                                <div class="form-control p-4" name="boardContents" th:utext="${todayTopFiveList[0].boardContents}" style="height: 70%"></div>
+                                <div class="form-control p-4" name="boardContents" th:utext="${todayTopFiveList[0].boardContents}" style="height: 180px; overflow: hidden;"></div>
                                 <hr id="hrBottom">
                             </div>
                         </div>
