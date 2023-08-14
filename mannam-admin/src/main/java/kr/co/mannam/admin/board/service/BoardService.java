@@ -297,11 +297,6 @@ public class BoardService {
         return boardDTOS;
     }
 
-    @Transactional
-    public void updateCommentCount(Long boardId, Long commentCount) {
-        boardRepository.updateCommentCount(boardId, commentCount);
-    }
-
     public List<BoardEntity> findTodayTopFive() {
         // 현재 날짜 구하기
         LocalDate today = LocalDate.now();

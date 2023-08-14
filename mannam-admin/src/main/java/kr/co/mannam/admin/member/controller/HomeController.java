@@ -25,7 +25,7 @@ public class HomeController {
     public String home(HttpSession session,Model model) {
         session.setAttribute("category",BoardCategory.values());
 
-        List<BoardEntity> boardList = boardRepository.findLatestFive();
+        List<BoardEntity> boardList = boardRepository.findLatestFive(PageRequest.of(0, 5));
         model.addAttribute("boardList",boardList);
 
         /**배너 - 오늘날짜의 인기 게시물 top5 **/
