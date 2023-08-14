@@ -1,12 +1,17 @@
 package kr.co.mannam.admin.member.controller;
 
 import kr.co.mannam.admin.member.dto.ResponseDTO;
+import kr.co.mannam.admin.member.dto.UserDTO;
 import kr.co.mannam.admin.member.service.UserService;
 import kr.co.mannam.domain.entity.member.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.modelmapper.ModelMapper;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -14,6 +19,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/login")
     public String login(){
@@ -28,19 +36,21 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public @ResponseBody ResponseDTO<?> insertUser(@RequestBody User user) {
+    public @ResponseBody ResponseDTO<?> insertUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
 //        userService.insertUser(user);
 //        return new ResponseDTO<>(HttpStatus.OK.value(), user.getUsername() + "님 회원 가입 성공 완료!!");
 
-        // 아이디 중복체크
-        User findUser = userService.getUser(user.getUsername());
+        User user = modelMapper.map(userDTO, User.class);
 
-        if (findUser.getUsername() == null){
+        // 아이디 중복체크
+        User findUser = userService.getUser(user.getId());
+
+        if (findUser.getId() == null){
             userService.insertUser(user);
 
             return new ResponseDTO<>(HttpStatus.OK.value(),user.getUsername()+"님 회원가입 성공했습니다!!");
         }else {
-            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), user.getUsername()+"님은 이미 회원이십니다!!");
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), user.getUsername()+"님은 이미 회원이십니다");
         }
     }
 

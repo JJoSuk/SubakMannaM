@@ -30,6 +30,8 @@ public class UserService {
     }
 
     public void insertUser(User user){
+
+
         user.setRole(RoleType.USER);
         userRepository.save(user);
     }
