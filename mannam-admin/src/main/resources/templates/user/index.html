@@ -7,6 +7,7 @@
 
 <div class="bd" style="margin-top: 60px;">
     <div class="bd-slider">
+        <div><img class="" src="/img/mainBanner.png" style="max-width: 100%; width: auto; height: auto;"></div>
         <div>
             <div class="today-recommend" src="./img/1.PNG" style="max-width: 100%; height: 100%;">
                 <div class="todayTitle d-flex">
@@ -54,10 +55,10 @@
                                         <div class="popular_post_info__18n7T"><div class="popular_post_info_title__3cuMM">
                                             <strong class="popular_post_title__3SdcZ" th:text="${board.boardTitle}"></strong>
 <!--                                            <span class="popular_post_new__VUMbO">-->
-                                                <th:block th:if="${board == todayTopFiveList[1]}">
+                                                <th:block th:if="${todayTopFiveList.size() > 1 && board == todayTopFiveList[1]}">
                                                     <span><img src="/img/2nd-place.png" alt="" style="width: 20px; height: 20px;"></span>
                                                 </th:block>
-                                                <th:block th:if="${board == todayTopFiveList[2]}">
+                                                <th:block th:if="${todayTopFiveList.size() > 2 && board == todayTopFiveList[2]}">
                                                     <span><img src="/img/3rd-place.png" alt="" style="width: 20px; height: 20px;"></span>
                                                 </th:block>
                                                 <span class="blind">NEW</span>
@@ -92,7 +93,6 @@
                 </th:block>
             </div>
         </div>
-        <div><img class="" src="/img/mainBanner.png" style="max-width: 100%; width: auto; height: auto;"></div>
     </div>
 </div>
 <!-- 섹션2 홈 -->
