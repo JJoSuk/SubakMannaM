@@ -11,6 +11,7 @@ import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.domain.repository.board.BoardRepository;
 import kr.co.mannam.type.board.BoardCategory;
+import kr.co.mannam.type.member.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -171,7 +172,8 @@ public class BoardController {
 
     @GetMapping("/paging/{category}")
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model,
-                         @PathVariable BoardCategory category, String keyword, String type) {
+                         @PathVariable BoardCategory category, String keyword, String type,
+                         HttpSession session) {
 //        System.out.println("type = " + type);
 
         Page<BoardDTO> boardList;
@@ -195,7 +197,10 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-
+        User user = (User)session.getAttribute("principal");
+        if (user.getRole() == RoleType.ADMIN) {
+            model.addAttribute("adminKey", RoleType.ADMIN);
+        }
 
         return "user/board/paging";
 
