@@ -4,6 +4,7 @@ package kr.co.mannam.domain.entity.member;
 import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.board.BookMark;
 import kr.co.mannam.domain.entity.board.CommentEntity;
+import kr.co.mannam.domain.entity.webchat.ChatRoom;
 import kr.co.mannam.type.member.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +40,13 @@ public class User {
     @CreationTimestamp // 현재 시간이 기본값으로 등록되도록 설정
     private Timestamp createDate;
 
+    @Column(name = "user_uuid", nullable = false)
+    private String userUUID;
+
+    @ManyToOne
+    @JoinColumn(name = "chatroom_id")
+    private ChatRoom chatRoom;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntitieList = new ArrayList<>();
 
@@ -47,4 +55,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<BookMark> bookMarkList = new ArrayList<>();
+
+    public User(String userUUID, String userName, ChatRoom chatRoomEntity){
+        this.userUUID = userUUID;
+        this.username = userName;
+        this.chatRoom = chatRoomEntity;
+    }
 }

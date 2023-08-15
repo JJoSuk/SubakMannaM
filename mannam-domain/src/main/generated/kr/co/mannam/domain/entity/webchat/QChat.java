@@ -32,7 +32,7 @@ public class QChat extends EntityPathBase<Chat> {
 
     public final DateTimePath<java.time.LocalDateTime> timestamp = createDateTime("timestamp", java.time.LocalDateTime.class);
 
-    public final QUser user;
+    public final kr.co.mannam.domain.entity.member.QUser user;
 
     public QChat(String variable) {
         this(Chat.class, forVariable(variable), INITS);
@@ -53,7 +53,7 @@ public class QChat extends EntityPathBase<Chat> {
     public QChat(Class<? extends Chat> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.chatRoom = inits.isInitialized("chatRoom") ? new QChatRoom(forProperty("chatRoom")) : null;
-        this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("user") ? new kr.co.mannam.domain.entity.member.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

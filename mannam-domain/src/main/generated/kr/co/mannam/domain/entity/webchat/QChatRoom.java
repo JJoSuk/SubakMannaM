@@ -36,7 +36,7 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
 
     public final NumberPath<Integer> userCount = createNumber("userCount", Integer.class);
 
-    public final ListPath<User, QUser> users = this.<User, QUser>createList("users", User.class, QUser.class, PathInits.DIRECT2);
+    public final ListPath<kr.co.mannam.domain.entity.member.User, kr.co.mannam.domain.entity.member.QUser> users = this.<kr.co.mannam.domain.entity.member.User, kr.co.mannam.domain.entity.member.QUser>createList("users", kr.co.mannam.domain.entity.member.User.class, kr.co.mannam.domain.entity.member.QUser.class, PathInits.DIRECT2);
 
     public QChatRoom(String variable) {
         super(ChatRoom.class, forVariable(variable));

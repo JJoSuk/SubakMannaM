@@ -59,7 +59,7 @@ public class QCommentEntity extends EntityPathBase<CommentEntity> {
     public QCommentEntity(Class<? extends CommentEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.boardEntity = inits.isInitialized("boardEntity") ? new QBoardEntity(forProperty("boardEntity"), inits.get("boardEntity")) : null;
-        this.user = inits.isInitialized("user") ? new kr.co.mannam.domain.entity.member.QUser(forProperty("user")) : null;
+        this.user = inits.isInitialized("user") ? new kr.co.mannam.domain.entity.member.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

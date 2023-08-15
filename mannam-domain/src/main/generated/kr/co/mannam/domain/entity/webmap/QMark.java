@@ -62,7 +62,7 @@ public class QMark extends EntityPathBase<Mark> {
 
     public QMark(Class<? extends Mark> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new kr.co.mannam.domain.entity.member.QUser(forProperty("user")) : null;
+        this.user = inits.isInitialized("user") ? new kr.co.mannam.domain.entity.member.QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

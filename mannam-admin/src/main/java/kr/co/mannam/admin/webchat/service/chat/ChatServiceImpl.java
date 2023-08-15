@@ -1,15 +1,15 @@
 package kr.co.mannam.admin.webchat.service.chat;
 
 import kr.co.mannam.admin.webchat.service.file.FileService;
+import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webchat.ChatRoom;
-import kr.co.mannam.domain.entity.webchat.User;
+import kr.co.mannam.domain.repository.member.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import kr.co.mannam.admin.webchat.dto.chat.ChatRoomDto;
 import kr.co.mannam.domain.repository.webchat.ChatRoomRepository;
-import kr.co.mannam.domain.repository.webchat.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
