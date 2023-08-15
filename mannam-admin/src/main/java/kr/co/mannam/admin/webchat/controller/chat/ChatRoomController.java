@@ -33,7 +33,7 @@ public class ChatRoomController {
         log.info("CREATE Chat Room {}", room);
         attr.addFlashAttribute("roomName", room);
 
-        return "redirect:/";
+        return "redirect:/chat";
     }
 
     // 채팅방 입장 화면
@@ -67,7 +67,7 @@ public class ChatRoomController {
         // roomId 기준으로 chatRoomMap 에서 삭제, 해당 채팅룸 안에 있는 사진 삭제
         chatService.delChatRoom(roomId);
 
-        return "redirect:/";
+        return "redirect:/chat";
     }
 
     @GetMapping("/chat/chkUserCnt/{roomId}")
