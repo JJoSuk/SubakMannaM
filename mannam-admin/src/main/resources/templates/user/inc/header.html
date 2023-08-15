@@ -32,8 +32,8 @@
         <script type="text/javascript"
                 src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
         <!-- 네이버 게임라운드 css -->
-<!--        <link rel="icon" href="https://ssl.pstatic.net/static/nng/resource/common/favicon.svg">-->
-<!--        <link rel="shortcut icon" href="https://ssl.pstatic.net/static/nng/resource/common/favicon.svg">-->
+        <!--        <link rel="icon" href="https://ssl.pstatic.net/static/nng/resource/common/favicon.svg">-->
+        <!--        <link rel="shortcut icon" href="https://ssl.pstatic.net/static/nng/resource/common/favicon.svg">-->
         <link rel="mask-icon" href="https://ssl.pstatic.net/static/nng/resource/common/mask-icon.svg" color="#03c75a">
         <link rel="apple-touch-icon" href="https://ssl.pstatic.net/static/nng/resource/common/apple-touch-icon.png">
         <link rel="stylesheet" href="https://ssl.pstatic.net/static/nng/resource/p/static/css/desktop-media-viewer.css">
@@ -54,20 +54,20 @@
             <nav>
                 <ul>
                     <li><a th:href="|/board/paging/${session.category[0]}|">인기</a></li>
-<!--                    <li><a href="/board/paging/Notice">공지</a></li>-->
+                    <!--                    <li><a href="/board/paging/Notice">공지</a></li>-->
                     <li><a th:href="|/board/paging/${session.category[1]}|">공지</a></li>
                     <li><a th:href="|/board/paging/${session.category[2]}|">건의</a></li>
                     <li class="">
                         <a class="" href="/kakaomap">지도</a>
                     </li>
-<!--                    <li class="">-->
-<!--                        <a class="" href="/kakaomarkmap">등록된 마커</a>-->
-<!--                    </li>-->
+                    <!--                    <li class="">-->
+                    <!--                        <a class="" href="/kakaomarkmap">등록된 마커</a>-->
+                    <!--                    </li>-->
                     <th:block th:if="${session.principal != null}">
-                    <li class="savedMarker">
-                        <a class="" th:href="@{/kakaomarkmap/{userid}(userid=${session.principal.getId()})}">등록된 마커</a>
-<!--                        th:href="@{/post/updatePost/{id}(id=${post.id})}"-->
-                    </li>
+                        <li class="savedMarker">
+                            <a class="" th:href="@{/kakaomarkmap/{userid}(userid=${session.principal.getId()})}">등록된 마커</a>
+                            <!--                        th:href="@{/post/updatePost/{id}(id=${post.id})}"-->
+                        </li>
                     </th:block>
                     <li class="board"><a href="">게시판</a>
                         <div class="subNav">
@@ -87,8 +87,8 @@
                         <option value="content">내용</option>
                         <option value="writer">작성자</option>
                     </select>
-                <input type="text" name="keyword" class="form-control" id="search" placeholder="키워드 검색">
-                <button type="submit" style="width: 110px;">검색</button>
+                    <input type="text" name="keyword" class="form-control" id="search" placeholder="키워드 검색">
+                    <button type="submit" style="width: 110px;">검색</button>
                 </form>
                 <!--  -->
                 <button><a href="/chat">채팅하기</a></button>
@@ -133,11 +133,11 @@
                         </th:block>
                     </th:block>
 
-<!--                    <th:block th:each="cat : ${session.category}">-->
-<!--                        <th:block th:unless="${cat.name == '공지사항' || cat.name == '건의사항'}">-->
-<!--                            <li><a class="list" th:href="|/board/paging/${cat}|" th:text="|${cat.name} 게시판|"></a></li>-->
-<!--                        </th:block>-->
-<!--                    </th:block>-->
+                    <!--                    <th:block th:each="cat : ${session.category}">-->
+                    <!--                        <th:block th:unless="${cat.name == '공지사항' || cat.name == '건의사항'}">-->
+                    <!--                            <li><a class="list" th:href="|/board/paging/${cat}|" th:text="|${cat.name} 게시판|"></a></li>-->
+                    <!--                        </th:block>-->
+                    <!--                    </th:block>-->
 
 
                     <li><a
@@ -262,6 +262,7 @@
                 form.submit();
             }
         }
-
     </script>
+    </body>
 </th:block>
+</html>

@@ -15,6 +15,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data // @Getter. @Setter, @ToString, @EqualsAndHashCode
 @NoArgsConstructor
@@ -55,6 +56,13 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<BookMark> bookMarkList = new ArrayList<>();
+
+    @PrePersist
+    public void generateUUID() {
+        if (userUUID == null) {
+            userUUID = UUID.randomUUID().toString();
+        }
+    }
 
     public User(String userUUID, String userName, ChatRoom chatRoomEntity){
         this.userUUID = userUUID;

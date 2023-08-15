@@ -42,7 +42,6 @@ public class UserController {
 //        return new ResponseDTO<>(HttpStatus.OK.value(), user.getUsername() + "님 회원 가입 성공 완료!!");
 
         User user = modelMapper.map(userDTO, User.class);
-        user.setUserUUID(UUID.randomUUID().toString());
 
         // 아이디 중복체크
         User findUser = userService.getUser(user.getId());

@@ -79,11 +79,15 @@ button {
     line-height: 100%;
     white-space: nowrap;
     vertical-align: middle;
-    padding: 0.6rem 1rem;
+    /*padding: 0.6rem 1rem;*/
     border-radius: 2px;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
     min-height: 38px;
+}
+
+.test {
+    padding: 0.6rem 1rem;
 }
 
 button.default {
