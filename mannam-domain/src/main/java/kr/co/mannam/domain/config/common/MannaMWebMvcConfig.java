@@ -12,12 +12,12 @@ import org.modelmapper.ModelMapper;
 public class MannaMWebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthenticationInterceptor())
-//                .addPathPatterns("/chat/**", "/chatroom/**")
-//                .excludePathPatterns("/")
-//                .excludePathPatterns("/user/login")
-//                .excludePathPatterns("/user/auth/register")
-//                .excludePathPatterns("/css/*", "/js/*", "/img/*", "/*.ico", "/error");
+        registry.addInterceptor(new AuthenticationInterceptor())
+                .addPathPatterns("/chat/**", "/chatroom/**", "/kakaomap/**","/board/**")
+                .excludePathPatterns("/")
+                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/user/auth/register")
+                .excludePathPatterns("/css/*", "/js/*", "/img/*", "/*.ico", "/error");
     }
 
     @Value("${resource.path}")
