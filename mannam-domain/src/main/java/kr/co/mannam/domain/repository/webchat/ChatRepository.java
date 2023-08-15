@@ -1,9 +1,9 @@
 package kr.co.mannam.domain.repository.webchat;
 
-import kr.co.mannam.domain.entity.webchat.WebChatRoomEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import kr.co.mannam.domain.entity.webchat.Chat;
 
 @Repository
-public interface WebChatRoomRepository extends JpaRepository<WebChatRoomEntity, String> {
+public interface ChatRepository extends JpaRepository<Chat, Long> {
 }
