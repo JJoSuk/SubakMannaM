@@ -6,6 +6,7 @@ document.write("<script\n" +
     "  integrity=\"sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=\"\n" +
     "  crossorigin=\"anonymous\"></script>")
 
+
 var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
 var usernameForm = document.querySelector('#usernameForm');
@@ -13,8 +14,10 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
+
 var stompClient = null;
 var username = null;
+
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
@@ -25,7 +28,6 @@ const url = new URL(location.href).searchParams;
 const roomId = url.get('roomId');
 
 function connect(event) {
-
     username = document.querySelector('#name').value.trim();
 
     // username 중복 확인
@@ -42,7 +44,10 @@ function connect(event) {
 
     stompClient.connect({}, onConnected, onError);
 
+
     event.preventDefault();
+
+
 }
 
 function onConnected() {
@@ -52,7 +57,9 @@ function onConnected() {
 
     // 서버에 username 을 가진 유저가 들어왔다는 것을 알림
     // /pub/chat/enterUser 로 메시지를 보냄
-    stompClient.send("/pub/chat/enterUser", {}, JSON.stringify({
+    stompClient.send("/pub/chat/enterUser",
+        {},
+        JSON.stringify({
             "roomId": roomId,
             sender: username,
             type: 'ENTER'
@@ -60,6 +67,7 @@ function onConnected() {
     )
 
     connectingElement.classList.add('hidden');
+
 }
 
 // 유저 닉네임 중복 확인
@@ -78,6 +86,7 @@ function isDuplicateName() {
             username = data;
         }
     })
+
 }
 
 // 유저 리스트 받기
@@ -97,11 +106,11 @@ function getUserList() {
                 //console.log("data[i] : "+data[i]);
                 users += "<li class='dropdown-item'>" + data[i] + "</li>"
             }
-
             $list.html(users);
         }
     })
 }
+
 
 function onError(error) {
     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
@@ -110,7 +119,6 @@ function onError(error) {
 
 // 메시지 전송때는 JSON 형식을 메시지를 전달한다.
 function sendMessage(event) {
-
     var messageContent = messageInput.value.trim();
 
     if (messageContent && stompClient) {
@@ -130,7 +138,7 @@ function sendMessage(event) {
 // 메시지를 받을 때도 마찬가지로 JSON 타입으로 받으며,
 // 넘어온 JSON 형식의 메시지를 parse 해서 사용한다.
 function onMessageReceived(payload) {
-
+    //console.log("payload 들어오냐? :"+payload);
     var chat = JSON.parse(payload.body);
 
     var messageElement = document.createElement('li');
@@ -139,11 +147,13 @@ function onMessageReceived(payload) {
         messageElement.classList.add('event-message');
         chat.content = chat.sender + chat.message;
         getUserList();
-    } else if (chat.type === 'EXIT') { // chatType 가 Exit 라면 아래 내용
+
+    } else if (chat.type === 'LEAVE') { // chatType 가 leave 라면 아래 내용
         messageElement.classList.add('event-message');
         chat.content = chat.sender + chat.message;
         getUserList();
-    } else { // chatType 이 talk 라면 아래 내용용
+
+    } else { // chatType 이 talk 라면 아래 내용
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('i');
@@ -175,8 +185,10 @@ function onMessageReceived(payload) {
         downBtnElement.setAttribute("name", chat.fileName);
         downBtnElement.setAttribute("onclick", `downloadFile('${chat.fileName}', '${chat.fileDir}')`);
 
+
         contentElement.appendChild(imgElement);
         contentElement.appendChild(downBtnElement);
+
     }else{
         // 만약 s3DataUrl 의 값이 null 이라면
         // 이전에 넘어온 채팅 내용 보여주기기
@@ -190,11 +202,50 @@ function onMessageReceived(payload) {
     messageArea.scrollTop = messageArea.scrollHeight;
 }
 
+// 방 수정 버튼 클릭 시 설정 모달을 띄우는 로직
+function showConfigModal() {
+    $('#configRoomModal').modal('show');
+}
+
+// 저장 버튼 클릭 시 변경 내용을 서버로 전송하는 로직
+function saveRoomConfig() {
+    let chPwd = $("#chPwd").val();
+    let chRoomName = $("#chRoomName").val();
+    let chRoomUserCnt = $("#chRoomUserCnt").val();
+    let chSecret = $("#chSecret").prop('checked');
+
+    let configData = {
+        roomId: roomId,
+        chPwd: chPwd,
+        chRoomName: chRoomName,
+        chRoomUserCnt: chRoomUserCnt,
+        chSecret: chSecret
+    };
+
+    // configData 를 서버로 POST 요청으로 전송하는 예제
+    // 방 수정 내용을 서버로 전송
+    $.ajax({
+        type: "POST",
+        url: "/chat/updateRoom",
+        contentType: "application/json",
+        data: JSON.stringify(configData),
+        success: function(response) {
+            // 서버에서 정상적으로 처리되었을 때의 로직
+            alert("방 설정이 변경되었습니다.");
+        },
+        error: function(error) {
+            // 에러가 발생했을 때의 로직
+            alert("방 설정 변경에 실패하였습니다.");
+        }
+    });
+}
+
 function getAvatarColor(messageSender) {
     var hash = 0;
     for (var i = 0; i < messageSender.length; i++) {
         hash = 31 * hash + messageSender.charCodeAt(i);
     }
+
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
@@ -202,25 +253,12 @@ function getAvatarColor(messageSender) {
 usernameForm.addEventListener('submit', connect, true)
 messageForm.addEventListener('submit', sendMessage, true)
 
-//--------------------------파일 업로드 관련
+/// 파일 업로드 부분 ////
 function uploadFile(){
     var file = $("#file")[0].files[0];
     var formData = new FormData();
     formData.append("file",file);
     formData.append("roomId", roomId);
-
-    // 확장자 추출
-    var fileDot = file.name.lastIndexOf(".");
-
-    // 확장자 검사
-    var fileType = file.name.substring(fileDot + 1, file.name.length);
-    // console.log("type : " + fileType);
-
-    if (!(fileType == "png" || fileType == "jpg" || fileType == "jpeg" || fileType == "gif"))
-    {
-        alert("파일 업로드는 png, jpg, gif, jpeg 만 가능합니다");
-        return;
-    }
 
     // ajax 로 multipart/form-data 를 넘겨줄 때는
     //         processData: false,
@@ -258,11 +296,12 @@ function uploadFile(){
     })
 }
 
-//--------------------------파일 다운로드 부분
+// 파일 다운로드 부분 //
 // 버튼을 누르면 downloadFile 메서드가 실행됨
 // 다운로드 url 은 /s3/download+원본파일이름
 function downloadFile(name, dir){
-
+    // console.log("파일 이름 : "+name);
+    // console.log("파일 경로 : " + dir);
     let url = "/s3/download/"+name;
 
     // get 으로 rest 요청한다.
