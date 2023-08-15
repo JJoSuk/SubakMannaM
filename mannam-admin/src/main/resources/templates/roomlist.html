@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/user/inc/header::headerFragment"/>
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -199,7 +200,8 @@
         }
 
         h2 {
-            margin-top: 40px;
+            margin-top: 100px;
+            font-width: 300;
         }
 
         input#maxUserCnt {
@@ -222,12 +224,6 @@
 
         <h2>채팅방 리스트</h2>
 
-        <div th:if="${user == null}" class="row">
-            <div class="col">
-<!--                로그인 미구현-->
-                <a href="#"><button type="button" class="btn btn-primary">로그인하기</button></a>
-            </div>
-        </div>
         <h5 th:if="${user != null}">
             [[${user.nickName}]]
         </h5>
@@ -408,5 +404,6 @@
         </div>
     </div>
 </div>
+<th:block th:replace="/user/inc/footer::footerFragment"/>
 </body>
 </html>

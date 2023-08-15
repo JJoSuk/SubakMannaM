@@ -13,7 +13,7 @@ public class MannaMWebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(new AuthenticationInterceptor())
-//                .addPathPatterns("/");
+//                .addPathPatterns("/chat/**", "/chatroom/**")
 //                .excludePathPatterns("/")
 //                .excludePathPatterns("/user/login")
 //                .excludePathPatterns("/user/auth/register")
