@@ -34,10 +34,6 @@ import java.util.List;
 public class MapController {
 
     @Autowired
-    ResourceLoader resourceLoader;
-
-
-    @Autowired
     MarkService markService;
 
     @Autowired
@@ -114,11 +110,6 @@ public class MapController {
 
         if (itemRequest.getFile() != null) {
             MultipartFile file = itemRequest.getFile();
-//            String fullPath = request.getServletContext().getRealPath("")+ File.separator+repo + file.getOriginalFilename();
-//            Resource resource = resourceLoader.getResource("classpath:markimage/txt.html");
-//            System.out.println(resource.exists());
-//            System.out.println(resource.getURL());
-//            System.out.println(resource.getURI().getPath());
             String fullPath = "C:/markimage/" + file.getOriginalFilename();
 
             ClassPathResource resource = new ClassPathResource("static/markimage/");
@@ -128,12 +119,8 @@ public class MapController {
             System.out.println(fullPath);
             file.transferTo(new File(fullPath));
 
-//            log.info("file.getOriginalFilename = {}", file.getOriginalFilename());
-//            log.info("fullPath = {}", fullPath);
-
             FileDTO fileDto = FileDTO.builder()
                     .originFileName(file.getOriginalFilename())
-//                    .fullPath(request.getServletContext().getRealPath("")+ File.separator+repo + file.getOriginalFilename())
                     .fullPath("C:/markimage/" + file.getOriginalFilename())
                     .build();
             String savedMarkimage = fileService.save(fileDto);
@@ -153,17 +140,6 @@ public class MapController {
 
         return "user/map/kakaomapmain";
     }
-
-//    @PostMapping("/auth/kakaomapRegister")
-//    public @ResponseBody ResponseDTO<?> insermark(@RequestBody Mark mark) {
-//
-//
-//        markService.insertMark(mark);
-//
-//        return new ResponseDTO<>(HttpStatus.OK.value(), mark.getMarkname() + "등록 완료!!");
-//
-//    }
-
 
     @GetMapping("/kakaomarkmap/{userid}")
     public String kakaomarkmap(Model model, HttpSession session,  @PathVariable String userid){
@@ -205,12 +181,6 @@ public class MapController {
 
         return new ResponseDTO<>(HttpStatus.OK.value(),
                  "마크를 삭제했습니다!!");
-    }
-
-    @GetMapping("/root2")
-    public String root() {
-
-        return "user/map/root2";
     }
 
 
