@@ -44,10 +44,12 @@
     <h2>Sorry! Your browser doesn't support Javascript</h2>
 </noscript>
 
-
 <div id="username-page">
     <div class="username-page-container">
         <h1 class="title text-center">채팅하기 전 주의사항</h1>
+        <div  th:if="${user == null}" class="form-group">
+            <input type="hidden" id="name" placeholder="Username" autocomplete="off" class="form-control" th:value="${session.principal.username}"/>
+        </div>
         <div class="d-flex justify-content-center" style="width: 100%;">
             <div>
                 <p>1. 음담패설 금지</p>
@@ -57,13 +59,12 @@
             </div>
         </div>
         <form class="d-flex justify-content-center" id="usernameForm" name="usernameForm">
-            <div class="form-group">
+            <div>
                 <button type="submit" class="accent username-submit">Start Chatting</button>
             </div>
         </form>
     </div>
 </div>
-
 
 <div id="chat-page" class="hidden">
     <div class="btn-group dropend">
@@ -109,7 +110,6 @@
     </div>
 
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="/js/chatroom/socket.js"></script>
