@@ -219,7 +219,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container mb-5">
     <div class="container">
 
         <h2>채팅방 리스트</h2>
@@ -228,12 +228,23 @@
             [[${user.nickName}]]
         </h5>
         <table class="table table-hover" id="table">
+            <colgroup>
+                <!--          <col width="2%" />-->
+                <col width="20%"/>
+                <col width="5%"/>
+                <col width="4%"/>
+                <col width="6%"/>
+                <!--          <col width="5%" />-->
+            </colgroup>
+            <thead>
             <tr>
                 <th scope="col">채팅방명</th>
                 <th scope="col">잠금 여부</th>
                 <th scope="col">참여 인원</th>
                 <th scope="col">채팅방 설정</th>
             </tr>
+            </thead>
+            <tbody>
             <th:block th:fragment="content">
 
                 <tr th:each="room : ${list}">
@@ -258,7 +269,7 @@
                     </td>
                 </tr>
             </th:block>
-
+            </tbody>
         </table>
         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#roomModal">방 생성</button>
 
