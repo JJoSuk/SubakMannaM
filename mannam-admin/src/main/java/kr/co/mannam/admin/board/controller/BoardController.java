@@ -95,7 +95,7 @@ public class BoardController {
 
         /* 좋아요 여부 가져오기 */
         User principal = (User) (session.getAttribute("principal"));
-        String userId = principal.getId();
+        String userId = String.valueOf(principal.getId());
         boolean like = boardService.findLike(id, userId);
         model.addAttribute("like", like);
 

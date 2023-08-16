@@ -10,12 +10,11 @@ import kr.co.mannam.admin.webchat.service.chat.ChatService;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class MainChatController {
+public class MainChatController { // 메인 채팅 페이지와 관련된 HTTP 요청을 처리하는 컨트롤러
 
     private final ChatService chatService;
 
-    // 채팅 리스트 화면
-    // / 로 요청이 들어오면 전체 채팅룸 리스트를 담아서 return
+    // 채팅방 리스트 페이지로 이동
     @GetMapping("/chat")
     public String goChatRoom(Model model){
 

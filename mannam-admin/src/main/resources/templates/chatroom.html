@@ -84,6 +84,9 @@
         <div class="chat-header">
             <h2>[[${room.roomName}]]</h2>
         </div>
+        <div th:if="${param.error}" class="alert alert-danger" role="alert">
+            Invalid Room ID provided!
+        </div>
         <div class="connecting">
             Connecting...
         </div>

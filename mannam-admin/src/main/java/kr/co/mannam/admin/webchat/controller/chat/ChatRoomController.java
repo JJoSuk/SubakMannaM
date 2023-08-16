@@ -1,5 +1,6 @@
 package kr.co.mannam.admin.webchat.controller.chat;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,15 +11,14 @@ import kr.co.mannam.admin.webchat.dto.chat.ChatRoomDto;
 import kr.co.mannam.admin.webchat.service.chat.ChatService;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
-public class ChatRoomController {
+public class ChatRoomController { // 채팅방 관련 HTTP 요청을 처리하는 컨트롤러
 
     // ChatRepository Bean 가져오기
-    @Autowired
-    private ChatService chatService;
+    private final ChatService chatService;
 
     // 채팅방 생성
-    // 채팅방 생성 후 다시 / 로 return
     @PostMapping("/chat/createroom")
     public String createRoom(@RequestParam("roomName") String roomName,
                              @RequestParam("roomPwd") String roomPwd,
@@ -36,11 +36,15 @@ public class ChatRoomController {
         return "redirect:/chat";
     }
 
-    // 채팅방 입장 화면
+    // 채팅방 리스트 페이지로 이동
     // 파라미터로 넘어오는 roomId 를 확인후 해당 roomId 를 기준으로
     // 채팅방을 찾아서 클라이언트를 chatroom 으로 보낸다.
     @GetMapping("/chat/room")
     public String roomDetail(Model model, String roomId){
+        if(roomId == null || roomId.isEmpty()) {
+            // Handle the error, e.g., return to the main page with an error message
+            return "redirect:/chat?error=InvalidRoomId";
+        }
 
         log.info("roomId {}", roomId);
 

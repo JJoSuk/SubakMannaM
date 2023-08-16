@@ -14,13 +14,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/s3")
 @Slf4j
-public class FileController {
+public class FileController { // 파일 업로드 및 다운로드와 관련된 HTTP 요청을 처리하는 컨트롤러
 
     @Autowired
     private S3FileService fileService;
 
-    // 프론트에서 ajax 를 통해 /upload 로 MultipartFile 형태로 파일과 roomId 를 전달받는다.
-    // 전달받은 file 를 uploadFile 메서드를 통해 업로드한다.
+    // 파일을 업로드하는 메서드. 여기서는 S3 서비스와 연동하여 파일을 저장
     @PostMapping("/upload")
     public FileUploadDto uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("roomId")String roomId){
 
@@ -31,8 +30,7 @@ public class FileController {
         return fileReq;
     }
 
-    // get 으로 요청이 오면 아래 download 메서드를 실행한다.
-    // fileName 과 파라미터로 넘어온 fileDir 을 getObject 메서드에 매개변수로 넣는다.
+    // 파일을 다운로드
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> download(@PathVariable String fileName, @RequestParam("fileDir")String fileDir){
         log.info("fileDir : fileName [{} : {}]", fileDir, fileName);

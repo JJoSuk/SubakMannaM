@@ -26,9 +26,7 @@ public class ChatController {
     private final SimpMessageSendingOperations template;
     private final ChatService chatService;
 
-    // MessageMapping 을 통해 webSocket 로 들어오는 메시지를 발신 처리한다.
-    // 이때 클라이언트에서는 /pub/chat/message 로 요청하게 되고 이것을 controller 가 받아서 처리한다.
-    // 처리가 완료되면 /sub/chat/room/roomId 로 메시지가 전송된다.
+    // 사용자가 채팅방에 입장할 때 호출되는 메서드. 이 메서드는 웹소켓을 통해 /chat/enterUser 경로로 요청이 들어오면 실행된다
     @MessageMapping("/chat/enterUser")
     public void enterUser(@Payload ChatDto chat, SimpMessageHeaderAccessor headerAccessor) {
 
@@ -42,11 +40,12 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("userUUID", userUUID);
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
 
+        // 사용자가 입장 했을 때 사용자 이름 채팅방에 출력
         chat.setMessage(chat.getSender() + " 님 입장!!");
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
     }
 
-    // 해당 유저
+    // 사용자가 메시지를 보낼 때 호출되는 메서드.
     @MessageMapping("/chat/sendMessage")
     public void sendMessage(@Payload ChatDto chat) {
         log.info("CHAT {}", chat);

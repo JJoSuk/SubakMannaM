@@ -1,10 +1,11 @@
 'use strict';
 
 // document.write("<script src='jquery-3.6.1.js'></script>")
-document.write("<script\n" +
-    "  src=\"https://code.jquery.com/jquery-3.6.1.min.js\"\n" +
-    "  integrity=\"sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=\"\n" +
-    "  crossorigin=\"anonymous\"></script>")
+var script = document.createElement('script');
+script.src = "https://code.jquery.com/jquery-3.6.1.min.js";
+script.integrity = "sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=";
+script.crossOrigin = "anonymous";
+document.head.appendChild(script);
 
 
 var usernamePage = document.querySelector('#username-page');
@@ -18,14 +19,20 @@ var connectingElement = document.querySelector('.connecting');
 var stompClient = null;
 var username = null;
 
+// roomId 파라미터 가져오기
+const url = new URL(location.href).searchParams;
+const roomId = url.get('roomId');
+
+if (!roomId) {
+    alert("Invalid Room ID!");
+    window.location.href = "/chat";  // Redirect to main chat page
+}
+
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-// roomId 파라미터 가져오기
-const url = new URL(location.href).searchParams;
-const roomId = url.get('roomId');
 
 function connect(event) {
     username = document.querySelector('#name').value.trim();
@@ -44,10 +51,7 @@ function connect(event) {
 
     stompClient.connect({}, onConnected, onError);
 
-
     event.preventDefault();
-
-
 }
 
 function onConnected() {
@@ -65,9 +69,7 @@ function onConnected() {
             type: 'ENTER'
         })
     )
-
     connectingElement.classList.add('hidden');
-
 }
 
 // 유저 닉네임 중복 확인
@@ -86,7 +88,6 @@ function isDuplicateName() {
             username = data;
         }
     })
-
 }
 
 // 유저 리스트 받기
@@ -143,16 +144,18 @@ function onMessageReceived(payload) {
 
     var messageElement = document.createElement('li');
 
-    if (chat.type === 'ENTER') {  // chatType 이 enter 라면 아래 내용
+    if (chat.type === 'ENTER') {
         messageElement.classList.add('event-message');
-        chat.content = chat.sender + chat.message;
+        chat.content = chat.sender + " 님 입장!!";
+        messageElement.textContent = chat.content;
+        document.querySelector('#messageArea').appendChild(messageElement);
         getUserList();
-
-    } else if (chat.type === 'LEAVE') { // chatType 가 leave 라면 아래 내용
+    } else if (chat.type === 'LEAVE') {
+        // 사용자가 방을 떠났을 때의 로직
         messageElement.classList.add('event-message');
-        chat.content = chat.sender + chat.message;
-        getUserList();
-
+        chat.content = chat.sender + " 님 퇴장!!";
+        messageElement.textContent = chat.content;
+        document.querySelector('#messageArea').appendChild(messageElement);
     } else { // chatType 이 talk 라면 아래 내용
         messageElement.classList.add('chat-message');
 

@@ -35,6 +35,11 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<Chat> chats;
 
+    public void addUser(User user) {
+        this.users.add(user);
+        user.setChatRoom(this);
+    }
+
     // 방 삭제시 내부 저장된 파일도 같이 삭제
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     private List<ChatFile> chatFiles;

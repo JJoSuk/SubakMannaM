@@ -133,25 +133,14 @@ public class ChatServiceImpl implements ChatService {
         return chatRoom.getUserCount() < chatRoom.getMaxUserCnt();
     }
 
-//    public String addUser(String roomId, String userName){
-//
-//        ChatRoomDto room = chatRoomMap.get(roomId);
-//        String userUUID = UUID.randomUUID().toString();
-//
-//        // 아이디 중복 확인 후 userList 에 추가
-//        room.getUserlist().put(userUUID, userName);
-//
-//        return userUUID;
-//    }
-
     // 채팅방 유저 리스트에 유저 추가
     @Override
     public String addUser(String roomId, String userName) {
         ChatRoom chatRoomEntity = chatRoomRepository.findById(roomId).orElse(null);
-        if (chatRoomEntity == null) return null;
-
         String userUUID = UUID.randomUUID().toString();
         User user = new User(userUUID, userName, chatRoomEntity);
+        if (chatRoomEntity == null) return null;
+        chatRoomEntity.addUser(user);
         userRepository.save(user);
 
         return userUUID;
@@ -174,13 +163,13 @@ public class ChatServiceImpl implements ChatService {
     }
 
     // 채팅방 유저 리스트 삭제
-@Override
-public void delUser(String roomId, String userUUID) {
-    User user = userRepository.findByUserUUIDAndChatRoom_RoomId(userUUID, roomId);
-    if (user != null) {
-        userRepository.delete(user);
+    @Override
+    public void delUser(String roomId, String userUUID) {
+        User user = userRepository.findByUserUUIDAndChatRoom_RoomId(userUUID, roomId);
+        if (user != null) {
+            userRepository.delete(user);
+        }
     }
-}
 
     // 채팅방 userName 조회
     @Override
