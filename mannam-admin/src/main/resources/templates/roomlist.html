@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="/user/inc/header::headerFragment"/>
 <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -17,6 +16,7 @@
           integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
           crossorigin="anonymous">
     <script src="/js/roomlist/bootstrap-show-password.min.js"></script>
+    <th:block th:replace="/user/inc/header::headerFragment"/>
     <script th:inline="javascript">
 
         let roomId;
@@ -189,6 +189,44 @@
             return chk;
         }
 
+
+        // 채팅방 수정
+        $(document).ready(function() {
+        // "방 수정" 버튼 클릭 시
+        $("#configRoomUpdate").click(function() {
+            // 변경된 내용을 가져오는 로직 (예: chPwd, chRoomName 등)
+            let chPwd = $("#chPwd").val();
+            let chRoomName = $("#chRoomName").val();
+            let chRoomUserCnt = $("#chRoomUserCnt").val();
+            let chSecret = $("#chSecret").prop('checked');
+
+            let configData = {
+            roomId: roomId,
+            roomPwd: chPwd,
+            roomName: chRoomName,
+            maxUserCnt: chRoomUserCnt,
+            secretChk: chSecret
+        };
+
+            // configData를 서버로 PUT 요청으로 전송
+            $.ajax({
+                type: "PUT",
+                url: "/chat/updateRoom",
+                contentType: "application/json",
+                data: JSON.stringify(configData),
+                success: function(response) {
+                    // 서버 응답에 따른 로직
+                    alert("방 설정이 변경되었습니다.");
+                    location = "/chat/room/";
+                },
+                error: function(error) {
+                    // 에러가 발생했을 때의 로직
+                    alert("방 설정 변경에 실패하였습니다.");
+                }
+            });
+        });
+});
+
     </script>
     <style>
         a {
@@ -301,7 +339,7 @@
                     <div class="mb-3">
                         <label for="maxUserCnt" class="col-form-label">채팅방 인원 설정(미체크 시 기본 100명)
                             <input class="form-check-input" type="checkbox" id="maxChk"></label>
-<!--                        인원 미체크 인원 자동 @명 설정-->
+                        <!--                        인원 미체크 인원 자동 @명 설정-->
                         <input type="text" class="form-control" id="maxUserCnt" name="maxUserCnt" value="100">
                     </div>
                     <div class="form-check">
@@ -405,7 +443,7 @@
                     </label>
                 </div>
                 <div class="mb-3">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#configRoomModal">방 수정</button>
+                    <button type="button" class="btn btn-secondary" id="configRoomUpdate">방 수정</button>
                     <button type="button" class="btn btn-primary" onclick="delRoom()">방 삭제</button>
                 </div>
             </div>

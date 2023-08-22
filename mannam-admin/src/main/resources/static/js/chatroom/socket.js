@@ -146,7 +146,7 @@ function onMessageReceived(payload) {
 
     if (chat.type === 'ENTER') {
         messageElement.classList.add('event-message');
-        chat.content = chat.sender + " 님 입장!!";
+//        chat.content = chat.sender + " 님 입장!!";
         messageElement.textContent = chat.content;
         document.querySelector('#messageArea').appendChild(messageElement);
         getUserList();
@@ -210,38 +210,39 @@ function showConfigModal() {
     $('#configRoomModal').modal('show');
 }
 
-// 저장 버튼 클릭 시 변경 내용을 서버로 전송하는 로직
-function saveRoomConfig() {
-    let chPwd = $("#chPwd").val();
-    let chRoomName = $("#chRoomName").val();
-    let chRoomUserCnt = $("#chRoomUserCnt").val();
-    let chSecret = $("#chSecret").prop('checked');
-
-    let configData = {
-        roomId: roomId,
-        chPwd: chPwd,
-        chRoomName: chRoomName,
-        chRoomUserCnt: chRoomUserCnt,
-        chSecret: chSecret
-    };
-
-    // configData 를 서버로 POST 요청으로 전송하는 예제
-    // 방 수정 내용을 서버로 전송
-    $.ajax({
-        type: "POST",
-        url: "/chat/updateRoom",
-        contentType: "application/json",
-        data: JSON.stringify(configData),
-        success: function(response) {
-            // 서버에서 정상적으로 처리되었을 때의 로직
-            alert("방 설정이 변경되었습니다.");
-        },
-        error: function(error) {
-            // 에러가 발생했을 때의 로직
-            alert("방 설정 변경에 실패하였습니다.");
-        }
-    });
-}
+//// 저장 버튼 클릭 시 변경 내용을 서버로 전송하는 로직
+//function saveRoomConfig() {
+//    let chPwd = $("#chPwd").val();
+//    let chRoomName = $("#chRoomName").val();
+//    let chRoomUserCnt = $("#chRoomUserCnt").val();
+//    let chSecret = $("#chSecret").prop('checked');
+//
+//    let configData = {
+//        roomId: roomId,
+//        chPwd: chPwd,
+//        chRoomName: chRoomName,
+//        chRoomUserCnt: chRoomUserCnt,
+//        chSecret: chSecret
+//    };
+//
+//    // configData 를 서버로 POST 요청으로 전송하는 예제
+//    // 방 수정 내용을 서버로 전송
+//    $.ajax({
+//        type: "PUT",
+//        url: "/chat/updateRoom",
+//        contentType: "application/json",
+//        data: JSON.stringify(configData),
+//        success: function(response) {
+//            // 서버에서 정상적으로 처리되었을 때의 로직
+//            alert("방 설정이 변경되었습니다.");
+//            location = "/chat/room";
+//        },
+//        error: function(error) {
+//            // 에러가 발생했을 때의 로직
+//            alert("방 설정 변경에 실패하였습니다.");
+//        }
+//    });
+//}
 
 function getAvatarColor(messageSender) {
     var hash = 0;

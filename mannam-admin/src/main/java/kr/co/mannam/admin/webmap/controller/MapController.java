@@ -8,6 +8,7 @@ import kr.co.mannam.admin.webmap.service.FileService;
 import kr.co.mannam.admin.webmap.service.MarkService;
 import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webmap.Mark;
+import kr.co.mannam.domain.repository.member.UserRepository;
 import kr.co.mannam.domain.repository.webmap.MarkRepository;
 import kr.co.mannam.type.board.BoardCategory;
 import lombok.Getter;
@@ -38,6 +39,9 @@ public class MapController {
 
     @Autowired
     MarkRepository markRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     FileService fileService;
@@ -135,6 +139,9 @@ public class MapController {
         }
 
         User user = (User) session.getAttribute("principal");
+
+        userRepository.save(user); // User 객체를 영속화
+
         markDTO.setUser(user);
         markService.save(markDTO);
 

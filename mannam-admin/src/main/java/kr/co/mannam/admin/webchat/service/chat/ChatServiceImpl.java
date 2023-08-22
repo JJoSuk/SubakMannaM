@@ -3,7 +3,9 @@ package kr.co.mannam.admin.webchat.service.chat;
 import kr.co.mannam.admin.webchat.service.file.FileService;
 import kr.co.mannam.domain.entity.member.User;
 import kr.co.mannam.domain.entity.webchat.ChatRoom;
+import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.domain.repository.member.UserRepository;
+import kr.co.mannam.domain.repository.webmap.MarkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class ChatServiceImpl implements ChatService {
     private final FileService fileService;
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
-
+    private final MarkRepository markRepository;
     private Map<String, ChatRoomDto> chatRoomMap;
 
     @PostConstruct
@@ -107,7 +109,7 @@ public class ChatServiceImpl implements ChatService {
     // 채팅방 인원 +1
     @Override
     public void plusUserCnt(String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
+        ChatRoom chatRoom = (ChatRoom)chatRoomRepository.findByRoomId(roomId).orElse(null);
         if (chatRoom != null) {
             chatRoom.setUserCount(userRepository.findByChatRoom_RoomId(roomId).size()); // entity 에 setter 를 설정 안했는데 어떻게 set 을 가져와야 할까
             chatRoomRepository.save(chatRoom);
@@ -118,7 +120,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     @Override
     public void minusUserCnt(String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
+        ChatRoom chatRoom = (ChatRoom)chatRoomRepository.findByRoomId(roomId).orElse(null);
         if (chatRoom != null) {
             chatRoom.setUserCount(userRepository.findByChatRoom_RoomId(roomId).size()); // entity 에 setter 를 설정 안했는데 어떻게 set 을 가져와야 할까
             chatRoomRepository.save(chatRoom);
@@ -134,14 +136,33 @@ public class ChatServiceImpl implements ChatService {
     }
 
     // 채팅방 유저 리스트에 유저 추가
+    @Transactional
     @Override
     public String addUser(String roomId, String userName) {
         ChatRoom chatRoomEntity = chatRoomRepository.findById(roomId).orElse(null);
         String userUUID = UUID.randomUUID().toString();
-        User user = new User(userUUID, userName, chatRoomEntity);
+
+        System.out.println("userUUID = " + userUUID);
+        System.out.println("userName = " + userName);
+        System.out.println("chatRoomEntity = " + chatRoomEntity);
+
+        userRepository.updateUserUUIDAndChatRoomEntityByUsername(userUUID, userName, chatRoomEntity);
+
         if (chatRoomEntity == null) return null;
-        chatRoomEntity.addUser(user);
-        userRepository.save(user);
+
+// 유저 정보 업데이트 후 다시 조회
+        User updatedUser = userRepository.findByUsername(userName);
+
+        System.out.println("updatedUser = " + updatedUser);
+
+        if (updatedUser == null) {
+            // 유저 정보가 업데이트되지 않았을 경우 처리
+            return null;
+        }
+
+// 채팅방에 유저 추가 및 저장
+        chatRoomEntity.addUser(updatedUser);
+        userRepository.save(updatedUser);
 
         return userUUID;
     }
@@ -167,7 +188,11 @@ public class ChatServiceImpl implements ChatService {
     public void delUser(String roomId, String userUUID) {
         User user = userRepository.findByUserUUIDAndChatRoom_RoomId(userUUID, roomId);
         if (user != null) {
-            userRepository.delete(user);
+//            userRepository.delete(user);
+
+            // 채팅방에 연결된 사용자의 chatroom_id를 null로 업데이트
+                user.setChatRoom(null);
+                userRepository.save(user); // 변경사항 저장
         }
     }
 
@@ -189,7 +214,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional(readOnly = true)
     @Override
     public boolean confirmPwd(String roomId, String roomPwd) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new RuntimeException("채팅방을 찾을 수 없습니다."));
+        ChatRoom chatRoom = (ChatRoom)chatRoomRepository.findByRoomId(roomId).orElseThrow(() -> new RuntimeException("채팅방을 찾을 수 없습니다."));
         return chatRoom.getRoomPwd().equals(roomPwd);
     }
 
@@ -197,9 +222,34 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     @Override
     public void delChatRoom(String roomId) {
+        // 채팅방을 가져옴
+        ChatRoom chatRoom = (ChatRoom)chatRoomRepository.findByRoomId(roomId).orElse(null);
+        System.out.println("chatRoom = " + chatRoom);
+        System.out.println("chatRoom.getUsers() = " + chatRoom.getUsers());
+        if (chatRoom != null) {
+            // 채팅방에 연결된 사용자들의 chatroom_id를 null로 업데이트
+            for (User user : chatRoom.getUsers()) {
+                user.setChatRoom(null);
+                userRepository.save(user); // 변경사항 저장
+            }
+
+            // 채팅방 삭제
+            chatRoomRepository.deleteById(roomId);
+        }
+
         // 채팅방 안에 등록된 파일 삭제
         fileService.deleteFileDir(roomId);
-        // 채팅방 삭제
-        chatRoomRepository.deleteById(roomId);
+    }
+
+
+    public void updateRoom(ChatRoom configData) {
+        ChatRoom findChatRoom = (ChatRoom)chatRoomRepository.findByRoomId(configData.getRoomId()).orElse(null);
+        System.out.println("configData.getRoomId() = " + configData.getRoomId());
+        findChatRoom.setRoomName(configData.getRoomName());
+        findChatRoom.setRoomPwd(configData.getRoomPwd());
+        findChatRoom.setMaxUserCnt(configData.getMaxUserCnt());
+        findChatRoom.setSecretChk(configData.isSecretChk());
+
+        chatRoomRepository.save(findChatRoom);
     }
 }

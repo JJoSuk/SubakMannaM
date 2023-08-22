@@ -112,7 +112,7 @@ function createCustomOverlayContent(positions) {
     rootButton.style.marginBottom = '8px';
     rootButton.type = 'button';
     rootButton.target = '_blank';
-    rootButton.href = 'https://map.kakao.com/link/to/'+positions.markname+','+"positions.longitude"+','+"positions.latitude";
+    rootButton.href = 'https://map.kakao.com/link/to/'+positions.title+','+positions.lng+','+positions.lat;
     rootButton.textContent = '길찾기';
     titleDiv.appendChild(rootButton);
 

@@ -266,17 +266,17 @@ public class BoardService {
         if("title".equals(type)) {
             boardEntities =
                     boardRepository.findByBoardTitleContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-            System.out.println("findByBoardTitleContainingAndBoardCategory = " + boardEntities);
+            System.out.println("findByBoardTitleContaining = " + boardEntities);
         }
         else if("content".equals(type)) {
             boardEntities =
                     boardRepository.findByBoardContentsContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-            System.out.println("findByBoardContentsContainingAndBoardCategory = " + boardEntities);
+            System.out.println("findByBoardContentsContaining = " + boardEntities);
         }
         else if("writer".equals(type)) {
             boardEntities =
                     boardRepository.findByBoardWriterContaining(keyword, PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-            System.out.println("findByBoardWriterContainingAndBoardCategory = " + boardEntities);
+            System.out.println("findByBoardWriterContaining = " + boardEntities);
         }
 
 

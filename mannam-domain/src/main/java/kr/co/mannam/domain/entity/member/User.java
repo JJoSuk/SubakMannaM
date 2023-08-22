@@ -5,6 +5,7 @@ import kr.co.mannam.domain.entity.board.BoardEntity;
 import kr.co.mannam.domain.entity.board.BookMark;
 import kr.co.mannam.domain.entity.board.CommentEntity;
 import kr.co.mannam.domain.entity.webchat.ChatRoom;
+import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.type.member.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +57,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<BookMark> bookMarkList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Mark> MarkList = new ArrayList<>();
 
     @PrePersist
     public void generateUUID() {

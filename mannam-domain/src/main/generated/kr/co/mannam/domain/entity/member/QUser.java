@@ -36,6 +36,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath id = createString("id");
 
+    public final ListPath<kr.co.mannam.domain.entity.webmap.Mark, kr.co.mannam.domain.entity.webmap.QMark> MarkList = this.<kr.co.mannam.domain.entity.webmap.Mark, kr.co.mannam.domain.entity.webmap.QMark>createList("MarkList", kr.co.mannam.domain.entity.webmap.Mark.class, kr.co.mannam.domain.entity.webmap.QMark.class, PathInits.DIRECT2);
+
     public final StringPath password = createString("password");
 
     public final EnumPath<kr.co.mannam.type.member.RoleType> role = createEnum("role", kr.co.mannam.type.member.RoleType.class);

@@ -1,6 +1,7 @@
 package kr.co.mannam.admin.webchat.service.chat;
 
 import kr.co.mannam.admin.webchat.dto.chat.ChatRoomDto;
+import kr.co.mannam.domain.entity.webchat.ChatRoom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,4 +21,6 @@ public interface ChatService {
     public String getUserName(String roomId, String userUUID); // 채팅방 userName 조회
     public boolean confirmPwd(String roomId, String roomPwd); // 채팅방 비밀번호 조회
     public String isDuplicateName(String roomId, String username);
+
+    void updateRoom(ChatRoom configData);
 }

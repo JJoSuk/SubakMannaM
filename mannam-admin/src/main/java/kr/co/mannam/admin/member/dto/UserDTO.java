@@ -1,5 +1,6 @@
 package kr.co.mannam.admin.member.dto;
 
+import kr.co.mannam.domain.entity.webchat.ChatRoom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

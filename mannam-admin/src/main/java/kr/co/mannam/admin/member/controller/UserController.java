@@ -45,6 +45,7 @@ public class UserController {
 
         // 아이디 중복체크
         User findUser = userService.getUser(user.getId());
+        System.out.println("findUser.getId() = " + findUser.getId());
 
         if (findUser.getId() == null){
             userService.insertUser(user);
