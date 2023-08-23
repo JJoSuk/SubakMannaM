@@ -92,4 +92,6 @@ public class ChatRoomController { // 채팅방 관련 HTTP 요청을 처리하�
         return new ResponseDTO<>(HttpStatus.OK.value(),
                 configData.getRoomName() + "번 방을 수정했습니다!!");
     }
+
+
 }

@@ -8,7 +8,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,8 +32,6 @@ public class ChatController {
     @MessageMapping("/chat/enterUser")
     public void enterUser(@Payload ChatDto chat, SimpMessageHeaderAccessor headerAccessor) {
 
-        // 채팅방 유저+1
-        chatService.plusUserCnt(chat.getRoomId());
 
         // 채팅방에 유저 추가 및 UserUUID 반환
         String userUUID = chatService.addUser(chat.getRoomId(), chat.getSender());
@@ -43,17 +43,12 @@ public class ChatController {
         // 사용자가 입장 했을 때 사용자 이름 채팅방에 출력
         chat.setMessage(chat.getSender() + " 님 입장!!");
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+
+        // 채팅방 유저+1
+        chatService.plusUserCnt(chat.getRoomId());
     }
 
-    // 사용자가 메시지를 보낼 때 호출되는 메서드.
-    @MessageMapping("/chat/sendMessage")
-    public void sendMessage(@Payload ChatDto chat) {
-        log.info("CHAT {}", chat);
-        chat.setMessage(chat.getMessage());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
-    }
-
-    // 유저 퇴장 시에는 EventListener 을 통해서 유저 퇴장을 확인
+        // 유저 퇴장 시에는 EventListener 을 통해서 유저 퇴장을 확인
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event) {
 
@@ -66,9 +61,6 @@ public class ChatController {
         String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
 
         log.info("headAccessor {}", headerAccessor);
-
-        // 채팅방 유저 -1
-        chatService.minusUserCnt(roomId);
 
         // 채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
         String username = chatService.getUserName(roomId, userUUID);
@@ -86,7 +78,29 @@ public class ChatController {
 
             template.convertAndSend("/sub/chat/room/" + roomId, chat);
         }
+
+        // 채팅방 유저 -1
+        chatService.minusUserCnt(roomId);
+
     }
+
+    // 사용자가 메시지를 보낼 때 호출되는 메서드.
+    @MessageMapping("/chat/sendMessage")
+    public void sendMessage(@Payload ChatDto chat) {
+        log.info("CHAT {}", chat);
+        chat.setMessage(chat.getMessage());
+
+        System.out.println("chat.getRoomId() = " + chat.getRoomId());
+        System.out.println("chat.getMessage() = " + chat.getMessage());
+        System.out.println("chat.getSender() = " + chat.getSender());
+
+        chatService.insertchat(chat);
+
+
+        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+    }
+
+
 
     // 채팅에 참여한 유저 리스트 반환
     @GetMapping("/chat/userlist")

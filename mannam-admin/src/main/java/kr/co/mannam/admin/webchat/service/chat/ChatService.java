@@ -1,5 +1,6 @@
 package kr.co.mannam.admin.webchat.service.chat;
 
+import kr.co.mannam.admin.webchat.dto.chat.ChatDto;
 import kr.co.mannam.admin.webchat.dto.chat.ChatRoomDto;
 import kr.co.mannam.domain.entity.webchat.ChatRoom;
 
@@ -23,4 +24,6 @@ public interface ChatService {
     public String isDuplicateName(String roomId, String username);
 
     void updateRoom(ChatRoom configData);
+
+    void insertchat(ChatDto chat);
 }

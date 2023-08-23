@@ -1,10 +1,13 @@
 package kr.co.mannam.admin.webchat.service.chat;
 
+import kr.co.mannam.admin.webchat.dto.chat.ChatDto;
 import kr.co.mannam.admin.webchat.service.file.FileService;
 import kr.co.mannam.domain.entity.member.User;
+import kr.co.mannam.domain.entity.webchat.Chat;
 import kr.co.mannam.domain.entity.webchat.ChatRoom;
 import kr.co.mannam.domain.entity.webmap.Mark;
 import kr.co.mannam.domain.repository.member.UserRepository;
+import kr.co.mannam.domain.repository.webchat.ChatRepository;
 import kr.co.mannam.domain.repository.webmap.MarkRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +17,7 @@ import kr.co.mannam.admin.webchat.dto.chat.ChatRoomDto;
 import kr.co.mannam.domain.repository.webchat.ChatRoomRepository;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,8 +29,8 @@ public class ChatServiceImpl implements ChatService {
     // 채팅방 등록된 사진 삭제를 위한 fileService 선언
     private final FileService fileService;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
     private final UserRepository userRepository;
-    private final MarkRepository markRepository;
     private Map<String, ChatRoomDto> chatRoomMap;
 
     @PostConstruct
@@ -112,6 +116,7 @@ public class ChatServiceImpl implements ChatService {
         ChatRoom chatRoom = (ChatRoom)chatRoomRepository.findByRoomId(roomId).orElse(null);
         if (chatRoom != null) {
             chatRoom.setUserCount(userRepository.findByChatRoom_RoomId(roomId).size()); // entity 에 setter 를 설정 안했는데 어떻게 set 을 가져와야 할까
+            System.out.println("userRepository.findByChatRoom_RoomId(roomId).size() = "+userRepository.findByChatRoom_RoomId(roomId).size());
             chatRoomRepository.save(chatRoom);
         }
     }
@@ -120,9 +125,12 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     @Override
     public void minusUserCnt(String roomId) {
+        System.out.println("roomId = " + roomId);
         ChatRoom chatRoom = (ChatRoom)chatRoomRepository.findByRoomId(roomId).orElse(null);
+        System.out.println("chatRoom = " + chatRoom);
         if (chatRoom != null) {
             chatRoom.setUserCount(userRepository.findByChatRoom_RoomId(roomId).size()); // entity 에 setter 를 설정 안했는데 어떻게 set 을 가져와야 할까
+            System.out.println("userRepository.findByChatRoom_RoomId(roomId).size() = "+userRepository.findByChatRoom_RoomId(roomId).size());
             chatRoomRepository.save(chatRoom);
         }
     }
@@ -251,5 +259,21 @@ public class ChatServiceImpl implements ChatService {
         findChatRoom.setSecretChk(configData.isSecretChk());
 
         chatRoomRepository.save(findChatRoom);
+    }
+
+    @Override
+    public void insertchat(ChatDto chatDto) {
+        Chat chat = new Chat();
+        chat.setSender(chatDto.getSender());
+        chat.setMessageContent(chatDto.getMessage());
+        chat.setTimestamp(LocalDateTime.now());
+
+        ChatRoom chatRoomEntity = chatRoomRepository.findById(chatDto.getRoomId()).orElse(null);
+        chat.setChatRoom(chatRoomEntity);
+
+        User user = userRepository.findByUsername(chatDto.getSender());
+        chat.setUser(user);
+
+        chatRepository.save(chat);
     }
 }
