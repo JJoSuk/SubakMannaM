@@ -44,6 +44,8 @@ public class ChatController {
         chat.setMessage(chat.getSender() + " 님 입장!!");
         template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
 
+        chatService.insertchat(chat);
+
         // 채팅방 유저+1
         chatService.plusUserCnt(chat.getRoomId());
     }
@@ -66,6 +68,8 @@ public class ChatController {
         String username = chatService.getUserName(roomId, userUUID);
         chatService.delUser(roomId, userUUID);
 
+        System.out.println("username = " + username);
+
         if (username != null) {
             log.info("User Disconnected : " + username);
 
@@ -73,11 +77,15 @@ public class ChatController {
             ChatDto chat = ChatDto.builder()
                     .type(ChatDto.MessageType.LEAVE)
                     .sender(username)
+                    .roomId(roomId)
                     .message(username + " 님 퇴장!!")
                     .build();
 
             template.convertAndSend("/sub/chat/room/" + roomId, chat);
+
+            chatService.insertchat(chat);
         }
+        
 
         // 채팅방 유저 -1
         chatService.minusUserCnt(roomId);
