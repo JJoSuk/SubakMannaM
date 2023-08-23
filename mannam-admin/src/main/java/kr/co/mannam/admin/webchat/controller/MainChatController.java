@@ -21,7 +21,4 @@ public class MainChatController {
         log.info("SHOW ALL ChatList {}", chatService.findAllRoom());
         return "roomlist";
     }
-
 }
-
-

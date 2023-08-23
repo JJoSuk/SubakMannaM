@@ -29,7 +29,7 @@ public interface FileService {
     }
 
     // 파일 삭제
-    default void removeFile(File file){
+    default void removeFile(File file) {
         file.delete();
     }
 

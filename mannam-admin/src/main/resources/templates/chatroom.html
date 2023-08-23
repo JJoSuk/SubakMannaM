@@ -3,26 +3,35 @@
 <th:block th:replace="/user/inc/header::headerFragment"/>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>My Spring WebSocket Chatting</title>
+
     <style>
-        #menu{
+        #menu {
             width: 310px;
         }
+
         #uploadFile {
             margin-left: 225px;
             margin-top: -55px;
         }
+
         .test {
             padding-left: 5px;
             outline: none;
             width: 100%;
             margin-top: 15px;
         }
+
         .btn fa fa-download {
             background-color: DodgerBlue;
             border: none;
@@ -31,20 +40,27 @@
             cursor: pointer;
             font-size: 20px;
         }
-        .fileUpload{
+
+        .fileUpload {
             height: 30px;
-            top:20px;
+            top: 20px;
             width: 120px;
         }
+
         .dropdown-toggle {
             top: 100px;
             margin-left: 50px;
         }
 
-        .chat-container{position: relative;}
-        .chat-container .btn-group{}
+        .chat-container {
+            position: relative;
+        }
+
+        .chat-container .btn-group {
+        }
     </style>
 </head>
+
 <body>
 <link rel="stylesheet" href="/css/chatroom/main.css"/>
 <noscript>
@@ -54,8 +70,9 @@
 <div id="username-page">
     <div class="username-page-container">
         <h1 class="title text-center">채팅하기 전 주의사항</h1>
-        <div  th:if="${user == null}" class="form-group">
-            <input type="hidden" id="name" placeholder="Username" autocomplete="off" class="form-control" th:value="${session.principal.username}"/>
+        <div th:if="${user == null}" class="form-group">
+            <input type="hidden" id="name" placeholder="Username" autocomplete="off" class="form-control"
+                   th:value="${session.principal.username}"/>
         </div>
         <div class="d-flex justify-content-center" style="width: 100%;">
             <div>

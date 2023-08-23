@@ -22,8 +22,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="USERS")
+@Table(name = "USERS")
 public class User {
+
     @Id
     private String id;
 
@@ -68,7 +69,7 @@ public class User {
         }
     }
 
-    public User(String userUUID, String userName, ChatRoom chatRoomEntity){
+    public User(String userUUID, String userName, ChatRoom chatRoomEntity) {
         this.userUUID = userUUID;
         this.username = userName;
         this.chatRoom = chatRoomEntity;

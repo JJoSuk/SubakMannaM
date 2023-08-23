@@ -49,10 +49,10 @@ public class S3FileService implements FileService {
     // 이때 transcation 는 파일 이름 중복 방지를 위한 UUID 를 의미한다.
     @Override
     public FileUploadDto uploadFile(MultipartFile file, String transaction, String roomId) {
-        try{
+        try {
 
             String filename = file.getOriginalFilename(); // 파일원본 이름
-            String key = roomId+"/"+transaction+"/"+filename; // S3 파일 경로
+            String key = roomId + "/" + transaction + "/" + filename; // S3 파일 경로
 
             // 매개변수로 넘어온 multipartFile 을 File 객체로 변환 시켜서 저장하기 위한 메서드
             File convertedFile = convertMultipartFileToFile(file, transaction + filename);
@@ -100,11 +100,13 @@ public class S3FileService implements FileService {
     }
 
     // path 아래있는 모든 파일을 삭제한다.
-// 이때 path 는 roomId 가 된다 => S3 에 roomId/변경된 파일명(uuid)/원본 파일명 으로 되어있기 때문에
-// roomId 를 적어주면 기준이 되는 roomId 아래의 모든 파일이 삭제된다.
+    // 이때 path 는 roomId 가 된다 => S3 에 roomId/변경된 파일명(uuid)/원본 파일명 으로 되어있기 때문에
+    // roomId 를 적어주면 기준이 되는 roomId 아래의 모든 파일이 삭제된다.
     @Override
     public void deleteFileDir(String roomId) {
+
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
+
         if (chatRoom != null) {
             List<ChatFile> files = chatFileRepository.findByChatRoom(chatRoom);
             for (ChatFile file : files) {
@@ -142,12 +144,6 @@ public class S3FileService implements FileService {
         httpHeaders.setContentDispositionFormData("attachment", fileName);
 
         log.info("HttpHeader : [{}]", httpHeaders);
-
-        // 최종적으로 ResponseEntity 객체를 리턴하는데
-        // --> ResponseEntity 란?
-        // ResponseEntity 는 사용자의 httpRequest 에 대한 응답 테이터를 포함하는 클래스이다.
-        // 단순히 body 에 데이터를 포함하는 것이 아니라, header 와 httpStatus 까지 넣어 줄 수 있다.
-        // 이를 통해서 header 에 따라서 다른 동작을 가능하게 할 수 있다 => 파일 다운로드!!
 
         // 나는 object가 변환된 byte 데이터, httpHeader 와 HttpStatus 가 포함된다.
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
